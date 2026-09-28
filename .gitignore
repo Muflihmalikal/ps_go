@@ -1,0 +1,9 @@
+# File konfigurasi sensitif / lokal
+config/database_local.php
+config/env.php
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+*.log
