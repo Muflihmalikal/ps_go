@@ -13,13 +13,15 @@ ps_go/
 ├── includes/    # Komponen halaman reusable (Header, Footer, Sidebar)
 ├── modules/     # File logika per fitur (Auth, Unit, Transaksi)
 └── index.php    # Halaman utama aplikasi
-
-🚀 Fitur Utama & Modul
+```
+## 🚀 Fitur Utama & Modul
+```text
 Auth: Autentikasi pengguna (Login, Logout, Register).
 Unit: Manajemen data unit PlayStation (Status, Tipe, Harga).
 Transaksi: Pencatatan penyewaan unit, durasi, dan pembayaran.
-
-👥 Tim Pengembang
+```
+## 👥 Tim Pengembang
+```text
 [M. Muflih Rafiansyah Fendy]
 [Sarah Sabrina Kusumadewi]
 [Alya Fakhrun Nisa]
