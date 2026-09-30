@@ -1,0 +1,32 @@
+/* --- Base Style & Sidebar --- */
+.sidebar-bg { 
+    background-color: #293d75; 
+    background-image: url('../img/sidebar-bg.png'); 
+    background-size: cover; 
+    background-position: center;
+    background-blend-mode: overlay; 
+}
+
+
+/* --- (index.html) --- */
+.card-hover:hover { transform: translateY(-5px); transition: 0.3s ease-in-out; }
+
+/* --- (form-sewa.html) --- */
+.glass-card { 
+    background: linear-gradient(rgba(235, 240, 255, 0.5), rgba(235, 240, 255, 0.5)), url('../img/bg-ringkasan.png');
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(4px); 
+    border: 1px solid rgba(255,255,255,0.5); 
+}
+
+/* --- (pembayaran.html) --- */
+.upload-area { border: 2px dashed #cbd5e1; border-radius: 12px; transition: 0.3s; cursor: pointer; }
+.upload-area:hover { border-color: #2563eb; background-color: #f8fafc; }
+.timeline-line { border-left: 2px solid #e2e8f0; margin-left: 11px; padding-left: 25px; padding-bottom: 20px; }
+
+/* --- (dashboard.html) --- */
+.card-blue { background-color: #e0e7ff; }
+.card-green { background-color: #dcfce7; }
+.card-yellow { background-color: #fef08a; }
+.card-pink { background-color: #fce7f3; }
