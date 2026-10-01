@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PS Rental - Pesanan Saya</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Custom CSS Proyek Kelompok -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card-custom {
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      background-color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .stepper-box {
+      position: relative;
+      background-color: #f8f9fa;
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
+    .stepper-line {
+      position: absolute;
+      top: 22px;
+      left: 18%;
+      right: 18%;
+      height: 2px;
+      background-color: #0d6efd;
+      z-index: 1;
+    }
+    .stepper-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      z-index: 2;
+      position: relative;
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+<div class="d-flex" style="min-height: 100vh;">
+
+  <!-- ================= SIDEBAR KIRI (PERSIS BERANDA / INDEX.HTML) ================= -->
+  <aside class="sidebar-bg d-flex flex-column p-3 text-white" style="width: 250px;">
+    <!-- Logo Brand -->
+    <a href="../index.html" class="d-flex align-items-center mb-5 mt-2 text-white text-decoration-none">
+      <div class="lh-sm">
+        <span class="fs-5 fw-bold d-block"><i class="bi bi-controller me-2"></i>PS Rental</span>
+        <small class="opacity-75" style="font-size: 0.7rem;">Bawa pulang, main di rumah!</small>
+      </div>
+    </a>
+
+    <!-- Menu Navigasi -->
+    <ul class="nav nav-pills flex-column mb-auto gap-2">
+      <li class="nav-item">
+        <a href="../index.html" class="nav-link text-white opacity-75">
+          <i class="bi bi-house-door-fill me-3"></i> Beranda
+        </a>
+      </li>
+      <li>
+        <a href="Pesanan.html" class="nav-link active text-white d-flex justify-content-between align-items-center">
+          <div>
+            <i class="bi bi-receipt me-3"></i> Pesanan Saya
+          </div>
+          <span class="badge bg-primary rounded-pill">2</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link text-white opacity-75">
+          <i class="bi bi-person-fill me-3"></i> Profil
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- ================= KONTEN UTAMA ================= -->
+  <main class="flex-grow-1 p-4">
+
+    <!-- Topbar Header -->
+    <header class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm border">
+      <div class="input-group w-50">
+        <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
+        <input type="text" class="form-control bg-light border-0" style="font-size: 0.85rem;" placeholder="Cari riwayat transaksi, konsol, atau nomor invoice...">
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 font-medium" style="font-size: 0.75rem;">
+          <i class="bi bi-circle-fill text-success me-1" style="font-size: 7px;"></i> Buka Setiap Hari (10:00 - 23:00 WIB)
+        </span>
+
+        <button class="btn btn-light rounded-circle position-relative p-2">
+          <i class="bi bi-bell"></i>
+          <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+        </button>
+
+        <div class="d-flex align-items-center gap-2 border-start ps-3">
+          <div class="text-end">
+            <div class="fw-bold small">Alya Pratama</div>
+            <div class="text-muted" style="font-size: 0.7rem;">Pelanggan</div>
+          </div>
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" class="rounded-circle" width="36" height="36">
+        </div>
+      </div>
+    </header>
+
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-start mb-4">
+      <div>
+        <p class="text-primary fw-bold text-uppercase mb-0" style="font-size: 0.75rem; letter-spacing: 0.5px;">Dashboard Pelanggan</p>
+        <h2 class="fw-bold text-dark mb-1">Pesanan Saya</h2>
+        <p class="text-muted small mb-0">Pantau status rental konsol PlayStation aktif, countdown waktu bermain, dan riwayat peminjaman secara real-time.</p>
+      </div>
+      <a href="form_sewa.html" class="btn btn-primary btn-sm px-3 py-2 rounded-2 fw-semibold">
+        <i class="bi bi-plus-lg me-1"></i> Sewa Unit Lagi
+      </a>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm rounded-2">Semua Pesanan (4)</button>
+        <button class="btn btn-primary btn-sm rounded-2 fw-semibold">Sedang Berlangsung (2)</button>
+        <button class="btn btn-outline-secondary btn-sm rounded-2">Selesai (2)</button>
+        <button class="btn btn-outline-secondary btn-sm rounded-2">Dibatalkan (0)</button>
+      </div>
+      <div class="d-flex gap-2">
+        <input type="text" class="form-control form-control-sm" placeholder="Cari ID pesanan..." style="width: 180px;">
+        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-sliders me-1"></i> Filter</button>
+      </div>
+    </div>
+
+    <!-- SECTION 1: Pesanan Sedang Berlangsung -->
+    <div class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-circle-fill text-primary" style="font-size: 10px;"></i> Pesanan Sedang Berlangsung
+          <span class="badge bg-primary-subtle text-primary rounded-pill">2 Konsol</span>
+        </h6>
+        <span class="text-muted" style="font-size: 0.75rem;">Otomatis sinkron dengan sistem kasir toko</span>
+      </div>
+
+      <!-- Grid Cards -->
+      <div class="row row-cols-1 row-cols-xl-2 g-4">
+
+        <!-- CARD 1: PS4 Slim (Sedang Dimainkan) -->
+        <div class="col">
+          <div class="card-custom p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                <span class="text-muted small"><strong>#GG-20251024-0089</strong> • Sewa 24 Jam</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">
+                  <i class="bi bi-controller me-1"></i> Sedang Aktif Dimainkan
+                </span>
+              </div>
+
+              <div class="d-flex gap-3 align-items-center mb-3">
+                <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=300&auto=format&fit=crop&q=80" alt="PS4" class="rounded-3 border" width="90" height="70" style="object-fit: cover;">
+                <div>
+                  <h6 class="fw-bold mb-1 text-dark">PlayStation 4 Slim 500GB</h6>
+                  <div class="d-flex gap-2">
+                    <span class="badge bg-light text-dark border"><i class="bi bi-truck text-primary me-1"></i> Diantar ke Rumah</span>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-check-lg me-1"></i> Lunas (QRIS)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Countdown Box -->
+              <div class="bg-primary-subtle bg-opacity-50 p-3 rounded-3 border border-primary-subtle mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="fw-bold text-dark small"><i class="bi bi-clock text-primary me-1"></i> Sisa Waktu Bermain:</span>
+                  <span class="fw-bold text-primary">18 Jam 25 Menit</span>
+                </div>
+                <div class="progress mb-2" style="height: 6px;">
+                  <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;"></div>
+                </div>
+                <div class="d-flex justify-content-between text-muted" style="font-size: 0.7rem;">
+                  <span>Mulai: 24 Okt 2025, 14:00</span>
+                  <span>Berakhir: Besok, 25 Okt 2025, 14:00</span>
+                </div>
+              </div>
+
+              <!-- Info Alamat & Jaminan -->
+              <div class="row g-2 mb-3 text-muted" style="font-size: 0.75rem;">
+                <div class="col-6">
+                  <div class="bg-light p-2 rounded border">
+                    <strong class="text-dark d-block mb-1"><i class="bi bi-geo-alt text-danger me-1"></i> Alamat Pengiriman</strong>
+                    Rogotrunan, Jl. Suwandak No. 45, Lumajang
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="bg-light p-2 rounded border">
+                    <strong class="text-dark d-block mb-1"><i class="bi bi-card-heading text-primary me-1"></i> Jaminan Identitas</strong>
+                    KTP Fisik Asli <span class="text-success">(Diverifikasi Kurir)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 pt-2">
+              <button class="btn btn-danger btn-sm w-50 fw-semibold">Stop & Kembalikan</button>
+              <button class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-dots"></i></button>
+              <button class="btn btn-primary btn-sm w-50 fw-semibold">Perpanjang Sewa</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: Paket Playbox (Sedang Dikirim) -->
+        <div class="col">
+          <div class="card-custom p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                <span class="text-muted small"><strong>#GG-20251023-0074</strong> • Paket Playbox 24 Jam</span>
+                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill">
+                  <i class="bi bi-truck me-1"></i> Sedang Dikirim Kurir
+                </span>
+              </div>
+
+              <div class="d-flex gap-3 align-items-center mb-3">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&auto=format&fit=crop&q=80" alt="Playbox" class="rounded-3 border" width="90" height="70" style="object-fit: cover;">
+                <div>
+                  <h6 class="fw-bold mb-1 text-dark">Paket Playbox PS4 + TV LED 43"</h6>
+                  <!-- Deskripsi "Lengkap 4 Stik..." SUDAH DIHAPUS DISINI -->
+                  <div class="fw-bold text-dark small mt-2">Total: Rp 120.000 <span class="text-muted font-normal">(COD)</span></div>
+                </div>
+              </div>
+
+              <!-- Tracking Stepper Box -->
+              <div class="stepper-box mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold text-primary small"><i class="bi bi-scooter me-1"></i> Estimasi Sampai Lokasi:</span>
+                  <span class="fw-bold text-primary">± 15 Menit Lagi</span>
+                </div>
+                
+                <div class="d-flex justify-content-between text-center position-relative pt-1 px-3">
+                  <div class="stepper-line"></div>
+
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="stepper-dot bg-primary text-white"><i class="bi bi-check"></i></div>
+                    <span class="text-muted mt-1" style="font-size: 0.65rem;">Dicek Toko</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="stepper-dot bg-primary text-white"><i class="bi bi-scooter"></i></div>
+                    <span class="fw-bold text-primary mt-1" style="font-size: 0.65rem;">Otw Kurir</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="stepper-dot bg-secondary-subtle text-muted"><i class="bi bi-house"></i></div>
+                    <span class="text-muted mt-1" style="font-size: 0.65rem;">Tiba & Pasang</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kurir Info -->
+              <div class="row g-2 mb-3 text-muted" style="font-size: 0.75rem;">
+                <div class="col-6">
+                  <div class="bg-light p-2 rounded border d-flex align-items-center gap-2">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" alt="Kurir" class="rounded-circle" width="30" height="30">
+                    <div>
+                      <strong class="text-dark d-block leading-none">Mas Dimas</strong>
+                      <span style="font-size: 0.65rem;">Honda Vario (N 4381 YD)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="bg-light p-2 rounded border">
+                    <strong class="text-dark d-block">Persiapan Jaminan</strong>
+                    <span class="text-danger" style="font-size: 0.65rem;">Siapkan STNK / KTP</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 pt-2">
+              <button class="btn btn-outline-secondary btn-sm w-40 fw-semibold"><i class="bi bi-qr-code me-1"></i> QR Terima</button>
+              <button class="btn btn-primary btn-sm w-60 fw-semibold">Lacak Pengantaran</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 2: Tabel Riwayat Selesai -->
+    <div>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h6 class="fw-bold mb-0"><i class="bi bi-clock-history me-1"></i> Riwayat Peminjaman Selesai</h6>
+          <span class="text-muted" style="font-size: 0.75rem;">Daftar transaksi konsol yang telah berhasil dikembalikan</span>
+        </div>
+        <a href="#" class="text-primary text-decoration-none fw-semibold small">Unduh Semua <i class="bi bi-download ms-1"></i></a>
+      </div>
+
+      <div class="card-custom overflow-hidden">
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.8rem;">
+          <thead class="table-light text-muted">
+            <tr>
+              <th class="ps-4">Unit & No. Pesanan</th>
+              <th>Durasi & Tanggal</th>
+              <th>Total Biaya</th>
+              <th>Status Jaminan</th>
+              <th>Status Sewa</th>
+              <th class="text-center pe-4">Tindakan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="ps-4">
+                <div class="d-flex align-items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1526509867162-5b0c0d1b4b33?w=100&auto=format&fit=crop&q=80" class="rounded border" width="45" height="35" style="object-fit: cover;">
+                  <div>
+                    <strong class="text-dark d-block">PlayStation 3 Super Slim</strong>
+                    <span class="text-muted" style="font-size: 0.7rem;">#GG-20251018-0052</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <strong class="text-dark d-block">24 Jam (1 Hari)</strong>
+                <span class="text-muted" style="font-size: 0.7rem;">Selesai: 19 Okt 2025</span>
+              </td>
+              <td>
+                <strong class="text-dark">Rp 50.000</strong>
+                <span class="text-muted d-block" style="font-size: 0.7rem;">Tunai / Selesai</span>
+              </td>
+              <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle">✓ KTP Utuh</span></td>
+              <td><span class="badge bg-secondary-subtle text-secondary border">Selesai</span></td>
+              <td class="text-center pe-4">
+                <a href="form_sewa.html" class="btn btn-primary btn-sm px-3 py-1" style="font-size: 0.75rem;"><i class="bi bi-arrow-repeat me-1"></i> Sewa Lagi</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="ps-4">
+                <div class="d-flex align-items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=100&auto=format&fit=crop&q=80" class="rounded border" width="45" height="35" style="object-fit: cover;">
+                  <div>
+                    <strong class="text-dark d-block">PlayStation 4 Slim</strong>
+                    <span class="text-muted" style="font-size: 0.7rem;">#GG-20251010-0031</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <strong class="text-dark d-block">24 Jam (Weekend)</strong>
+                <span class="text-muted" style="font-size: 0.7rem;">Selesai: 11 Okt 2025</span>
+              </td>
+              <td>
+                <strong class="text-dark">Rp 80.000</strong>
+                <span class="text-muted d-block" style="font-size: 0.7rem;">Transfer / Lunas</span>
+              </td>
+              <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle">✓ SIM C Utuh</span></td>
+              <td><span class="badge bg-secondary-subtle text-secondary border">Selesai</span></td>
+              <td class="text-center pe-4">
+                <a href="form_sewa.html" class="btn btn-primary btn-sm px-3 py-1" style="font-size: 0.75rem;"><i class="bi bi-arrow-repeat me-1"></i> Sewa Lagi</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
