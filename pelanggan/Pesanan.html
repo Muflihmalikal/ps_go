@@ -13,50 +13,194 @@
   <link rel="stylesheet" href="../assets/css/style.css">
 
   <style>
-    body {
+    /* Reset & Base Setup untuk menghilangkan jarak/margin sisa di kiri */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
       background-color: #f8f9fa;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow-x: hidden;
     }
+    
     .card-custom {
       border: 1px solid #e2e8f0;
       border-radius: 1rem;
       background-color: #ffffff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .card-custom:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+
+    /* Fix Tombol & Icon Bulat */
+    .btn-circle-fixed {
+      width: 38px !important;
+      height: 38px !important;
+      min-width: 38px !important;
+      min-height: 38px !important;
+      max-width: 38px !important;
+      max-height: 38px !important;
+      border-radius: 50% !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      padding: 0 !important;
+      aspect-ratio: 1 / 1 !important;
+    }
+
+    /* --- FIX: TOMBOL FILTER & QR TERIMA YANG ILANG SAAT HOVER --- */
+    .btn-filter {
+      border-radius: 50rem !important;
+      padding: 0.4rem 1.2rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-filter-inactive {
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #64748b;
+    }
+    .btn-filter-inactive:hover {
+      background-color: #eff6ff;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    /* Custom Class Buat Tombol Outline Biar Gak Jadi Abu-Abu Jelek */
+    .btn-outline-custom {
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      transition: all 0.2s ease;
+    }
+    .btn-outline-custom:hover {
+      background-color: #f1f5f9; /* Abu-abu sangat muda yang aman */
+      border-color: #94a3b8;
+      color: #0f172a; /* Teks jadi gelap, dijamin kebaca! */
+    }
+
+    /* --- UPGRADE: ANIMASI STEPPER KURIR --- */
     .stepper-box {
       position: relative;
       background-color: #f8f9fa;
       border-radius: 0.75rem;
       padding: 1rem;
+      overflow: hidden; /* Biar garis nggak keluar batas */
     }
-    .stepper-line {
+    
+    /* Garis dasar (abu-abu) */
+    .stepper-line-bg {
       position: absolute;
       top: 22px;
       left: 18%;
       right: 18%;
-      height: 2px;
-      background-color: #0d6efd;
+      height: 4px;
+      background-color: #e2e8f0;
+      border-radius: 2px;
       z-index: 1;
     }
+    
+    /* Garis progres biru (bergerak JS) */
+    .stepper-line-progress {
+      position: absolute;
+      top: 22px;
+      left: 18%;
+      height: 4px;
+      background-color: #0d6efd;
+      border-radius: 2px;
+      z-index: 2;
+      width: 50%; /* Nilai awal, diubah oleh JS */
+      transition: width 1s linear; /* Animasi mulus ngikutin detik */
+      box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+    }
+
     .stepper-dot {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
-      z-index: 2;
+      font-size: 13px;
+      z-index: 3;
       position: relative;
+      transition: all 0.4s ease;
+    }
+
+    /* Animasi icon motor kurir "Otw" jalan-jalan halus */
+    .dot-animating {
+      animation: pulse-ring 2s infinite;
+      box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.5);
+    }
+    
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(13, 110, 253, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+    }
+
+    /* --- UPGRADE: PROGRESS BAR WAKTU BERMAIN --- */
+    .progress-bar-waktu {
+      transition: width 1s linear, background-color 0.5s ease;
+    }
+    
+    /* Efek garis-garis jalan pada progress bar */
+    .progress-animated-striped {
+      background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+      background-size: 1rem 1rem;
+      animation: progress-stripes 1s linear infinite;
+    }
+    @keyframes progress-stripes {
+      from { background-position: 1rem 0; }
+      to { background-position: 0 0; }
+    }
+
+    /* --- SHOPEE STYLE TIMELINE --- */
+    .timeline-shopee {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline-shopee::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background-color: #e2e8f0;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #cbd5e1;
+    }
+    .timeline-item.active::before {
+      background-color: #10b981;
+      box-shadow: 0 0 0 4px #d1fae5;
     }
   </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="d-flex" style="min-height: 100vh;">
+<div class="d-flex w-100" style="min-height: 100vh;">
 
-  <!-- ================= SIDEBAR KIRI (PERSIS BERANDA / INDEX.HTML) ================= -->
-  <aside class="sidebar-bg d-flex flex-column p-3 text-white" style="width: 250px;">
-    <!-- Logo Brand -->
+  <!-- ================= SIDEBAR KIRI ================= -->
+  <aside class="sidebar-bg d-flex flex-column p-3 text-white flex-shrink-0 border-end border-dark" style="width: 250px; margin-left: 0;">
     <a href="../index.html" class="d-flex align-items-center mb-5 mt-2 text-white text-decoration-none">
       <div class="lh-sm">
         <span class="fs-5 fw-bold d-block"><i class="bi bi-controller me-2"></i>PS Rental</span>
@@ -64,7 +208,6 @@
       </div>
     </a>
 
-    <!-- Menu Navigasi -->
     <ul class="nav nav-pills flex-column mb-auto gap-2">
       <li class="nav-item">
         <a href="../index.html" class="nav-link text-white opacity-75">
@@ -72,11 +215,11 @@
         </a>
       </li>
       <li>
-        <a href="Pesanan.html" class="nav-link active text-white d-flex justify-content-between align-items-center">
+        <a href="Pesanan.html" class="nav-link active text-white d-flex justify-content-between align-items-center shadow-sm">
           <div>
             <i class="bi bi-receipt me-3"></i> Pesanan Saya
           </div>
-          <span class="badge bg-primary rounded-pill">2</span>
+          <span class="badge bg-primary rounded-pill border border-white">2</span>
         </a>
       </li>
       <li>
@@ -88,76 +231,73 @@
   </aside>
 
   <!-- ================= KONTEN UTAMA ================= -->
-  <main class="flex-grow-1 p-4">
+  <main class="flex-grow-1 p-3 p-md-4">
 
-    <!-- Topbar Header -->
-    <header class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm border">
+    <!-- TOPBAR HEADER -->
+    <header class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm border">
       <div class="input-group w-50">
-        <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
-        <input type="text" class="form-control bg-light border-0" style="font-size: 0.85rem;" placeholder="Cari riwayat transaksi, konsol, atau nomor invoice...">
+        <span class="input-group-text bg-light border-0 rounded-start-pill ps-3"><i class="bi bi-search text-muted"></i></span>
+        <input type="text" id="globalSearchInput" class="form-control bg-light border-0 rounded-end-pill" style="font-size: 0.85rem;" placeholder="Cari riwayat transaksi, konsol...">
       </div>
 
       <div class="d-flex align-items-center gap-3">
         <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 font-medium" style="font-size: 0.75rem;">
           <i class="bi bi-circle-fill text-success me-1" style="font-size: 7px;"></i> Buka Setiap Hari (10:00 - 23:00 WIB)
         </span>
-
-        <button class="btn btn-light rounded-circle position-relative p-2">
-          <i class="bi bi-bell"></i>
-          <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+        <button class="btn btn-link text-muted p-1 text-decoration-none">
+          <i class="bi bi-bell fs-5"></i>
         </button>
-
         <div class="d-flex align-items-center gap-2 border-start ps-3">
-          <div class="text-end">
-            <div class="fw-bold small">Alya Pratama</div>
+          <div class="btn-circle-fixed bg-warning-subtle text-dark fw-bold border border-warning" style="font-size: 0.85rem;">
+            AP
+          </div>
+          <div class="text-start">
+            <div class="fw-bold small lh-1 text-dark">Alya Pratama</div>
             <div class="text-muted" style="font-size: 0.7rem;">Pelanggan</div>
           </div>
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" class="rounded-circle" width="36" height="36">
         </div>
       </div>
     </header>
 
-    <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-start mb-4">
       <div>
-        <p class="text-primary fw-bold text-uppercase mb-0" style="font-size: 0.75rem; letter-spacing: 0.5px;">Dashboard Pelanggan</p>
+        <p class="text-primary fw-bold text-uppercase mb-0" style="font-size: 0.75rem; letter-spacing: 0.5px;">Detail Pesanan</p>
         <h2 class="fw-bold text-dark mb-1">Pesanan Saya</h2>
-        <p class="text-muted small mb-0">Pantau status rental konsol PlayStation aktif, countdown waktu bermain, dan riwayat peminjaman secara real-time.</p>
+        <p class="text-muted small mb-0">Pantau status rental konsol PlayStation aktif, countdown waktu bermain, dan riwayat peminjaman.</p>
       </div>
-      <a href="form_sewa.html" class="btn btn-primary btn-sm px-3 py-2 rounded-2 fw-semibold">
+      <a href="form_sewa.html" class="btn btn-primary btn-sm px-4 py-2 rounded-pill fw-semibold shadow-sm">
         <i class="bi bi-plus-lg me-1"></i> Sewa Unit Lagi
       </a>
     </div>
 
-    <!-- Filter Buttons -->
-    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+    <!-- FILTER BUTTONS & SEARCH -->
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4 flex-wrap gap-2">
       <div class="d-flex gap-2">
-        <button class="btn btn-outline-secondary btn-sm rounded-2">Semua Pesanan (4)</button>
-        <button class="btn btn-primary btn-sm rounded-2 fw-semibold">Sedang Berlangsung (2)</button>
-        <button class="btn btn-outline-secondary btn-sm rounded-2">Selesai (2)</button>
-        <button class="btn btn-outline-secondary btn-sm rounded-2">Dibatalkan (0)</button>
+        <button class="btn btn-filter btn-filter-inactive" id="filterAll" onclick="filterTab('all')">Semua Pesanan (4)</button>
+        <button class="btn btn-filter btn-primary text-white shadow-sm" id="filterActive" onclick="filterTab('active')">Sedang Berlangsung (2)</button>
+        <button class="btn btn-filter btn-filter-inactive" id="filterDone" onclick="filterTab('done')">Selesai (2)</button>
+        <button class="btn btn-filter btn-filter-inactive" id="filterCancel" onclick="filterTab('cancel')">Dibatalkan (0)</button>
       </div>
       <div class="d-flex gap-2">
-        <input type="text" class="form-control form-control-sm" placeholder="Cari ID pesanan..." style="width: 180px;">
-        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-sliders me-1"></i> Filter</button>
+        <input type="text" id="orderSearchInput" class="form-control form-control-sm rounded-pill px-3" placeholder="Cari ID pesanan..." style="width: 180px;" onkeyup="searchOrders()">
+        <!-- FIX: Pake btn-outline-custom biar gak abu-abu gelap -->
+        <button class="btn btn-outline-custom btn-sm rounded-pill px-3 fw-medium"><i class="bi bi-sliders me-1"></i> Filter</button>
       </div>
     </div>
 
-    <!-- SECTION 1: Pesanan Sedang Berlangsung -->
-    <div class="mb-5">
+    <!-- SECTION 1: PESANAN SEDANG BERLANGSUNG -->
+    <div class="mb-5" id="sectionBerlangsung">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
           <i class="bi bi-circle-fill text-primary" style="font-size: 10px;"></i> Pesanan Sedang Berlangsung
           <span class="badge bg-primary-subtle text-primary rounded-pill">2 Konsol</span>
         </h6>
-        <span class="text-muted" style="font-size: 0.75rem;">Otomatis sinkron dengan sistem kasir toko</span>
       </div>
 
-      <!-- Grid Cards -->
       <div class="row row-cols-1 row-cols-xl-2 g-4">
 
-        <!-- CARD 1: PS4 Slim (Sedang Dimainkan) -->
-        <div class="col">
+        <!-- CARD 1: PS4 Slim -->
+        <div class="col order-card" data-title="ps4 slim playstation 4 #gg-20251024-0089">
           <div class="card-custom p-4 h-100 d-flex flex-column justify-content-between">
             <div>
               <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
@@ -168,97 +308,107 @@
               </div>
 
               <div class="d-flex gap-3 align-items-center mb-3">
-                <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=300&auto=format&fit=crop&q=80" alt="PS4" class="rounded-3 border" width="90" height="70" style="object-fit: cover;">
+                <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=300&auto=format&fit=crop&q=80" class="rounded-3 border flex-shrink-0 shadow-sm" width="90" height="70" style="object-fit: cover;">
                 <div>
                   <h6 class="fw-bold mb-1 text-dark">PlayStation 4 Slim 500GB</h6>
-                  <div class="d-flex gap-2">
+                  <div class="d-flex gap-2 mt-2">
                     <span class="badge bg-light text-dark border"><i class="bi bi-truck text-primary me-1"></i> Diantar ke Rumah</span>
                     <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-check-lg me-1"></i> Lunas (QRIS)</span>
                   </div>
                 </div>
               </div>
 
-              <!-- Countdown Box -->
-              <div class="bg-primary-subtle bg-opacity-50 p-3 rounded-3 border border-primary-subtle mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-1">
+              <!-- Countdown Box Live JS -->
+              <div class="bg-primary-subtle bg-opacity-25 p-3 rounded-4 border border-primary-subtle mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="fw-bold text-dark small"><i class="bi bi-clock text-primary me-1"></i> Sisa Waktu Bermain:</span>
-                  <span class="fw-bold text-primary">18 Jam 25 Menit</span>
+                  <span class="fw-bold fs-6 text-primary" id="liveCountdownPlay">19 Jam 19 Menit 53 Detik</span>
                 </div>
-                <div class="progress mb-2" style="height: 6px;">
-                  <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;"></div>
+                <!-- Animasi Bar Striped Smooth -->
+                <div class="progress mb-2 bg-light border border-light" style="height: 10px; border-radius: 5rem;">
+                  <div class="progress-bar progress-animated-striped progress-bar-waktu bg-primary" id="liveProgressBar" role="progressbar" style="width: 80%;"></div>
                 </div>
-                <div class="d-flex justify-content-between text-muted" style="font-size: 0.7rem;">
+                <div class="d-flex justify-content-between text-muted mt-1" style="font-size: 0.65rem;">
                   <span>Mulai: 24 Okt 2025, 14:00</span>
                   <span>Berakhir: Besok, 25 Okt 2025, 14:00</span>
                 </div>
               </div>
 
-              <!-- Info Alamat & Jaminan -->
+              <!-- Info Alamat -->
               <div class="row g-2 mb-3 text-muted" style="font-size: 0.75rem;">
                 <div class="col-6">
-                  <div class="bg-light p-2 rounded border">
+                  <div class="bg-light p-2 rounded-3 border h-100">
                     <strong class="text-dark d-block mb-1"><i class="bi bi-geo-alt text-danger me-1"></i> Alamat Pengiriman</strong>
                     Rogotrunan, Jl. Suwandak No. 45, Lumajang
                   </div>
                 </div>
                 <div class="col-6">
-                  <div class="bg-light p-2 rounded border">
+                  <div class="bg-light p-2 rounded-3 border h-100">
                     <strong class="text-dark d-block mb-1"><i class="bi bi-card-heading text-primary me-1"></i> Jaminan Identitas</strong>
-                    KTP Fisik Asli <span class="text-success">(Diverifikasi Kurir)</span>
+                    KTP Fisik Asli <span class="text-success fw-medium">(Diverifikasi Kurir)</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="d-flex gap-2 pt-2">
-              <button class="btn btn-danger btn-sm w-50 fw-semibold">Stop & Kembalikan</button>
-              <button class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-dots"></i></button>
-              <button class="btn btn-primary btn-sm w-50 fw-semibold">Perpanjang Sewa</button>
+            <!-- Tombol Aksi Bulat Anti-Gepeng -->
+            <div class="d-flex align-items-center justify-content-between gap-2 pt-2">
+              <button class="btn btn-danger btn-sm flex-grow-1 fw-semibold rounded-pill py-2" onclick="konfirmasiStop()">Stop & Kembalikan</button>
+              <button class="btn btn-outline-custom btn-circle-fixed bg-white" title="Hubungi CS">
+                <i class="bi bi-chat-dots fs-5"></i>
+              </button>
+              <button class="btn btn-primary btn-sm flex-grow-1 fw-semibold rounded-pill py-2" onclick="tambahWaktuSewa()">Perpanjang Sewa</button>
             </div>
           </div>
         </div>
 
-        <!-- CARD 2: Paket Playbox (Sedang Dikirim) -->
-        <div class="col">
-          <div class="card-custom p-4 h-100 d-flex flex-column justify-content-between">
+        <!-- CARD 2: Paket Playbox (Animasi Kurir Bergerak) -->
+        <div class="col order-card" data-title="paket playbox ps4 tv led #gg-20251023-0074">
+          <div class="card-custom p-4 h-100 d-flex flex-column justify-content-between" id="cardPaketPlaybox">
             <div>
               <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
                 <span class="text-muted small"><strong>#GG-20251023-0074</strong> • Paket Playbox 24 Jam</span>
-                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill">
+                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill" id="statusBadgeDelivery">
                   <i class="bi bi-truck me-1"></i> Sedang Dikirim Kurir
                 </span>
               </div>
 
               <div class="d-flex gap-3 align-items-center mb-3">
-                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&auto=format&fit=crop&q=80" alt="Playbox" class="rounded-3 border" width="90" height="70" style="object-fit: cover;">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&auto=format&fit=crop&q=80" class="rounded-3 border flex-shrink-0 shadow-sm" width="90" height="70" style="object-fit: cover;">
                 <div>
                   <h6 class="fw-bold mb-1 text-dark">Paket Playbox PS4 + TV LED 43"</h6>
-                  <!-- Deskripsi "Lengkap 4 Stik..." SUDAH DIHAPUS DISINI -->
-                  <div class="fw-bold text-dark small mt-2">Total: Rp 120.000 <span class="text-muted font-normal">(COD)</span></div>
+                  <div class="fw-bold text-dark small mt-2">Total: Rp 120.000 <span class="text-muted fw-normal">(COD)</span></div>
                 </div>
               </div>
 
-              <!-- Tracking Stepper Box -->
-              <div class="stepper-box mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
+              <!-- TRACKING STEPPER UPGRADE (Animasi Progress JS) -->
+              <div class="stepper-box mb-3 border shadow-sm" style="background-color: #fafaf9;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                   <span class="fw-bold text-primary small"><i class="bi bi-scooter me-1"></i> Estimasi Sampai Lokasi:</span>
-                  <span class="fw-bold text-primary">± 15 Menit Lagi</span>
+                  <span class="fw-bold fs-6 text-primary" id="liveCountdownDelivery">± 11 Menit 21 Detik</span>
                 </div>
                 
                 <div class="d-flex justify-content-between text-center position-relative pt-1 px-3">
-                  <div class="stepper-line"></div>
+                  <!-- Dua Lapis Garis: Background (Abu) & Progress (Biru) -->
+                  <div class="stepper-line-bg"></div>
+                  <div class="stepper-line-progress" id="kurirProgressBar"></div>
 
                   <div class="d-flex flex-column align-items-center">
                     <div class="stepper-dot bg-primary text-white"><i class="bi bi-check"></i></div>
-                    <span class="text-muted mt-1" style="font-size: 0.65rem;">Dicek Toko</span>
+                    <span class="text-muted mt-2" style="font-size: 0.65rem;">Dicek Toko</span>
                   </div>
+                  
+                  <!-- Icon Motor dengan Animasi Pulse Jalan -->
                   <div class="d-flex flex-column align-items-center">
-                    <div class="stepper-dot bg-primary text-white"><i class="bi bi-scooter"></i></div>
-                    <span class="fw-bold text-primary mt-1" style="font-size: 0.65rem;">Otw Kurir</span>
+                    <div class="stepper-dot bg-primary text-white dot-animating border border-2 border-white" id="dotKurir">
+                      <i class="bi bi-scooter fs-6"></i>
+                    </div>
+                    <span class="fw-bold text-primary mt-2" style="font-size: 0.65rem;" id="textKurir">Otw Kurir</span>
                   </div>
+                  
                   <div class="d-flex flex-column align-items-center">
-                    <div class="stepper-dot bg-secondary-subtle text-muted"><i class="bi bi-house"></i></div>
-                    <span class="text-muted mt-1" style="font-size: 0.65rem;">Tiba & Pasang</span>
+                    <div class="stepper-dot bg-secondary-subtle text-muted" id="dotTiba"><i class="bi bi-house"></i></div>
+                    <span class="text-muted mt-2" style="font-size: 0.65rem;" id="textTiba">Tiba & Pasang</span>
                   </div>
                 </div>
               </div>
@@ -266,26 +416,30 @@
               <!-- Kurir Info -->
               <div class="row g-2 mb-3 text-muted" style="font-size: 0.75rem;">
                 <div class="col-6">
-                  <div class="bg-light p-2 rounded border d-flex align-items-center gap-2">
-                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" alt="Kurir" class="rounded-circle" width="30" height="30">
-                    <div>
-                      <strong class="text-dark d-block leading-none">Mas Dimas</strong>
+                  <div class="bg-light p-2 rounded-3 border d-flex align-items-center gap-2 h-100">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" class="btn-circle-fixed shadow-sm" style="width:36px; height:36px;">
+                    <div class="lh-sm">
+                      <strong class="text-dark d-block">Mas Dimas</strong>
                       <span style="font-size: 0.65rem;">Honda Vario (N 4381 YD)</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-6">
-                  <div class="bg-light p-2 rounded border">
+                  <div class="bg-light p-2 rounded-3 border h-100">
                     <strong class="text-dark d-block">Persiapan Jaminan</strong>
-                    <span class="text-danger" style="font-size: 0.65rem;">Siapkan STNK / KTP</span>
+                    <span class="text-danger fw-medium" style="font-size: 0.65rem;">Siapkan STNK / KTP</span>
                   </div>
                 </div>
               </div>
             </div>
 
+            <!-- Tombol Lacak -->
             <div class="d-flex gap-2 pt-2">
-              <button class="btn btn-outline-secondary btn-sm w-40 fw-semibold"><i class="bi bi-qr-code me-1"></i> QR Terima</button>
-              <button class="btn btn-primary btn-sm w-60 fw-semibold">Lacak Pengantaran</button>
+              <!-- FIX: Pake btn-outline-custom biar pas di-hover teksnya aman -->
+              <button class="btn btn-outline-custom btn-sm w-40 fw-semibold rounded-pill py-2" onclick="simulasiTiba()"><i class="bi bi-qr-code me-1"></i> QR Terima</button>
+              <button class="btn btn-primary btn-sm w-60 fw-semibold rounded-pill py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#trackingModal">
+                <i class="bi bi-geo-alt me-1"></i> Lacak Pengantaran
+              </button>
             </div>
           </div>
         </div>
@@ -293,75 +447,77 @@
       </div>
     </div>
 
-    <!-- SECTION 2: Tabel Riwayat Selesai -->
-    <div>
-      <div class="d-flex justify-content-between align-items-center mb-3">
+    <!-- SECTION 2: RIWAYAT PEMINJAMAN SELESAI -->
+    <div class="card-custom p-4 mb-4" id="sectionSelesai">
+      <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3">
         <div>
-          <h6 class="fw-bold mb-0"><i class="bi bi-clock-history me-1"></i> Riwayat Peminjaman Selesai</h6>
+          <h6 class="fw-bold mb-1 text-dark"><i class="bi bi-clock-history me-2 text-primary"></i> Riwayat Peminjaman Selesai</h6>
           <span class="text-muted" style="font-size: 0.75rem;">Daftar transaksi konsol yang telah berhasil dikembalikan</span>
         </div>
-        <a href="#" class="text-primary text-decoration-none fw-semibold small">Unduh Semua <i class="bi bi-download ms-1"></i></a>
+        <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold" style="font-size: 0.75rem;">
+          Unduh Semua <i class="bi bi-download ms-1"></i>
+        </a>
       </div>
 
-      <div class="card-custom overflow-hidden">
-        <table class="table table-hover align-middle mb-0" style="font-size: 0.8rem;">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.82rem;">
           <thead class="table-light text-muted">
             <tr>
-              <th class="ps-4">Unit & No. Pesanan</th>
-              <th>Durasi & Tanggal</th>
-              <th>Total Biaya</th>
-              <th>Status Jaminan</th>
-              <th>Status Sewa</th>
-              <th class="text-center pe-4">Tindakan</th>
+              <th class="ps-3 border-0 rounded-start">Unit & No. Pesanan</th>
+              <th class="border-0">Durasi & Tanggal</th>
+              <th class="border-0">Total Biaya</th>
+              <th class="border-0">Status Jaminan</th>
+              <th class="border-0">Status Sewa</th>
+              <th class="text-center pe-3 border-0 rounded-end">Tindakan</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td class="ps-4">
+          <tbody class="border-top-0">
+            <tr class="order-card" data-title="playstation 3 super slim #gg-20251018-0052">
+              <td class="ps-3 pt-3">
                 <div class="d-flex align-items-center gap-3">
-                  <img src="https://images.unsplash.com/photo-1526509867162-5b0c0d1b4b33?w=100&auto=format&fit=crop&q=80" class="rounded border" width="45" height="35" style="object-fit: cover;">
+                  <img src="https://images.unsplash.com/photo-1526509867162-5b0c0d1b4b33?w=100&auto=format&fit=crop&q=80" class="rounded border flex-shrink-0" width="45" height="35" style="object-fit: cover;">
                   <div>
                     <strong class="text-dark d-block">PlayStation 3 Super Slim</strong>
                     <span class="text-muted" style="font-size: 0.7rem;">#GG-20251018-0052</span>
                   </div>
                 </div>
               </td>
-              <td>
+              <td class="pt-3">
                 <strong class="text-dark d-block">24 Jam (1 Hari)</strong>
                 <span class="text-muted" style="font-size: 0.7rem;">Selesai: 19 Okt 2025</span>
               </td>
-              <td>
+              <td class="pt-3">
                 <strong class="text-dark">Rp 50.000</strong>
                 <span class="text-muted d-block" style="font-size: 0.7rem;">Tunai / Selesai</span>
               </td>
-              <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle">✓ KTP Utuh</span></td>
-              <td><span class="badge bg-secondary-subtle text-secondary border">Selesai</span></td>
-              <td class="text-center pe-4">
-                <a href="form_sewa.html" class="btn btn-primary btn-sm px-3 py-1" style="font-size: 0.75rem;"><i class="bi bi-arrow-repeat me-1"></i> Sewa Lagi</a>
+              <td class="pt-3"><span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">✓ KTP Utuh</span></td>
+              <td class="pt-3"><span class="badge bg-secondary-subtle text-secondary border rounded-pill">Selesai</span></td>
+              <td class="text-center pe-3 pt-3">
+                <a href="form_sewa.html" class="btn btn-primary btn-sm px-3 py-1 rounded-pill" style="font-size: 0.75rem;"><i class="bi bi-arrow-repeat me-1"></i> Sewa Lagi</a>
               </td>
             </tr>
-            <tr>
-              <td class="ps-4">
+            <tr class="order-card" data-title="playstation 4 slim #gg-20251010-0031">
+              <td class="ps-3 pt-3 pb-3">
                 <div class="d-flex align-items-center gap-3">
-                  <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=100&auto=format&fit=crop&q=80" class="rounded border" width="45" height="35" style="object-fit: cover;">
+                  <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=100&auto=format&fit=crop&q=80" class="rounded border flex-shrink-0" width="45" height="35" style="object-fit: cover;">
                   <div>
                     <strong class="text-dark d-block">PlayStation 4 Slim</strong>
                     <span class="text-muted" style="font-size: 0.7rem;">#GG-20251010-0031</span>
                   </div>
                 </div>
               </td>
-              <td>
+              <td class="pt-3 pb-3">
                 <strong class="text-dark d-block">24 Jam (Weekend)</strong>
                 <span class="text-muted" style="font-size: 0.7rem;">Selesai: 11 Okt 2025</span>
               </td>
-              <td>
+              <td class="pt-3 pb-3">
                 <strong class="text-dark">Rp 80.000</strong>
                 <span class="text-muted d-block" style="font-size: 0.7rem;">Transfer / Lunas</span>
               </td>
-              <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle">✓ SIM C Utuh</span></td>
-              <td><span class="badge bg-secondary-subtle text-secondary border">Selesai</span></td>
-              <td class="text-center pe-4">
-                <a href="form_sewa.html" class="btn btn-primary btn-sm px-3 py-1" style="font-size: 0.75rem;"><i class="bi bi-arrow-repeat me-1"></i> Sewa Lagi</a>
+              <td class="pt-3 pb-3"><span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">✓ SIM C Utuh</span></td>
+              <td class="pt-3 pb-3"><span class="badge bg-secondary-subtle text-secondary border rounded-pill">Selesai</span></td>
+              <td class="text-center pe-3 pt-3 pb-3">
+                <a href="form_sewa.html" class="btn btn-primary btn-sm px-3 py-1 rounded-pill" style="font-size: 0.75rem;"><i class="bi bi-arrow-repeat me-1"></i> Sewa Lagi</a>
               </td>
             </tr>
           </tbody>
@@ -372,7 +528,216 @@
   </main>
 </div>
 
+<!-- ================= MODAL TRACKING SHOPEE STYLE ================= -->
+<div class="modal fade" id="trackingModal" tabindex="-1" aria-labelledby="trackingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h6 class="modal-title fw-bold" id="trackingModalLabel"><i class="bi bi-truck text-primary me-2"></i> Lacak Status Pengantaran</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        
+        <div class="bg-light p-3 rounded-3 d-flex align-items-center justify-content-between mb-4 border">
+          <div class="d-flex align-items-center gap-3">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" class="btn-circle-fixed" style="width:42px; height:42px;">
+            <div>
+              <div class="fw-bold text-dark">Mas Dimas Prasetyo</div>
+              <div class="text-muted small">Kurir Pengantar Galaxy Game</div>
+              <div class="badge bg-primary-subtle text-primary" style="font-size: 0.65rem;">Honda Vario (N 4381 YD)</div>
+            </div>
+          </div>
+          
+          <a href="https://wa.me/6288973539946" target="_blank" class="btn btn-success btn-circle-fixed text-white" title="Hubungi WA">
+            <i class="bi bi-whatsapp fs-6"></i>
+          </a>
+        </div>
+
+        <h6 class="fw-bold mb-3 text-dark small">Rincian Perjalanan Pengiriman</h6>
+        <div class="timeline-shopee">
+          <div class="timeline-item active">
+            <div class="fw-bold text-success small" id="shopeeStatusHead">Pesanan Sedang Dalam Perjalanan</div>
+            <div class="text-muted" style="font-size: 0.7rem;" id="shopeeStatusSub">Kurir sedang mengarah ke rumah tujuan (Jl. Suwandak No. 45)</div>
+          </div>
+          <div class="timeline-item">
+            <div class="fw-bold text-dark small">Pesanan Diserahkan ke Kurir</div>
+            <div class="text-muted" style="font-size: 0.7rem;">14:00 WIB • Unit Paket Playbox diserahkan toko ke Mas Dimas</div>
+          </div>
+          <div class="timeline-item">
+            <div class="fw-bold text-dark small">Pengecekan Unit & Packing</div>
+            <div class="text-muted" style="font-size: 0.7rem;">13:45 WIB • Penyiapan konsol PS4 + TV LED 43" & testing kelengkapan</div>
+          </div>
+        </div>
+
+        <!-- Bukti Foto Kurir -->
+        <div class="border-top pt-3 mt-3">
+          <div class="fw-bold text-dark small mb-2"><i class="bi bi-camera me-1"></i> Bukti Serah Terima / Foto Kurir:</div>
+          <div class="d-flex gap-2">
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&auto=format&fit=crop&q=80" class="rounded border object-fit-cover flex-shrink-0" width="100" height="80" alt="Bukti Foto">
+            <div class="bg-light p-2 rounded border flex-grow-1" style="font-size: 0.7rem;">
+              <span class="text-muted d-block">Status Foto:</span>
+              <span class="badge bg-success-subtle text-success mb-1">Terverifikasi Sistem</span>
+              <p class="text-muted mb-0">Foto otomatis dikirim oleh kurir saat unit diserahterimakan.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer border-top-0 pt-0">
+        <button type="button" class="btn btn-secondary btn-sm rounded-pill w-100" data-bs-dismiss="modal">Tutup Lacak</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ================= LOGIC JAVASCRIPT REAL-TIME ANIMATION ================= -->
+<script>
+  // 1. ANIMASI COUNTDOWN: Sisa Waktu Bermain
+  let totalPlaySeconds = (19 * 3600) + (19 * 60) + 53; // 19 Jam 19 Menit 53 Detik
+  const maxPlaySeconds = 24 * 3600; // TOTAL 24 Jam
+
+  setInterval(() => {
+    if (totalPlaySeconds > 0) {
+      totalPlaySeconds--;
+      let hours = Math.floor(totalPlaySeconds / 3600);
+      let minutes = Math.floor((totalPlaySeconds % 3600) / 60);
+      let seconds = totalPlaySeconds % 60;
+
+      // Update Teks Live (Jam Menit Detik)
+      document.getElementById('liveCountdownPlay').innerText = 
+        `${hours} Jam ${minutes < 10 ? '0' : ''}${minutes} Menit ${seconds < 10 ? '0' : ''}${seconds} Detik`;
+
+      // Update Lebar Progress Bar Mulus
+      let pct = (totalPlaySeconds / maxPlaySeconds) * 100;
+      let bar = document.getElementById('liveProgressBar');
+      bar.style.width = pct.toFixed(2) + '%';
+      
+      // Ubah Warna Bar jika sisa sedikit (< 2 Jam Kuning, < 1 Jam Merah)
+      if(totalPlaySeconds < 3600) {
+        bar.className = 'progress-bar progress-animated-striped progress-bar-waktu bg-danger';
+      } else if (totalPlaySeconds < 7200) {
+        bar.className = 'progress-bar progress-animated-striped progress-bar-waktu bg-warning text-dark';
+      }
+    }
+  }, 1000);
+
+  // 2. ANIMASI KURIR BERGERAK (Estimasi Sampai Lokasi)
+  let deliverySeconds = (11 * 60) + 21; // 11 Menit 21 Detik (Sesuai Gambar Lo)
+  const maxDeliverySeconds = 30 * 60; // Anggap Total Waktu Pengiriman 30 Menit (Untuk Hitung Persen Garis Biru)
+
+  const deliveryTimer = setInterval(() => {
+    if (deliverySeconds > 0) {
+      deliverySeconds--;
+      let mins = Math.floor(deliverySeconds / 60);
+      let secs = deliverySeconds % 60;
+
+      // Update Angka
+      document.getElementById('liveCountdownDelivery').innerText = 
+        `± ${mins} Menit ${secs < 10 ? '0' : ''}${secs} Detik`;
+
+      // Hitung Garis Biru Bergerak Naik Pelan-pelan (Dari Dicek Toko (0%) menuju Tiba & Pasang (100%))
+      // Waktu berkurang = Garis biru bertambah
+      let timePassed = maxDeliverySeconds - deliverySeconds; 
+      let pctLine = (timePassed / maxDeliverySeconds) * 100;
+      
+      // Mentokkin maksimal 98% biar pas di buletan hijau
+      if (pctLine > 98) pctLine = 98;
+      document.getElementById('kurirProgressBar').style.width = pctLine + '%';
+
+    } else {
+      clearInterval(deliveryTimer);
+      simulasiTiba(); // Otomatis hijau saat hitungan habis
+    }
+  }, 1000);
+
+  // 3. FUNGSI SIMULASI KURIR TIBA (Hijau Semua)
+  function simulasiTiba() {
+    // Ubah Badge Status
+    document.getElementById('statusBadgeDelivery').className = 'badge bg-success-subtle text-success border border-success-subtle rounded-pill';
+    document.getElementById('statusBadgeDelivery').innerHTML = '<i class="bi bi-check-circle me-1"></i> Pesanan Tiba & Pasang';
+    
+    // Ubah Teks Header Estimasi
+    document.getElementById('liveCountdownDelivery').innerText = 'Sudah Sampai Lokasi';
+    
+    // Penuhi Garis Biru
+    document.getElementById('kurirProgressBar').style.width = '100%';
+    document.getElementById('kurirProgressBar').style.backgroundColor = '#198754'; // Hijau
+
+    // Ubah Dot Motor (Berhenti animasi jalan)
+    let dotKurir = document.getElementById('dotKurir');
+    dotKurir.className = 'stepper-dot bg-success text-white border-0';
+    document.getElementById('textKurir').className = 'text-muted mt-2';
+
+    // Ubah Dot Tiba & Pasang (Jadi Hijau Aktif)
+    document.getElementById('dotTiba').className = 'stepper-dot bg-success text-white shadow';
+    document.getElementById('dotTiba').innerHTML = '<i class="bi bi-check"></i>';
+    document.getElementById('textTiba').className = 'fw-bold text-success mt-2';
+  }
+
+  // 4. FILTER TAB INTERAKTIF
+  function filterTab(type) {
+    const btns = [
+      document.getElementById('filterAll'),
+      document.getElementById('filterActive'),
+      document.getElementById('filterDone'),
+      document.getElementById('filterCancel')
+    ];
+    
+    const secBerlangsung = document.getElementById('sectionBerlangsung');
+    const secSelesai = document.getElementById('sectionSelesai');
+
+    // Reset button styles
+    btns.forEach(b => b.className = 'btn btn-filter btn-filter-inactive');
+
+    if (type === 'all') {
+      btns[0].className = 'btn btn-filter btn-primary text-white shadow-sm';
+      secBerlangsung.style.display = 'block';
+      secSelesai.style.display = 'block';
+    } else if (type === 'active') {
+      btns[1].className = 'btn btn-filter btn-primary text-white shadow-sm';
+      secBerlangsung.style.display = 'block';
+      secSelesai.style.display = 'none';
+    } else if (type === 'done') {
+      btns[2].className = 'btn btn-filter btn-primary text-white shadow-sm';
+      secBerlangsung.style.display = 'none';
+      secSelesai.style.display = 'block';
+    } else if (type === 'cancel') {
+      btns[3].className = 'btn btn-filter btn-primary text-white shadow-sm';
+      secBerlangsung.style.display = 'none';
+      secSelesai.style.display = 'none';
+    }
+  }
+
+  // 5. LIVE SEARCH (Cari ID Pesanan/Nama)
+  function searchOrders() {
+    let query = document.getElementById('orderSearchInput').value.toLowerCase();
+    let cards = document.querySelectorAll('.order-card');
+
+    cards.forEach(card => {
+      let title = card.getAttribute('data-title').toLowerCase();
+      if (title.includes(query)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // 6. ACTION BUTTONS
+  function tambahWaktuSewa() {
+    totalPlaySeconds += 3600; // Tambah 1 jam (3600 detik)
+    alert('Berhasil! Durasi bermain Anda telah diperpanjang +1 Jam!');
+  }
+
+  function konfirmasiStop() {
+    if (confirm('Apakah Anda yakin ingin menghentikan sewa dan mengajukan pengembalian unit?')) {
+      alert('Pengajuan pengembalian berhasil dikirim ke Admin!');
+    }
+  }
+</script>
+
 </body>
 </html>
