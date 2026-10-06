@@ -22,11 +22,13 @@
             </div>
         </a>
         <ul class="nav nav-pills flex-column mb-auto gap-2">
-            <li><a href="#" class="nav-link text-white opacity-75"><i class="bi bi-speedometer2 me-3"></i> Beranda</a>
+            <li><a href="dashboard.html" class="nav-link text-white opacity-75"><i class="bi bi-speedometer2 me-3"></i>
+                    Beranda</a>
             </li>
             <li><a href="#" class="nav-link active text-white shadow-sm" style="background-color: #2563eb;"><i
                         class="bi bi-card-list me-3"></i> Penyewaan</a></li>
-            <li><a href="#" class="nav-link text-white opacity-75"><i class="bi bi-box-seam me-3"></i> Unit PS</a></li>
+            <li><a href="unit-ps.html" class="nav-link text-white opacity-75"><i class="bi bi-box-seam me-3"></i> Unit
+                    PS</a></li>
             <li><a href="#" class="nav-link text-white opacity-75"><i class="bi bi-exclamation-octagon me-3"></i>
                     Denda</a></li>
             <li><a href="#" class="nav-link text-white opacity-75"><i class="bi bi-cash-stack me-3"></i> Pengeluaran</a>
@@ -69,7 +71,7 @@
                 <div class="card card-yellow stat border-0 rounded-4 p-3 shadow-sm h-100" data-f="menunggu">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold">MENUNGGU KONFIRMASI</small>
+                            <small class="text-muted fw-bold">MENUNGGU VERIFIKASI</small>
                             <h3 class="fw-bold mt-2 mb-0 text-warning" id="sMenunggu">0</h3>
                         </div>
                         <div class="bg-white p-2 rounded-3 text-warning d-none d-sm-block"><i
@@ -90,10 +92,10 @@
                 </div>
             </div>
             <div class="col-6 col-lg-3">
-                <div class="card card-pink stat border-0 rounded-4 p-3 shadow-sm h-100" data-f="terlambat">
+                <div class="card card-pink stat border-0 rounded-4 p-3 shadow-sm h-100" data-f="lewat">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold">SEWA TERLAMBAT</small>
+                            <small class="text-muted fw-bold">WAKTU HABIS / TERLAMBAT</small>
                             <h3 class="fw-bold mt-2 mb-0 text-danger" id="sTelat">0</h3>
                         </div>
                         <div class="bg-white p-2 rounded-3 text-danger d-none d-sm-block"><i
@@ -105,8 +107,9 @@
                 <div class="card card-green border-0 rounded-4 p-3 shadow-sm h-100">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold">PEMASUKAN HARI INI</small>
-                            <h3 class="fw-bold mt-2 mb-0 text-success">Rp 450rb</h3>
+                            <small class="text-muted fw-bold">TOTAL PEMBAYARAN SEWA</small>
+                            <h3 class="fw-bold mt-2 mb-0 text-success" id="sTotalBayar">Rp 0</h3>
+                            <small class="text-muted d-block mt-1" id="sTotalTunda" style="font-size: 0.7rem;"></small>
                         </div>
                         <div class="bg-white p-2 rounded-3 text-success d-none d-sm-block"><i
                                 class="bi bi-graph-up-arrow fs-3"></i></div>
@@ -130,10 +133,12 @@
                     <div class="col-6 col-md-4 col-lg-2">
                         <select class="form-select" id="fStatus" aria-label="Filter status">
                             <option value="all">Semua status</option>
-                            <option value="aktif" selected>Aktif</option>
-                            <option value="menunggu">Menunggu konfirmasi</option>
-                            <option value="terlambat">Terlambat</option>
+                            <option value="menunggu">Menunggu verifikasi</option>
+                            <option value="proses">Siap / diantar</option>
+                            <option value="aktif" selected>Aktif (di pelanggan)</option>
+                            <option value="lewat">Waktu habis / terlambat</option>
                             <option value="selesai">Selesai</option>
+                            <option value="ditolak">Ditolak</option>
                         </select>
                     </div>
                     <div class="col-6 col-md-4 col-lg-2">
@@ -149,6 +154,7 @@
                             <option value="all">Semua unit</option>
                             <option value="ps3">PS 3</option>
                             <option value="ps4">PS 4</option>
+                            <option value="ps5">PS 5</option>
                             <option value="tvled">TV LED</option>
                             <option value="playbox">Playbox</option>
                         </select>
@@ -177,10 +183,11 @@
                         </thead>
                         <tbody>
                             <!-- SAMPLE DATA 1: SEWA DI TEMPAT (AKTIF) -->
-                            <tr data-id="#TRX-100" data-nama="Budi Santoso" data-unit="PS3 #2 (Ruang 1)"
-                                data-jenis="ps3" data-layanan="ditempat" data-state="aktif" data-sisa="1800"
-                                data-jam-awal="18:30 WIB" data-jam-habis="21:30 WIB" data-durasi="3 Jam"
-                                data-sewa="Rp 60.000" data-total="Rp 60.000" data-status-bayar="Lunas">
+                            <tr data-id="#TRX-100" data-serial="PS3-001" data-nama="Budi Santoso"
+                                data-unit="PS3 #2 (Ruang 1)" data-jenis="ps3" data-layanan="ditempat" data-state="aktif"
+                                data-sisa="1800" data-jam-awal="18:30 WIB" data-jam-habis="21:30 WIB"
+                                data-durasi="3 Jam" data-sewa="Rp 60.000" data-total="Rp 60.000"
+                                data-status-bayar="Lunas">
                                 <td class="fw-bold">#TRX-100</td>
                                 <td class="fw-bold text-dark">Budi Santoso</td>
                                 <td>PS3 #2 <small class="d-block text-muted">Ruang 1</small></td>
@@ -203,10 +210,11 @@
                             </tr>
 
                             <!-- SAMPLE DATA 2: SEWA DI TEMPAT (TERLAMBAT) -->
-                            <tr data-id="#TRX-101" data-nama="Rizky Pratama" data-unit="PS4 #1 (Ruang VIP 2)"
-                                data-jenis="ps4" data-layanan="ditempat" data-state="terlambat" data-sisa="-2880"
-                                data-jam-awal="17:00 WIB" data-jam-habis="19:00 WIB" data-durasi="2 Jam"
-                                data-sewa="Rp 60.000" data-total="Rp 60.000" data-status-bayar="Lunas">
+                            <tr data-id="#TRX-101" data-serial="PS4-003" data-nama="Rizky Pratama"
+                                data-unit="PS4 #1 (Ruang VIP 2)" data-jenis="ps4" data-layanan="ditempat"
+                                data-state="habis" data-sisa="-2880" data-jam-awal="17:00 WIB"
+                                data-jam-habis="19:00 WIB" data-durasi="2 Jam" data-sewa="Rp 60.000"
+                                data-total="Rp 60.000" data-status-bayar="Lunas">
                                 <td class="fw-bold">#TRX-101</td>
                                 <td class="fw-bold text-dark">Rizky Pratama</td>
                                 <td>PS4 #1 <small class="d-block text-muted">Ruang VIP 2</small></td>
@@ -229,7 +237,7 @@
                             </tr>
 
                             <!-- SAMPLE DATA 3: DELIVERY (USER) -->
-                            <tr data-id="#TRX-099" data-nama="Alya Pratama" data-hp="081234567890"
+                            <tr data-id="#TRX-099" data-serial="PS4-001" data-nama="Alya Pratama" data-hp="081234567890"
                                 data-unit="PS4 Slim #1" data-jenis="ps4" data-layanan="delivery" data-state="menunggu"
                                 data-jaminan="KTP (Alya)" data-alamat="Jl. Mawar No. 12, Lowokwaru"
                                 data-tgl="02 Okt 2026, 14:00 WIB" data-jam-habis="04 Okt 2026, 14:00 WIB"
@@ -262,9 +270,9 @@
                             </tr>
 
                             <!-- SAMPLE DATA 4: PICKUP (USER) -->
-                            <tr data-id="#TRX-098" data-nama="Rina Sari" data-hp="089876543210" data-unit="Playbox #1"
-                                data-jenis="playbox" data-layanan="pickup" data-state="aktif" data-sisa="2530"
-                                data-jaminan="SIM A" data-alamat="Ambil Sendiri di Toko"
+                            <tr data-id="#TRX-098" data-serial="PS4-002" data-nama="Rina Sari" data-hp="089876543210"
+                                data-unit="Playbox #1" data-jenis="playbox" data-layanan="pickup" data-state="aktif"
+                                data-sisa="2530" data-jaminan="SIM A" data-alamat="Ambil Sendiri di Toko"
                                 data-tgl="02 Okt 2026, 16:00 WIB" data-jam-habis="03 Okt 2026, 16:00 WIB"
                                 data-durasi="1 Hari" data-sewa="Rp 120.000" data-ongkir="Rp 0" data-total="Rp 120.000"
                                 data-status-bayar="Lunas">
@@ -319,21 +327,27 @@
                         <div class="row g-3">
                             <div class="col-md-12">
                                 <label class="form-label fw-bold small text-muted">Nama Pelanggan</label>
-                                <input type="text" class="form-control" placeholder="Contoh: Budi Santoso" required>
+                                <input type="text" class="form-control" id="addNama" placeholder="Contoh: Budi Santoso"
+                                    required>
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label fw-bold small text-muted">Pilih Unit & Ruangan</label>
                                 <select class="form-select" id="addUnitRuang" required>
                                     <option value="" selected disabled>-- Pilih Unit & Ruangan --</option>
-                                    <option value="PS3 #1 (Ruang 1)" data-tarif="20000">PS3 #1 - Ruang 1 (Rp 20.000/jam)
+                                    <option value="PS3 #1 (Ruang 1)" data-serial="PS3-001" data-tarif="20000">PS3 #1 -
+                                        Ruang 1 (Rp 20.000/jam)
                                     </option>
-                                    <option value="PS3 #2 (Ruang 2)" data-tarif="20000">PS3 #2 - Ruang 2 (Rp 20.000/jam)
+                                    <option value="PS3 #2 (Ruang 2)" data-serial="PS3-002" data-tarif="20000">PS3 #2 -
+                                        Ruang 2 (Rp 20.000/jam)
                                     </option>
-                                    <option value="PS4 #1 (Ruang VIP 1)" data-tarif="30000">PS4 #1 - Ruang VIP 1 (Rp
+                                    <option value="PS4 #1 (Ruang VIP 1)" data-serial="PS4-001" data-tarif="30000">PS4 #1
+                                        - Ruang VIP 1 (Rp
                                         30.000/jam)</option>
-                                    <option value="PS4 #2 (Ruang VIP 2)" data-tarif="30000">PS4 #2 - Ruang VIP 2 (Rp
+                                    <option value="PS4 #2 (Ruang VIP 2)" data-serial="PS4-002" data-tarif="30000">PS4 #2
+                                        - Ruang VIP 2 (Rp
                                         30.000/jam)</option>
-                                    <option value="PS5 #1 (Ruang VVIP)" data-tarif="50000">PS5 #1 - Ruang VVIP (Rp
+                                    <option value="PS5 #1 (Ruang VVIP)" data-serial="PS5-001" data-tarif="50000">PS5 #1
+                                        - Ruang VVIP (Rp
                                         50.000/jam)</option>
                                 </select>
                             </div>
@@ -395,9 +409,11 @@
                                     <div class="col-md-6"><small class="text-muted d-block">No. WhatsApp:</small> <span
                                             class="fw-bold" id="dtlHp">-</span></div>
                                     <div class="col-md-6"><small class="text-muted d-block">Jaminan Identitas:</small>
-                                        <span class="fw-bold text-dark" id="dtlJaminan">-</span></div>
+                                        <span class="fw-bold text-dark" id="dtlJaminan">-</span>
+                                    </div>
                                     <div class="col-md-12"><small class="text-muted d-block">Alamat Pengiriman:</small>
-                                        <span class="fw-semibold" id="dtlAlamat">-</span></div>
+                                        <span class="fw-semibold" id="dtlAlamat">-</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -479,21 +495,19 @@
                             </div>
                         </div>
 
-                        <div class="col-12" id="secBuktiTransfer" style="display: none;">
-                            <div
-                                class="p-3 border rounded-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-file-earmark-check fs-3 text-primary"></i>
-                                    <div>
-                                        <small class="d-block text-muted">Bukti Transfer & Serah Terima</small>
-                                        <span class="fw-bold small text-success"><i
-                                                class="bi bi-check-circle-fill me-1"></i> Terverifikasi oleh
-                                            Website</span>
-                                    </div>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3"
-                                    onclick="alert('Menampilkan gambar bukti transfer dan berita acara serah terima...')"><i
-                                        class="bi bi-image me-1"></i> Lihat Dokumen</button>
+                        <div class="col-12" id="secHabis" style="display: none;">
+                            <div class="p-3 border border-warning bg-warning bg-opacity-10 rounded-4 small">
+                                <i class="bi bi-hourglass-bottom me-1"></i> <b>Waktu sewa sudah habis.</b> Sewa di
+                                tempat tidak
+                                dikenakan denda. Beritahu pelanggan secara langsung, lalu lakukan Check-Out.
+                            </div>
+                        </div>
+                        <div class="col-12" id="secBukti" style="display: none;">
+                            <div class="p-3 border rounded-4">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-2"
+                                    style="font-size: 0.75rem;"><i class="bi bi-shield-check me-1"></i> Verifikasi &
+                                    Bukti Serah Terima</small>
+                                <div class="d-flex flex-column gap-2 small" id="dtlBukti"></div>
                             </div>
                         </div>
 
@@ -530,16 +544,12 @@
                             <td class="text-end" id="coAktual"></td>
                         </tr>
                         <tr>
-                            <td class="text-muted">Keterlambatan</td>
+                            <td class="text-muted">Kelebihan waktu</td>
                             <td class="text-end" id="coTelat"></td>
                         </tr>
-                        <tr>
-                            <td class="text-muted">Tarif denda</td>
-                            <td class="text-end">Rp 10.000 / jam</td>
-                        </tr>
                         <tr class="border-top">
-                            <td class="fw-bold">Total denda</td>
-                            <td class="text-end fw-bold text-danger" id="coTotal"></td>
+                            <td colspan="2" class="small text-muted pt-2">Sewa di tempat tidak dikenakan denda. Jika
+                                waktu habis, operator memberitahu pelanggan langsung.</td>
                         </tr>
                     </table>
                 </div>
@@ -550,9 +560,151 @@
             </div>
         </div>
     </div>
+    <!-- MODAL 4: VERIFIKASI PEMBAYARAN & JAMINAN -->
+    <div class="modal fade" id="modalVerifikasi" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-header border-0 pb-0">
+                    <div>
+                        <h5 class="modal-title fw-bold">Verifikasi <span id="vId" class="text-primary"></span></h5>
+                        <small class="text-muted">Pembayaran dan jaminan wajib diverifikasi sebelum unit diambil atau
+                            diantar.</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-borderless table-sm mb-3">
+                        <tr>
+                            <td class="text-muted ps-0">Pelanggan</td>
+                            <td class="text-end fw-semibold" id="vNama"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted ps-0">Layanan</td>
+                            <td class="text-end" id="vLayanan"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted ps-0">Total pembayaran</td>
+                            <td class="text-end fw-bold text-primary" id="vTotal"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted ps-0">Jaminan</td>
+                            <td class="text-end fw-semibold" id="vJaminan"></td>
+                        </tr>
+                    </table>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="vBayar">
+                        <label class="form-check-label" for="vBayar">Pembayaran sudah masuk dan nominalnya
+                            sesuai</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="vJamin">
+                        <label class="form-check-label" for="vJamin">Jaminan valid dan sesuai identitas
+                            pelanggan</label>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-success rounded-pill px-4" id="vConfirm" disabled><i
+                            class="bi bi-patch-check me-1"></i> Verifikasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: SCAN SERAH / TERIMA UNIT -->
+    <div class="modal fade" id="modalScan" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-header border-0 pb-0">
+                    <div>
+                        <h5 class="modal-title fw-bold" id="scanJudul"></h5>
+                        <small class="text-muted" id="scanSub"></small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted" for="scanPesanan">1. Scan kode
+                                pesanan</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-upc-scan"></i></span>
+                                <input type="text" class="form-control" id="scanPesanan" autocomplete="off"
+                                    placeholder="Arahkan alat scan / ketik kode">
+                                <button type="button" class="btn btn-outline-secondary" data-cam="scanPesanan"
+                                    title="Scan dengan kamera"><i class="bi bi-camera"></i></button>
+                            </div>
+                            <small class="text-muted">Harus sama dengan <b id="scanHarapPesanan"></b></small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted" for="scanUnit">2. Scan nomor serial
+                                unit</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-upc"></i></span>
+                                <input type="text" class="form-control" id="scanUnit" autocomplete="off"
+                                    placeholder="Arahkan alat scan / ketik serial">
+                                <button type="button" class="btn btn-outline-secondary" data-cam="scanUnit"
+                                    title="Scan dengan kamera"><i class="bi bi-camera"></i></button>
+                            </div>
+                            <small class="text-muted">Harus sama dengan <b id="scanHarapUnit"></b></small>
+                        </div>
+                        <div class="col-12">
+                            <video id="scanVideo" class="w-100 rounded-3 d-none" playsinline muted
+                                style="max-height: 240px; object-fit: cover;"></video>
+                        </div>
+                        <div class="col-12 d-none" id="scanDenda">
+                            <div
+                                class="p-3 border border-danger bg-danger bg-opacity-10 rounded-4 small text-danger fw-semibold">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> <span id="scanDendaInfo"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fw-bold small text-muted mb-2">3. Validasi</div>
+                            <div id="scanCek" class="d-flex flex-column gap-2"></div>
+                            <div id="scanKondisiWrap" class="mt-3 d-none">
+                                <label class="form-label small text-muted mb-1" for="scanKondisi">Kondisi unit saat
+                                    diterima</label>
+                                <select class="form-select form-select-sm mb-2" id="scanKondisi">
+                                    <option value="baik">Baik</option>
+                                    <option value="maint">Perlu maintenance</option>
+                                    <option value="rusak">Rusak</option>
+                                </select>
+                                <input type="text" class="form-control form-control-sm" id="scanCatatan"
+                                    placeholder="Catatan (wajib jika tidak baik)">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted" for="scanFoto">4. Foto bukti</label>
+                            <input type="file" class="form-control" id="scanFoto" accept="image/*"
+                                capture="environment">
+                            <img id="scanPreview" class="img-fluid rounded-3 border mt-2 d-none"
+                                style="max-height: 140px;" alt="Pratinjau bukti">
+                            <small class="text-muted d-block mt-1">Bukti dikirim ke pelanggan setelah
+                                dikonfirmasi.</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4" id="scanConfirm" disabled><i
+                            class="bi bi-send-check me-1"></i> Konfirmasi & Kirim Bukti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+        <div id="toastApp" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="polite">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMsg"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Tutup"></button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/penyewaan.js"></script>
 </body>
 
 </html>

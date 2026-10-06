@@ -1,140 +1,237 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PS Rental - Pembayaran</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-
-    <style>
-        .upload-area { border: 2px dashed #cbd5e1; border-radius: 12px; transition: 0.3s; cursor: pointer; }
-        .upload-area:hover { border-color: #2563eb; background-color: #f8fafc; }
-        .timeline-line { border-left: 2px solid #e2e8f0; margin-left: 11px; padding-left: 25px; padding-bottom: 20px; }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
+
 <body class="bg-light">
-
-<div class="d-flex" style="min-height: 100vh;">
-    <!-- Sidebar -->
-    <aside class="sidebar-bg d-flex flex-column p-3 text-white" style="width: 250px;">
-        <a href="../index.html" class="d-flex align-items-center mb-5 mt-2 text-white text-decoration-none">
-            <i class="bi bi-controller fs-2 me-2"></i>
-            <div class="lh-sm">
-                <span class="fs-5 fw-bold d-block">PS Rental</span>
-                <small class="opacity-75" style="font-size: 0.7rem;">Bawa pulang, main di rumah!</small>
-            </div>
-        </a>
-        <ul class="nav nav-pills flex-column mb-auto gap-2">
-            <li class="nav-item"><a href="../index.html" class="nav-link text-white opacity-75"><i class="bi bi-house-door-fill me-3"></i> Beranda</a></li>
-            <li><a href="#" class="nav-link active text-white shadow-sm" style="background-color: #2563eb;"><i class="bi bi-receipt me-3"></i> Pesanan Saya</a></li>
-            <li><a href="#" class="nav-link text-white opacity-75"><i class="bi bi-person-fill me-3"></i> Profil</a></li>
-        </ul>
-    </aside>
-
-    <!-- Area Konten -->
-    <main class="flex-grow-1 p-4">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <a href="form-sewa.html" class="text-decoration-none text-primary fw-bold"><i class="bi bi-arrow-left me-1"></i> Kembali</a>
-            <div class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill">
-                <i class="bi bi-check-circle-fill me-1"></i>  Dikonfirmasi
-            </div>
-        </div>
-
-        <div class="row g-4">
-            <!-- Kolom Kiri: Rincian & Rekening -->
-            <div class="col-lg-7">
-                <h5 class="fw-bold text-dark mb-3">Detail Pesanan</h5>
-                
-                <!-- Ringkasan -->
-                <div class="card border-0 shadow-sm rounded-4 mb-4">
-                    <div class="card-header bg-white border-bottom-0 pt-3 pb-0"><h6 class="fw-bold text-secondary m-0">Ringkasan Pesanan</h6></div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-playstation fs-1 me-3 text-dark"></i>
-                                <div><h5 class="fw-bold m-0">PS4</h5><small class="text-muted">Durasi 2 Hari</small></div>
-                            </div>
-                            <span class="fw-bold text-dark">Rp 200.000</span>
-                        </div>
-                        <hr class="border-secondary-subtle">
-                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Subtotal</span><span>Rp 200.000</span></div>
-                        <div class="d-flex justify-content-between mb-3"><span class="text-muted">Jaminan</span><span>KTP</span></div>
-                        <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-3">
-                            <h6 class="fw-bold m-0">Total Tagihan</h6>
-                            <h5 class="fw-bold text-primary m-0">Rp 200.000</h5>
-                        </div>
-                    </div>
+    <div class="d-flex w-100" style="min-height: 100vh; overflow-x: hidden">
+        <!-- Sidebar Kiri -->
+        <aside class="sidebar-bg d-flex flex-column p-3 text-white flex-shrink-0 sticky-top"
+            style="width: 250px; height: 100vh">
+            <a href="../index.html" class="d-flex align-items-center mb-5 mt-2 text-white text-decoration-none">
+                <i class="bi bi-controller fs-2 me-2"></i>
+                <div class="lh-sm">
+                    <span class="fs-5 fw-bold d-block">PS Rental</span>
+                    <small class="opacity-75" style="font-size: 0.7rem">Bawa pulang, main di rumah!</small>
                 </div>
+            </a>
+            <ul class="nav nav-pills flex-column mb-auto gap-2">
+                <li class="nav-item">
+                    <a href="../index.html" class="nav-link active text-white d-flex align-items-center shadow-sm">
+                        <i class="bi bi-house-door-fill me-3"></i> Beranda
+                    </a>
+                </li>
+                <li>
+                    <a href="Pesanan.html" class="nav-link text-white opacity-75 d-flex align-items-center">
+                        <i class="bi bi-receipt me-3"></i> Pesanan Saya
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link text-white opacity-75 d-flex align-items-center">
+                        <i class="bi bi-person-fill me-3"></i> Profil
+                    </a>
+                </li>
+            </ul>
+        </aside>
 
-                <!-- Metode Pembayaran -->
-                <div class="card border-0 shadow-sm rounded-4">
-                    <div class="card-header bg-white border-bottom-0 pt-3 pb-0"><h6 class="fw-bold text-secondary m-0">Metode Pembayaran</h6></div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="bi bi-bank2 fs-4 text-primary me-3"></i>
-                            <div><h6 class="fw-bold m-0">Transfer Bank</h6><small class="text-muted">Silahkan transfer ke rekening berikut:</small></div>
-                        </div>
-                        <div class="bg-light p-3 rounded-3 d-flex justify-content-between align-items-center border">
-                            <h5 class="fw-bold m-0 text-dark">BCA 1234 5678 90 a.n. PS Rental</h5>
-                            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-clipboard"></i> Salin</button>
-                        </div>
-                    </div>
+        <main class="flex-grow-1 p-4 ms-0" style="max-height: 100vh; overflow-y: auto; margin-left: 0 !important">
+            <!-- Belum ada data pesanan -->
+            <div id="viewKosong" class="d-none">
+                <div class="card border-0 shadow-sm rounded-4 p-5 text-center">
+                    <i class="bi bi-inbox fs-1 text-muted"></i>
+                    <h5 class="fw-bold mt-2">Belum ada pesanan yang perlu dibayar</h5>
+                    <p class="text-muted">Isi formulir penyewaan dulu, lalu lanjutkan ke pembayaran.</p>
+                    <div><a href="../index.html" class="btn btn-primary rounded-pill px-4">Pilih Unit</a></div>
                 </div>
             </div>
 
-            <!-- Kolom Kanan: Upload & Status -->
-            <div class="col-lg-5">
-                <!-- Upload Bukti -->
-                <div class="card border-0 shadow-sm rounded-4 mb-4">
-                    <div class="card-body text-center p-4">
-                        <h6 class="fw-bold text-start mb-3">Upload Bukti Transfer</h6>
-                        <form action="../admin/dashboard.html">
-                            <div class="upload-area p-4 mb-3 bg-light">
-                                <i class="bi bi-cloud-arrow-up fs-1 text-primary"></i>
-                                <p class="m-0 fw-bold mt-2">Klik untuk upload atau drag & drop</p>
-                                <small class="text-muted">Format: JPG/PNG, maks. 5MB</small>
-                                <input class="form-control mt-3" type="file" id="buktiTransfer" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold">Upload Bukti Transfer</button>
-                        </form>
-                    </div>
+            <!-- Form pembayaran -->
+            <div id="viewForm" class="d-none">
+                <div class="mb-4">
+                    <a href="form_sewa.html" id="linkKembali" class="text-decoration-none fw-semibold">
+                        <i class="bi bi-arrow-left me-2"></i> Kembali ke Formulir
+                    </a>
                 </div>
 
-                <!-- Status Pesanan -->
-                <div class="card border-0 shadow-sm rounded-4 p-4">
-                    <h6 class="fw-bold mb-4">Status Pesanan</h6>
-                    <div class="position-relative">
-                        <!-- Step 1 -->
-                        <div class="d-flex align-items-start position-relative">
-                            <i class="bi bi-check-circle-fill text-success fs-4 me-3 bg-white position-relative" style="z-index: 2;"></i>
-                            <div class="timeline-line">
-                                <h6 class="fw-bold mb-1">Menunggu Pembayaran</h6>
-                                <small class="text-muted">Menunggu Anda mengunggah bukti transfer</small>
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                            <h5 class="fw-bold mb-1">Metode Pembayaran</h5>
+                            <p class="text-muted small mb-3">Pembayaran diproses manual dan diverifikasi langsung oleh
+                                operator toko, tanpa pihak ketiga.</p>
+                            <div class="row g-3" id="daftarMetode"></div>
+                            <div class="alert alert-warning small border-0 mt-3 mb-0 d-none" id="infoCod">
+                                <i class="bi bi-info-circle-fill me-1"></i> COD tidak tersedia untuk pengantaran ke
+                                rumah. Pembayaran harus dikirim dulu sebelum unit diantar.
                             </div>
                         </div>
-                        <!-- Step 2 -->
-                        <div class="d-flex align-items-start position-relative">
-                            <i class="bi bi-circle text-secondary fs-4 me-3 bg-white position-relative" style="z-index: 2;"></i>
-                            <div class="timeline-line">
-                                <h6 class="fw-bold mb-1 text-muted">Pembayaran Dikonfirmasi</h6>
+
+                        <!-- Transfer bank -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4" id="panelTransfer">
+                            <h6 class="fw-bold mb-3"><i class="bi bi-bank me-2 text-primary"></i>Transfer ke Rekening
+                                Toko</h6>
+                            <div id="listRekening" class="d-flex flex-column gap-2 mb-3"></div>
+                            <div
+                                class="d-flex justify-content-between align-items-center p-3 rounded-3 bg-primary-subtle">
+                                <div>
+                                    <small class="text-muted d-block">Nominal transfer</small>
+                                    <span class="fw-bold fs-5 text-primary nominal-bayar"></span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"
+                                    data-salin="nominal"><i class="bi bi-clipboard me-1"></i>Salin</button>
                             </div>
                         </div>
-                        <!-- Step 3 -->
-                        <div class="d-flex align-items-start position-relative">
-                            <i class="bi bi-circle text-secondary fs-4 me-3 bg-white position-relative" style="z-index: 2;"></i>
-                            <div class="ms-4 ps-2">
-                                <h6 class="fw-bold mb-1 text-muted">Siap Diambil / Dikirim</h6>
+
+                        <!-- QRIS -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4" id="panelQris">
+                            <h6 class="fw-bold mb-3"><i class="bi bi-qr-code me-2 text-primary"></i>Bayar dengan QRIS
+                            </h6>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-5 text-center">
+                                    <div class="border rounded-3 p-2 bg-white d-inline-block">
+                                        <img src="../assets/img/qris.png" alt="QRIS toko" class="img-fluid"
+                                            style="max-width: 220px" id="imgQris" />
+                                        <div class="small text-muted d-none p-4" id="qrisKosong">Gambar QRIS belum
+                                            dipasang.<br />Simpan di <code>assets/img/qris.png</code></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <ol class="small ps-3 mb-3">
+                                        <li class="mb-1">Buka aplikasi m-banking atau e-wallet, pilih <b>Scan QRIS</b>.
+                                        </li>
+                                        <li class="mb-1">Scan kode di samping, lalu masukkan nominal <b
+                                                class="nominal-bayar"></b>.</li>
+                                        <li>Simpan screenshot bukti bayar, lalu unggah di bawah.</li>
+                                    </ol>
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"
+                                        data-salin="nominal"><i class="bi bi-clipboard me-1"></i>Salin nominal</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COD (hanya ambil di toko) -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4" id="panelCod">
+                            <h6 class="fw-bold mb-3"><i class="bi bi-cash-coin me-2 text-primary"></i>Bayar di Tempat
+                                (COD)</h6>
+                            <ul class="small mb-0 ps-3">
+                                <li class="mb-1">Bayar tunai <b class="nominal-bayar"></b> di toko saat mengambil unit.
+                                </li>
+                                <li class="mb-1">Bawa jaminan asli (KTP / STNK) dan tunjukkan kode pesanan ke operator.
+                                </li>
+                                <li>Operator tetap memverifikasi pesanan dan jaminan sebelum unit diserahkan.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Bukti pembayaran -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4" id="formBukti">
+                            <h6 class="fw-bold mb-3"><i class="bi bi-receipt-cutoff me-2 text-primary"></i>Kirim Bukti
+                                Pembayaran</h6>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-semibold" for="namaPengirim">Nama
+                                        pemilik rekening / akun <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="namaPengirim"
+                                        placeholder="Sesuai yang tertera di bukti" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-semibold" for="bankAsal">Bank /
+                                        e-wallet asal</label>
+                                    <input type="text" class="form-control" id="bankAsal"
+                                        placeholder="Contoh: BCA, DANA, GoPay" />
+                                </div>
+                            </div>
+                            <label class="form-label text-muted small fw-semibold">Bukti pembayaran <span
+                                    class="text-danger">*</span></label>
+                            <label class="upload-area d-block text-center p-4 w-100" for="fileBukti">
+                                <input type="file" id="fileBukti" accept="image/*,application/pdf" class="d-none" />
+                                <i class="bi bi-cloud-arrow-up fs-3 text-primary d-block mb-1"></i>
+                                <span class="small fw-semibold d-block" id="namaFileBukti">Klik untuk pilih bukti
+                                    transfer / screenshot QRIS</span>
+                                <img id="previewBukti" class="upload-preview rounded-3 border mt-3 d-none"
+                                    alt="Pratinjau bukti" />
+                            </label>
+                            <small class="text-muted d-block mt-2">Format JPG, PNG, atau PDF, maksimal 5 MB.</small>
+                        </div>
+
+                        <div class="alert alert-danger small d-none" id="errBayar" role="alert"></div>
+                        <button type="button" class="btn btn-primary btn-lg w-100 rounded-pill fw-semibold mb-4"
+                            id="btnKirim"></button>
+                    </div>
+
+                    <!-- Ringkasan -->
+                    <div class="col-lg-4">
+                        <div class="card glass-card rounded-4 p-4 shadow-sm border-0 sticky-top" style="top: 20px">
+                            <h5 class="fw-bold mb-4">Ringkasan Pesanan</h5>
+                            <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                                <img src="../assets/img/ps4.png" alt="" width="40" class="me-3" id="rGambar" />
+                                <div>
+                                    <h6 class="mb-0 fw-bold" id="rUnit"></h6>
+                                    <small class="text-muted" id="rTarif"></small>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Durasi</span><span
+                                    class="fw-semibold" id="rDurasi"></span></div>
+                            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Mulai</span><span
+                                    class="fw-semibold text-end" id="rMulai"></span></div>
+                            <div class="d-flex justify-content-between mb-2"><span
+                                    class="text-muted">Penerimaan</span><span class="fw-semibold text-end"
+                                    id="rPenerimaan"></span></div>
+                            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom"><span
+                                    class="text-muted">Jaminan</span><span class="fw-semibold text-end"
+                                    id="rJaminan"></span></div>
+                            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Biaya
+                                    sewa</span><span class="fw-semibold" id="rSewa"></span></div>
+                            <div class="d-flex justify-content-between mb-3 d-none" id="rOngkirBaris"><span
+                                    class="text-muted">Ongkir</span><span class="fw-semibold" id="rOngkir"></span></div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold fs-5">Total Bayar</span>
+                                <span class="fw-bold fs-5 text-primary nominal-bayar"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Berhasil -->
+            <div id="viewSukses" class="d-none">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+                            <div class="text-center mb-4">
+                                <i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem"></i>
+                                <h4 class="fw-bold mt-2 mb-1" id="sJudul"></h4>
+                                <p class="text-muted mb-0" id="sSub"></p>
+                            </div>
+                            <div class="text-center p-3 rounded-4 bg-light mb-4">
+                                <small class="text-muted d-block">Kode Pesanan</small>
+                                <span class="fw-bold fs-4" id="sId"></span>
+                                <svg id="barcodePesanan" class="d-block mx-auto mt-2 mw-100"></svg>
+                                <small class="text-muted">Tunjukkan kode ini ke operator saat unit diserahkan.</small>
+                            </div>
+                            <h6 class="fw-bold mb-3">Langkah selanjutnya</h6>
+                            <div id="sLangkah" class="mb-3"></div>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a href="Pesanan.html" class="btn btn-primary rounded-pill px-4">Lihat Pesanan Saya</a>
+                                <a href="../index.html" class="btn btn-light rounded-pill px-4">Kembali ke Beranda</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <script src="../assets/js/tarif.js"></script>
+    <script src="../assets/js/pembayaran.js"></script>
 </body>
+
 </html>

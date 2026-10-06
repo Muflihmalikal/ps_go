@@ -8,6 +8,58 @@
 }
 
 
+/* --- Komponen bersama (index.html & Pesanan.html) --- */
+.app-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.app-topbar-status {
+    font-size: 0.75rem;
+}
+
+.app-topbar-dot {
+    font-size: 7px;
+}
+
+.app-topbar-avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111827;
+    background-color: #fff3cd;
+    border: 2px solid #ffc107;
+}
+
+.app-topbar-name {
+    font-size: 0.9rem;
+}
+
+.app-topbar-role {
+    font-size: 0.75rem;
+}
+
+.app-card {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+
 /* --- (index.html) --- */
 .card-hover:hover {
     transform: translateY(-5px);
@@ -21,6 +73,30 @@
     background-position: center;
     backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.radio-card input[type="radio"] {
+    display: none;
+}
+
+.radio-card input[type="radio"]:checked+.card {
+    border-color: #0d6efd !important;
+    background-color: #f8faff !important;
+}
+
+.radio-card .card {
+    transition: all 0.2s ease-in-out;
+}
+
+.radio-card .card:hover {
+    border-color: #0d6efd;
+    cursor: pointer;
+}
+
+.upload-preview {
+    max-height: 140px;
+    max-width: 100%;
+    object-fit: contain;
 }
 
 /* --- (pembayaran.html) --- */
@@ -105,4 +181,237 @@
     #backdrop {
         display: none !important;
     }
+}
+
+
+/* --- (Pesanan.html) --- */
+body.page-pesanan {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+.card-custom {
+    border: 0;
+    border-radius: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-custom:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.btn-circle-fixed {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    max-width: 38px !important;
+    max-height: 38px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+.btn-outline-custom {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-custom:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+.stepper-box {
+    position: relative;
+    background-color: #f8f9fa;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.stepper-line-bg {
+    position: absolute;
+    top: 22px;
+    left: 18%;
+    right: 18%;
+    height: 4px;
+    background-color: #e2e8f0;
+    border-radius: 2px;
+    z-index: 1;
+}
+
+.stepper-line-progress {
+    position: absolute;
+    top: 22px;
+    left: 18%;
+    height: 4px;
+    background-color: #0d6efd;
+    border-radius: 2px;
+    z-index: 2;
+    width: 32%;
+    max-width: 64%;
+    transition: width 0.8s ease, background-color 0.5s ease;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
+}
+
+.stepper-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    z-index: 3;
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+.dot-animating {
+    animation: pulse-ring 2s infinite;
+    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.5);
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+    }
+}
+
+.progress-bar-waktu {
+    transition: width 1s linear, background-color 0.5s ease;
+}
+
+.progress-animated-striped {
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+    animation: progress-stripes 1s linear infinite;
+}
+
+@keyframes progress-stripes {
+    from {
+        background-position: 1rem 0;
+    }
+
+    to {
+        background-position: 0 0;
+    }
+}
+
+.timeline-shopee {
+    position: relative;
+    padding-left: 28px;
+}
+
+.timeline-shopee::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background-color: #e2e8f0;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #cbd5e1;
+}
+
+.timeline-item.active::before {
+    background-color: #10b981;
+    box-shadow: 0 0 0 4px #d1fae5;
+}
+
+.bg-modal-info {
+    background-color: #f0f4ff;
+    border-radius: 0.85rem;
+}
+
+.qr-dashed-box {
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 1rem;
+    background-color: #ffffff;
+}
+
+.barcode-line-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    height: 48px;
+}
+
+.barcode-bar {
+    background-color: #1e293b;
+    height: 100%;
+    border-radius: 1px;
+}
+
+.qr-scan-area {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.qr-scan-area:hover {
+    transform: scale(1.02);
+    border-color: #10b981 !important;
+}
+
+.custom-success-box {
+    border: 3px solid #10b981;
+    border-radius: 1rem;
+    padding: 2.5rem 1.5rem;
+    background-color: #ffffff;
+}
+
+.custom-success-icon {
+    width: 72px;
+    height: 72px;
+    background-color: #10b981;
+    color: #ffffff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 1.25rem;
 }
