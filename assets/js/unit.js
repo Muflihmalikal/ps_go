@@ -79,11 +79,11 @@
         let kepala, isi;
         if (p.kategori === 'combo') {
             const k = p.komponen.map(cari).filter(Boolean);
-            kepala = `<div><span class="fw-bold small"><i class="bi bi-circle-fill text-warning me-2" style="font-size:.5rem"></i>KOMPONEN PAKET</span><span class="text-muted small ms-2">${k.length} komponen</span></div>`;
+            kepala = `<div><span class="fw-bold small"><i class="bi bi-circle-fill text-warning me-2 fz-50"></i>KOMPONEN PAKET</span><span class="text-muted small ms-2">${k.length} komponen</span></div>`;
             isi = `<thead><tr><th>Komponen</th><th>Tipe</th><th>Stok komponen</th></tr></thead><tbody>` + (k.map(x => `<tr><td class="fw-semibold">1 &times; ${esc(x.nama)}</td><td>${KAT[x.kategori]}</td><td>${n(x, 'tersedia')} / ${x.unit.length} tersedia</td></tr>`).join('') || '<tr><td colspan="3" class="text-muted">Belum ada komponen.</td></tr>') + '</tbody>';
         } else {
             const u = p.unit.filter(x => sf === 'all' || x.status === sf);
-            kepala = `<div><span class="fw-bold small"><i class="bi bi-circle-fill text-primary me-2" style="font-size:.5rem"></i>DAFTAR UNIT FISIK &amp; SERIAL (${esc(p.nama)})</span><span class="text-muted small ms-2">Total ${p.unit.length} Perangkat</span></div>
+            kepala = `<div><span class="fw-bold small"><i class="bi bi-circle-fill text-primary me-2 fz-50"></i>DAFTAR UNIT FISIK &amp; SERIAL (${esc(p.nama)})</span><span class="text-muted small ms-2">Total ${p.unit.length} Perangkat</span></div>
         <button type="button" class="btn btn-sm btn-light text-primary fw-bold rounded-pill" data-aksi="serial" data-id="${p.id}"><i class="bi bi-plus-lg me-1"></i>Tambah Nomor Serial</button>`;
             isi = `<thead><tr><th>ID Unit (Serial)</th><th>Status Perangkat</th><th class="text-end">Aksi</th></tr></thead><tbody>` + (u.map(x => `<tr>
         <td class="fw-semibold small">${esc(x.kode)}</td><td>${sp(p, x)}</td><td class="text-end text-nowrap">${aksiUnit(p, x)}</td></tr>`).join('') || '<tr><td colspan="3" class="text-muted">Tidak ada unit dengan status ini.</td></tr>') + '</tbody>';

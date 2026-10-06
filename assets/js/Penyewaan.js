@@ -369,7 +369,7 @@ function initApp() {
             set('dtlOngkir', tr.dataset.ongkir || 'Rp 0');
             $('dtlBukti').innerHTML = (tr._log || []).map(x => `<div class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill text-success"></i>
                 <span class="flex-grow-1">${esc(x.teks)}<small class="d-block text-muted">${esc(x.waktu)}</small></span>
-                ${x.foto ? `<a href="${x.foto}" target="_blank"><img src="${x.foto}" width="44" height="44" class="rounded border" style="object-fit:cover" alt="Bukti"></a>` : ''}</div>`).join('')
+                ${x.foto ? `<a href="${x.foto}" target="_blank"><img src="${x.foto}" width="44" height="44" class="rounded border obj-cover" alt="Bukti"></a>` : ''}</div>`).join('')
                 || '<span class="text-muted">Belum ada catatan verifikasi atau serah terima.</span>';
         }
         set('dtlTotalTagihan', (ditempat ? tr.dataset.sewa : tr.dataset.total || tr.dataset.sewa) || 'Rp 0');

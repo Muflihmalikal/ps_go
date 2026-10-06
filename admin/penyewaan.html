@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
-<body class="bg-light">
+<body class="bg-light page-admin page-penyewaan">
 
     <div id="backdrop"></div>
     <aside id="sidebar" class="sidebar-bg d-flex flex-column p-3 text-white">
@@ -18,14 +18,14 @@
             <i class="bi bi-controller fs-2 me-2"></i>
             <div class="lh-sm">
                 <span class="fs-5 fw-bold d-block">PS Rental</span>
-                <small class="opacity-75" style="font-size: 0.7rem;">Admin Panel</small>
+                <small class="opacity-75 fz-70">Admin Panel</small>
             </div>
         </a>
         <ul class="nav nav-pills flex-column mb-auto gap-2">
             <li><a href="dashboard.html" class="nav-link text-white opacity-75"><i class="bi bi-speedometer2 me-3"></i>
                     Beranda</a>
             </li>
-            <li><a href="#" class="nav-link active text-white shadow-sm" style="background-color: #2563eb;"><i
+            <li><a href="#" class="nav-link active text-white shadow-sm nav-active-blue"><i
                         class="bi bi-card-list me-3"></i> Penyewaan</a></li>
             <li><a href="unit-ps.html" class="nav-link text-white opacity-75"><i class="bi bi-box-seam me-3"></i> Unit
                     PS</a></li>
@@ -58,8 +58,8 @@
                     <img src="https://ui-avatars.com/api/?name=Admin+Toko&background=0D8ABC&color=fff"
                         class="rounded-circle" width="35" height="35" alt="Admin" />
                     <div class="lh-1 d-none d-md-block">
-                        <span class="d-block fw-bold" style="font-size: 0.9rem;">Operator Toko</span>
-                        <small class="text-muted" style="font-size: 0.75rem;">Administrator</small>
+                        <span class="d-block fw-bold fz-90">Operator Toko</span>
+                        <small class="text-muted fz-75">Administrator</small>
                     </div>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                         <div>
                             <small class="text-muted fw-bold">TOTAL PEMBAYARAN SEWA</small>
                             <h3 class="fw-bold mt-2 mb-0 text-success" id="sTotalBayar">Rp 0</h3>
-                            <small class="text-muted d-block mt-1" id="sTotalTunda" style="font-size: 0.7rem;"></small>
+                            <small class="text-muted d-block mt-1 fz-70" id="sTotalTunda"></small>
                         </div>
                         <div class="bg-white p-2 rounded-3 text-success d-none d-sm-block"><i
                                 class="bi bi-graph-up-arrow fs-3"></i></div>
@@ -123,8 +123,8 @@
             <div
                 class="card-header bg-white border-bottom-0 pt-3 pt-md-4 pb-0 px-3 px-md-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <h5 class="fw-bold text-dark m-0">Daftar Penyewaan</h5>
-                <button class="btn btn-primary rounded-pill px-3 shadow-sm fw-bold" data-bs-toggle="modal"
-                    data-bs-target="#modalTambahSewa">
+                <button class="btn btn-primary rounded-pill px-3 shadow-sm fw-bold btn-tambah-sewa"
+                    data-bs-toggle="modal" data-bs-target="#modalTambahSewa">
                     <i class="bi bi-plus-lg me-1"></i> Tambah Sewa (Di Tempat)
                 </button>
             </div>
@@ -388,7 +388,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content rounded-4 border-0">
                 <div class="modal-header border-0 pb-0">
-                    <div class="d-flex align-items-center gap-2">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
                         <h5 class="modal-title fw-bold">Detail Pesanan <span id="dtlId"
                                 class="text-primary">#TRX-000</span></h5>
                         <span id="dtlBadgeState" class="badge bg-success px-3 py-2 rounded-pill">Aktif</span>
@@ -402,8 +402,8 @@
                     <div class="row g-3">
                         <div class="col-12" id="secUserOnly">
                             <div class="p-3 bg-light rounded-4">
-                                <small class="text-muted text-uppercase fw-bold d-block mb-2"
-                                    style="font-size: 0.75rem;"><i class="bi bi-person-vcard me-1"></i> Data Identitas &
+                                <small class="text-muted text-uppercase fw-bold d-block mb-2 fz-75"><i
+                                        class="bi bi-person-vcard me-1"></i> Data Identitas &
                                     Pengiriman (Delivery / Pickup)</small>
                                 <div class="row g-2">
                                     <div class="col-md-6"><small class="text-muted d-block">No. WhatsApp:</small> <span
@@ -420,8 +420,8 @@
 
                         <div class="col-md-6">
                             <div class="p-3 bg-light rounded-4 h-100">
-                                <small class="text-muted text-uppercase fw-bold d-block mb-2"
-                                    style="font-size: 0.75rem;"><i class="bi bi-info-circle me-1"></i> Informasi
+                                <small class="text-muted text-uppercase fw-bold d-block mb-2 fz-75"><i
+                                        class="bi bi-info-circle me-1"></i> Informasi
                                     Pelanggan & Unit</small>
                                 <table class="table table-borderless table-sm mb-0">
                                     <tr>
@@ -443,8 +443,8 @@
 
                         <div class="col-md-6">
                             <div class="p-3 bg-light rounded-4 h-100">
-                                <small class="text-muted text-uppercase fw-bold d-block mb-2"
-                                    style="font-size: 0.75rem;"><i class="bi bi-clock me-1"></i> Waktu Sewa</small>
+                                <small class="text-muted text-uppercase fw-bold d-block mb-2 fz-75"><i
+                                        class="bi bi-clock me-1"></i> Waktu Sewa</small>
                                 <table class="table table-borderless table-sm mb-0">
                                     <tr>
                                         <td class="text-muted ps-0">Jam Mulai (Awal):</td>
@@ -464,8 +464,8 @@
 
                         <div class="col-12">
                             <div class="p-3 border rounded-4">
-                                <small class="text-muted text-uppercase fw-bold d-block mb-2"
-                                    style="font-size: 0.75rem;"><i class="bi bi-receipt me-1"></i> Rincian
+                                <small class="text-muted text-uppercase fw-bold d-block mb-2 fz-75"><i
+                                        class="bi bi-receipt me-1"></i> Rincian
                                     Tagihan</small>
                                 <div class="d-flex justify-content-between mb-1">
                                     <span class="text-muted">Biaya Sewa Unit</span>
@@ -483,7 +483,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12" id="secDenda" style="display: none;">
+                        <div class="col-12" id="secDenda">
                             <div class="p-3 border border-danger bg-danger bg-opacity-10 rounded-4">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <span class="fw-bold text-danger"><i
@@ -495,17 +495,17 @@
                             </div>
                         </div>
 
-                        <div class="col-12" id="secHabis" style="display: none;">
+                        <div class="col-12" id="secHabis">
                             <div class="p-3 border border-warning bg-warning bg-opacity-10 rounded-4 small">
                                 <i class="bi bi-hourglass-bottom me-1"></i> <b>Waktu sewa sudah habis.</b> Sewa di
                                 tempat tidak
                                 dikenakan denda. Beritahu pelanggan secara langsung, lalu lakukan Check-Out.
                             </div>
                         </div>
-                        <div class="col-12" id="secBukti" style="display: none;">
+                        <div class="col-12" id="secBukti">
                             <div class="p-3 border rounded-4">
-                                <small class="text-muted text-uppercase fw-bold d-block mb-2"
-                                    style="font-size: 0.75rem;"><i class="bi bi-shield-check me-1"></i> Verifikasi &
+                                <small class="text-muted text-uppercase fw-bold d-block mb-2 fz-75"><i
+                                        class="bi bi-shield-check me-1"></i> Verifikasi &
                                     Bukti Serah Terima</small>
                                 <div class="d-flex flex-column gap-2 small" id="dtlBukti"></div>
                             </div>
@@ -649,8 +649,7 @@
                             <small class="text-muted">Harus sama dengan <b id="scanHarapUnit"></b></small>
                         </div>
                         <div class="col-12">
-                            <video id="scanVideo" class="w-100 rounded-3 d-none" playsinline muted
-                                style="max-height: 240px; object-fit: cover;"></video>
+                            <video id="scanVideo" class="w-100 rounded-3 d-none scan-video" playsinline muted></video>
                         </div>
                         <div class="col-12 d-none" id="scanDenda">
                             <div
@@ -677,8 +676,8 @@
                             <label class="form-label fw-bold small text-muted" for="scanFoto">4. Foto bukti</label>
                             <input type="file" class="form-control" id="scanFoto" accept="image/*"
                                 capture="environment">
-                            <img id="scanPreview" class="img-fluid rounded-3 border mt-2 d-none"
-                                style="max-height: 140px;" alt="Pratinjau bukti">
+                            <img id="scanPreview" class="img-fluid rounded-3 border mt-2 d-none scan-preview"
+                                alt="Pratinjau bukti">
                             <small class="text-muted d-block mt-1">Bukti dikirim ke pelanggan setelah
                                 dikonfirmasi.</small>
                         </div>
@@ -693,7 +692,7 @@
         </div>
     </div>
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 toast-container-app">
         <div id="toastApp" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="polite">
             <div class="d-flex">
                 <div class="toast-body" id="toastMsg"></div>

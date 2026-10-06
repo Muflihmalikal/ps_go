@@ -1,4 +1,23 @@
-/* --- Base Style & Sidebar --- */
+/* =====================================================================
+   PS RENTAL - style.css
+   Satu-satunya file CSS proyek (admin + pelanggan).
+
+   DAFTAR ISI
+   1. Layout dasar: sidebar, backdrop, main
+   2. Utilitas kecil (ukuran font, kursor, dll)
+   3. Komponen bersama halaman pelanggan (topbar, app-card, mobile-bar)
+   4. Beranda pelanggan        (index.html)
+   5. Form sewa & Pembayaran   (pelanggan/form_sewa.html, pembayaran.html)
+   6. Pesanan Saya             (pelanggan/Pesanan.html)
+   7. Admin: dashboard & penyewaan (kartu statistik, penyewaan.html)
+   8. Admin: Unit PS           (admin/unit-ps.html, di-scope .page-unit-ps)
+   9. Responsive (tablet & ponsel)
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. LAYOUT DASAR
+   ===================================================================== */
 .sidebar-bg {
     background-color: #293d75;
     background-image: url('../img/sidebar-bg.png');
@@ -7,17 +26,165 @@
     background-blend-mode: overlay;
 }
 
+#sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 250px;
+    max-width: 85vw;
+    overflow-y: auto;
+    z-index: 1040;
+    transition: transform .25s;
+}
 
-/* --- Komponen bersama (index.html & Pesanan.html) --- */
+#backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    z-index: 1039;
+    display: none;
+}
+
+#backdrop.show {
+    display: block;
+}
+
+main {
+    min-width: 0;
+}
+
+/* Layar kecil: sidebar jadi off-canvas (dibuka lewat tombol #menuBtn) */
+@media (max-width: 991.98px) {
+    #sidebar {
+        transform: translateX(-100%);
+    }
+
+    #sidebar.show {
+        transform: none;
+    }
+
+    body.sidebar-open {
+        overflow: hidden;
+    }
+}
+
+/* Layar lebar: sidebar tetap tampil, konten digeser */
+@media (min-width: 992px) {
+    main {
+        margin-left: 250px;
+    }
+
+    #backdrop {
+        display: none !important;
+    }
+}
+
+
+/* =====================================================================
+   2. UTILITAS KECIL
+   ===================================================================== */
+.fz-50 {
+    font-size: .5rem;
+}
+
+.fz-65 {
+    font-size: .65rem;
+}
+
+.fz-68 {
+    font-size: .68rem;
+}
+
+.fz-70 {
+    font-size: .7rem;
+}
+
+.fz-72 {
+    font-size: .72rem;
+}
+
+.fz-73 {
+    font-size: .73rem;
+}
+
+.fz-75 {
+    font-size: .75rem;
+}
+
+.fz-78 {
+    font-size: .78rem;
+}
+
+.fz-80 {
+    font-size: .8rem;
+}
+
+.fz-82 {
+    font-size: .82rem;
+}
+
+.fz-90 {
+    font-size: .9rem;
+}
+
+.fz-95 {
+    font-size: .95rem;
+}
+
+.fz-px-6 {
+    font-size: 6px;
+}
+
+.fz-px-8 {
+    font-size: 8px;
+}
+
+.fz-px-10 {
+    font-size: 10px;
+}
+
+.ls-05 {
+    letter-spacing: .5px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.obj-cover {
+    object-fit: cover;
+}
+
+/* Lebar tombol 40% / 60% (dipakai di kartu Pesanan) */
+.w-40 {
+    width: 40% !important;
+}
+
+.w-60 {
+    width: 60% !important;
+}
+
+
+/* =====================================================================
+   3. KOMPONEN BERSAMA HALAMAN PELANGGAN
+   ===================================================================== */
 .app-topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: .75rem;
     margin-bottom: 1.5rem;
     padding: 1rem;
     background-color: #fff;
     border-radius: 1rem;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.app-topbar-search {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 420px;
 }
 
 .app-topbar-status {
@@ -51,6 +218,13 @@
     font-size: 0.75rem;
 }
 
+@media (min-width: 768px) {
+    .app-topbar-user {
+        border-left: 1px solid #dee2e6;
+        padding-left: 1rem;
+    }
+}
+
 .app-card {
     margin-bottom: 1.5rem;
     padding: 1.5rem;
@@ -59,14 +233,145 @@
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
+/* Bar kecil berisi tombol menu (halaman pelanggan tanpa topbar, hanya di layar kecil) */
+.mobile-bar {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1rem;
+    padding: .6rem .75rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
 
-/* --- (index.html) --- */
+/* Kartu ringkasan: menempel di layar lebar saja */
+.card-ringkasan {
+    position: static;
+}
+
+@media (min-width: 992px) {
+    .card-ringkasan {
+        position: sticky;
+        top: 20px;
+    }
+}
+
+
+/* =====================================================================
+   4. BERANDA PELANGGAN (index.html)
+   ===================================================================== */
 .card-hover:hover {
     transform: translateY(-5px);
     transition: 0.3s ease-in-out;
 }
 
-/* --- (form-sewa.html) --- */
+.kartu-gerak {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.kartu-gerak:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.wadah-toggle {
+    background-color: #e2e8f0;
+    position: relative;
+    border-radius: 50px;
+    padding: 4px;
+    display: inline-flex;
+    width: 380px;
+    max-width: 100%;
+}
+
+.slider-biru {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(50% - 4px);
+    background-color: #0d6efd;
+    border-radius: 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.tombol-toggle {
+    position: relative;
+    z-index: 2;
+    width: 50%;
+    background: transparent !important;
+    border: none !important;
+    font-size: 0.85rem;
+    padding: 6px 0;
+    transition: color 0.3s ease;
+}
+
+.item-produk {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Judul katalog + kontrol tarif: menumpuk di layar kecil */
+.katalog-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.katalog-aksi {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+}
+
+.produk-thumb {
+    height: 160px;
+}
+
+.produk-img {
+    max-height: 110px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.produk-img-habis {
+    opacity: 0.4;
+}
+
+@media (min-width: 1200px) {
+    .katalog-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .katalog-aksi {
+        align-items: flex-end;
+        margin-top: .25rem;
+    }
+}
+
+
+/* =====================================================================
+   5. FORM SEWA & PEMBAYARAN (pelanggan)
+   ===================================================================== */
 .glass-card {
     background: linear-gradient(rgba(235, 240, 255, 0.5), rgba(235, 240, 255, 0.5)), url('../img/bg-ringkasan.png');
     background-size: cover;
@@ -99,7 +404,6 @@
     object-fit: contain;
 }
 
-/* --- (pembayaran.html) --- */
 .upload-area {
     border: 2px dashed #cbd5e1;
     border-radius: 12px;
@@ -119,72 +423,29 @@
     padding-bottom: 20px;
 }
 
-/* --- (dashboard.html) --- */
-.card-blue {
-    background-color: #e0e7ff;
+.timeline-line-akhir {
+    border-color: transparent;
 }
 
-.card-green {
-    background-color: #dcfce7;
+.timeline-dot {
+    width: 12px;
+    height: 12px;
+    left: -7px;
+    top: 5px;
 }
 
-.card-yellow {
-    background-color: #fef08a;
+.qris-img {
+    max-width: 220px;
 }
 
-.card-pink {
-    background-color: #fce7f3;
-}
-
-#sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 250px;
-    overflow-y: auto;
-    z-index: 1040;
-    transition: transform .25s;
-}
-
-#backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, .45);
-    z-index: 1039;
-    display: none;
-}
-
-#backdrop.show {
-    display: block;
-}
-
-.stat {
-    cursor: pointer;
-}
-
-@media (max-width: 991.98px) {
-    #sidebar {
-        transform: translateX(-100%);
-    }
-
-    #sidebar.show {
-        transform: none;
-    }
-}
-
-@media (min-width: 992px) {
-    main {
-        margin-left: 250px;
-    }
-
-    #backdrop {
-        display: none !important;
-    }
+.ikon-sukses {
+    font-size: 3.5rem;
 }
 
 
-/* --- (Pesanan.html) --- */
+/* =====================================================================
+   6. PESANAN SAYA (pelanggan/Pesanan.html)
+   ===================================================================== */
 body.page-pesanan {
     margin: 0;
     padding: 0;
@@ -242,6 +503,10 @@ body.page-pesanan {
     border-radius: 0.75rem;
     padding: 1rem;
     overflow: hidden;
+}
+
+.stepper-box-kurir {
+    background-color: #fafaf9;
 }
 
 .stepper-line-bg {
@@ -306,6 +571,11 @@ body.page-pesanan {
 
 .progress-bar-waktu {
     transition: width 1s linear, background-color 0.5s ease;
+}
+
+.progress-waktu {
+    height: 10px;
+    border-radius: 5rem;
 }
 
 .progress-animated-striped {
@@ -385,6 +655,48 @@ body.page-pesanan {
     border-radius: 1px;
 }
 
+.bar-1 {
+    width: 1px;
+}
+
+.bar-2 {
+    width: 2px;
+}
+
+.bar-3 {
+    width: 3px;
+}
+
+.bar-4 {
+    width: 4px;
+}
+
+.bar-5 {
+    width: 5px;
+}
+
+.bar-6 {
+    width: 6px;
+}
+
+.bar-7 {
+    width: 7px;
+}
+
+.bar-8 {
+    width: 8px;
+}
+
+.kode-sm {
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+.kode-lg {
+    font-family: monospace;
+    font-size: 1.1rem;
+}
+
 .qr-scan-area {
     cursor: pointer;
     position: relative;
@@ -414,4 +726,497 @@ body.page-pesanan {
     justify-content: center;
     font-size: 2.5rem;
     margin-bottom: 1.25rem;
+}
+
+/* Tabel riwayat: lebar minimum supaya kolom tidak terjepit, digeser di layar kecil */
+.table-riwayat {
+    min-width: 680px;
+}
+
+
+/* =====================================================================
+   7. ADMIN: DASHBOARD & PENYEWAAN
+   ===================================================================== */
+.card-blue {
+    background-color: #e0e7ff;
+}
+
+.card-green {
+    background-color: #dcfce7;
+}
+
+.card-yellow {
+    background-color: #fef08a;
+}
+
+.card-pink {
+    background-color: #fce7f3;
+}
+
+.stat {
+    cursor: pointer;
+}
+
+/* Menu aktif sidebar admin */
+.nav-pills .nav-link.nav-active-blue {
+    background-color: #2563eb;
+}
+
+/* Bagian modal yang tersembunyi sampai dibuka lewat JS (penyewaan.html) */
+#secDenda,
+#secHabis,
+#secBukti {
+    display: none;
+}
+
+.scan-video {
+    max-height: 240px;
+    object-fit: cover;
+}
+
+.scan-preview {
+    max-height: 140px;
+}
+
+.toast-container-app {
+    z-index: 1100;
+}
+
+
+/* =====================================================================
+   8. ADMIN: UNIT PS (admin/unit-ps.html)
+   Semua aturan di-scope ke .page-unit-ps supaya nama umum seperti
+   .stat, .chip, .avatar tidak bentrok dengan halaman lain.
+   ===================================================================== */
+.page-unit-ps .topbar {
+    background: #fff;
+    margin: -1rem -1rem 1.25rem;
+    padding: .85rem 1rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, .08)
+}
+
+@media (min-width: 768px) {
+    .page-unit-ps .topbar {
+        margin: -1.5rem -1.5rem 1.5rem;
+        padding: 1rem 1.5rem
+    }
+}
+
+.page-unit-ps .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0f3d7a;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: .8rem
+}
+
+.page-unit-ps .cabang {
+    background: #eff6ff;
+    border-radius: 999px;
+    padding: .25rem .5rem .25rem .8rem;
+    gap: .35rem
+}
+
+.page-unit-ps .cabang select {
+    border: 0;
+    background: transparent;
+    color: #1d4ed8;
+    font-weight: 600;
+    font-size: .85rem;
+    outline: 0
+}
+
+.page-unit-ps .stat {
+    border-radius: 1rem;
+    padding: 1rem 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid;
+    height: 100%
+}
+
+.page-unit-ps .stat small {
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: #64748b
+}
+
+.page-unit-ps .stat h3 {
+    margin: .2rem 0 0;
+    font-weight: 800
+}
+
+.page-unit-ps .stat .ico {
+    width: 42px;
+    height: 42px;
+    border-radius: .8rem;
+    display: grid;
+    place-items: center;
+    font-size: 1.2rem
+}
+
+.page-unit-ps .st-kuning {
+    background: linear-gradient(135deg, #fff8e1, #fffdf5);
+    border-color: #fde9a8
+}
+
+.page-unit-ps .st-kuning h3 {
+    color: #d97706
+}
+
+.page-unit-ps .st-kuning .ico {
+    background: #fde68a;
+    color: #b45309
+}
+
+.page-unit-ps .st-hijau {
+    background: linear-gradient(135deg, #ecfdf3, #f8fffb);
+    border-color: #bbf7d0
+}
+
+.page-unit-ps .st-hijau h3 {
+    color: #16a34a
+}
+
+.page-unit-ps .st-hijau .ico {
+    background: #bbf7d0;
+    color: #15803d
+}
+
+.page-unit-ps .st-biru {
+    background: linear-gradient(135deg, #eff6ff, #f8fbff);
+    border-color: #bfdbfe
+}
+
+.page-unit-ps .st-biru h3 {
+    color: #2563eb
+}
+
+.page-unit-ps .st-biru .ico {
+    background: #bfdbfe;
+    color: #1d4ed8
+}
+
+.page-unit-ps .st-merah {
+    background: linear-gradient(135deg, #fff1f2, #fff9f9);
+    border-color: #fecdd3
+}
+
+.page-unit-ps .st-merah h3 {
+    color: #e11d48
+}
+
+.page-unit-ps .st-merah .ico {
+    background: #fecdd3;
+    color: #be123c
+}
+
+.page-unit-ps .chip {
+    border: 1px solid #dbe2ea;
+    background: #fff;
+    color: #334155;
+    border-radius: 999px;
+    padding: .35rem .9rem;
+    font-size: .85rem;
+    font-weight: 500
+}
+
+.page-unit-ps .chip.active {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #fff
+}
+
+.page-unit-ps .stab {
+    border: 1px solid #dbe2ea;
+    background: #fff;
+    color: #334155;
+    border-radius: 999px;
+    padding: .25rem .7rem;
+    font-size: .8rem;
+    font-weight: 600
+}
+
+.page-unit-ps .stab.active {
+    background: #1e293b;
+    border-color: #1e293b;
+    color: #fff
+}
+
+.page-unit-ps .cnt {
+    display: inline-block;
+    min-width: 1.4rem;
+    text-align: center;
+    border-radius: 999px;
+    padding: 0 .35rem;
+    font-size: .7rem;
+    background: #e2e8f0;
+    color: #334155
+}
+
+.page-unit-ps .cnt-tersedia {
+    background: #dcfce7;
+    color: #15803d
+}
+
+.page-unit-ps .cnt-disewa {
+    background: #dbeafe;
+    color: #1d4ed8
+}
+
+.page-unit-ps .cnt-maintenance {
+    background: #ffedd5;
+    color: #c2410c
+}
+
+.page-unit-ps .cnt-rusak {
+    background: #fee2e2;
+    color: #b91c1c
+}
+
+.page-unit-ps #tabelUnit {
+    min-width: 820px
+}
+
+.page-unit-ps #tabelUnit thead th {
+    font-size: .68rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 700;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap
+}
+
+.page-unit-ps #tabelUnit>tbody>tr>td {
+    padding-top: .9rem;
+    padding-bottom: .9rem
+}
+
+.page-unit-ps .kelengkapan {
+    min-width: 190px;
+    font-weight: 600;
+    color: #1e293b;
+    font-size: .9rem
+}
+
+.page-unit-ps .btn-ex {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 0;
+    background: #f1f5f9;
+    color: #475569;
+    flex: none
+}
+
+.page-unit-ps .ikon {
+    width: 40px;
+    height: 40px;
+    border-radius: .75rem;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    flex: none
+}
+
+.page-unit-ps .ik-blue {
+    background: #e0ecff;
+    color: #2563eb
+}
+
+.page-unit-ps .ik-violet {
+    background: #ede9fe;
+    color: #7c3aed
+}
+
+.page-unit-ps .ik-orange {
+    background: #ffedd5;
+    color: #ea580c
+}
+
+.page-unit-ps .ik-teal {
+    background: #ccfbf1;
+    color: #0f766e
+}
+
+.page-unit-ps .pill-stok {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    border-radius: 999px;
+    padding: .2rem .75rem;
+    font-weight: 700;
+    font-size: .8rem
+}
+
+.page-unit-ps .pill-stok::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor
+}
+
+.page-unit-ps .pill-stok.ok {
+    background: #dcfce7;
+    color: #15803d
+}
+
+.page-unit-ps .pill-stok.low {
+    background: #fef3c7;
+    color: #b45309
+}
+
+.page-unit-ps .pill-stok.zero {
+    background: #fee2e2;
+    color: #b91c1c
+}
+
+.page-unit-ps .pill-stok.off {
+    background: #e2e8f0;
+    color: #475569
+}
+
+.page-unit-ps .panel-unit {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: .9rem;
+    padding: .9rem 1rem
+}
+
+.page-unit-ps .panel-unit thead th {
+    font-size: .66rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 700
+}
+
+.page-unit-ps .sp {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    border-radius: 999px;
+    padding: .2rem .7rem;
+    font-size: .8rem;
+    font-weight: 600;
+    border: 1px solid transparent
+}
+
+.page-unit-ps button.sp {
+    cursor: pointer
+}
+
+.page-unit-ps .sp-tersedia {
+    background: #dcfce7;
+    color: #15803d
+}
+
+.page-unit-ps .sp-disewa {
+    background: #dbeafe;
+    color: #1d4ed8
+}
+
+.page-unit-ps .sp-maintenance {
+    background: #fff4e0;
+    color: #b45309;
+    border-color: #fcd9a0
+}
+
+.page-unit-ps .sp-rusak {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-color: #fecaca
+}
+
+.page-unit-ps .pagination .page-link {
+    border: 0;
+    border-radius: .5rem;
+    margin: 0 2px;
+    color: #475569
+}
+
+.page-unit-ps .pagination .active>.page-link {
+    background: #2563eb;
+    color: #fff
+}
+
+.page-unit-ps .cari-unit {
+    max-width: 280px;
+}
+
+
+/* =====================================================================
+   9. RESPONSIVE (tablet & ponsel)
+   ===================================================================== */
+
+/* < 768px : tablet portrait & ponsel */
+@media (max-width: 767.98px) {
+    .app-card {
+        padding: 1.25rem;
+    }
+}
+
+/* < 576px : ponsel */
+@media (max-width: 575.98px) {
+
+    /* Topbar & kartu pelanggan lebih rapat */
+    .app-topbar {
+        padding: .75rem;
+        margin-bottom: 1rem;
+    }
+
+    .app-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Beranda: teks toggle tarif lebih kecil agar muat dua baris rapi */
+    .tombol-toggle {
+        font-size: 0.75rem;
+    }
+
+    /* Pembayaran: 3 metode bayar ditumpuk, daftar rekening boleh turun baris */
+    #daftarMetode>.col-4 {
+        width: 100%;
+    }
+
+    #listRekening>div {
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+
+    /* Penyewaan (admin): tombol aksi utama selebar layar, angka statistik lebih kecil */
+    .btn-tambah-sewa {
+        width: 100%;
+    }
+
+    .page-penyewaan .stat h3 {
+        font-size: 1.35rem;
+    }
+
+    /* Unit PS (admin): kolom pencarian selebar layar */
+    .page-unit-ps .cari-unit {
+        max-width: none;
+    }
+
+    .page-unit-ps .stat {
+        padding: .85rem;
+    }
+
+    .page-unit-ps .stat h3 {
+        font-size: 1.5rem;
+    }
+
+    /* Modal: isi lebih rapat di ponsel */
+    .custom-success-box {
+        padding: 2rem 1rem;
+    }
 }

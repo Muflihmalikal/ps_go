@@ -8,367 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/style.css">
-
-    <style>
-        .topbar {
-            background: #fff;
-            margin: -1rem -1rem 1.25rem;
-            padding: .85rem 1rem;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, .08)
-        }
-
-        @media(min-width:768px) {
-            .topbar {
-                margin: -1.5rem -1.5rem 1.5rem;
-                padding: 1rem 1.5rem
-            }
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #0f3d7a;
-            color: #fff;
-            display: grid;
-            place-items: center;
-            font-weight: 700;
-            font-size: .8rem
-        }
-
-        .cabang {
-            background: #eff6ff;
-            border-radius: 999px;
-            padding: .25rem .5rem .25rem .8rem;
-            gap: .35rem
-        }
-
-        .cabang select {
-            border: 0;
-            background: transparent;
-            color: #1d4ed8;
-            font-weight: 600;
-            font-size: .85rem;
-            outline: 0
-        }
-
-        .stat {
-            border-radius: 1rem;
-            padding: 1rem 1.1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid;
-            height: 100%
-        }
-
-        .stat small {
-            font-size: .68rem;
-            font-weight: 700;
-            letter-spacing: .04em;
-            color: #64748b
-        }
-
-        .stat h3 {
-            margin: .2rem 0 0;
-            font-weight: 800
-        }
-
-        .stat .ico {
-            width: 42px;
-            height: 42px;
-            border-radius: .8rem;
-            display: grid;
-            place-items: center;
-            font-size: 1.2rem
-        }
-
-        .st-kuning {
-            background: linear-gradient(135deg, #fff8e1, #fffdf5);
-            border-color: #fde9a8
-        }
-
-        .st-kuning h3 {
-            color: #d97706
-        }
-
-        .st-kuning .ico {
-            background: #fde68a;
-            color: #b45309
-        }
-
-        .st-hijau {
-            background: linear-gradient(135deg, #ecfdf3, #f8fffb);
-            border-color: #bbf7d0
-        }
-
-        .st-hijau h3 {
-            color: #16a34a
-        }
-
-        .st-hijau .ico {
-            background: #bbf7d0;
-            color: #15803d
-        }
-
-        .st-biru {
-            background: linear-gradient(135deg, #eff6ff, #f8fbff);
-            border-color: #bfdbfe
-        }
-
-        .st-biru h3 {
-            color: #2563eb
-        }
-
-        .st-biru .ico {
-            background: #bfdbfe;
-            color: #1d4ed8
-        }
-
-        .st-merah {
-            background: linear-gradient(135deg, #fff1f2, #fff9f9);
-            border-color: #fecdd3
-        }
-
-        .st-merah h3 {
-            color: #e11d48
-        }
-
-        .st-merah .ico {
-            background: #fecdd3;
-            color: #be123c
-        }
-
-        .chip {
-            border: 1px solid #dbe2ea;
-            background: #fff;
-            color: #334155;
-            border-radius: 999px;
-            padding: .35rem .9rem;
-            font-size: .85rem;
-            font-weight: 500
-        }
-
-        .chip.active {
-            background: #2563eb;
-            border-color: #2563eb;
-            color: #fff
-        }
-
-        .stab {
-            border: 1px solid #dbe2ea;
-            background: #fff;
-            color: #334155;
-            border-radius: 999px;
-            padding: .25rem .7rem;
-            font-size: .8rem;
-            font-weight: 600
-        }
-
-        .stab.active {
-            background: #1e293b;
-            border-color: #1e293b;
-            color: #fff
-        }
-
-        .cnt {
-            display: inline-block;
-            min-width: 1.4rem;
-            text-align: center;
-            border-radius: 999px;
-            padding: 0 .35rem;
-            font-size: .7rem;
-            background: #e2e8f0;
-            color: #334155
-        }
-
-        .cnt-tersedia {
-            background: #dcfce7;
-            color: #15803d
-        }
-
-        .cnt-disewa {
-            background: #dbeafe;
-            color: #1d4ed8
-        }
-
-        .cnt-maintenance {
-            background: #ffedd5;
-            color: #c2410c
-        }
-
-        .cnt-rusak {
-            background: #fee2e2;
-            color: #b91c1c
-        }
-
-        #tabelUnit thead th {
-            font-size: .68rem;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            color: #94a3b8;
-            font-weight: 700;
-            border-bottom: 1px solid #e2e8f0;
-            white-space: nowrap
-        }
-
-        #tabelUnit>tbody>tr>td {
-            padding-top: .9rem;
-            padding-bottom: .9rem
-        }
-
-        .kelengkapan {
-            min-width: 190px;
-            font-weight: 600;
-            color: #1e293b;
-            font-size: .9rem
-        }
-
-        .btn-ex {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 0;
-            background: #f1f5f9;
-            color: #475569;
-            flex: none
-        }
-
-        .ikon {
-            width: 40px;
-            height: 40px;
-            border-radius: .75rem;
-            display: grid;
-            place-items: center;
-            font-size: 1.1rem;
-            flex: none
-        }
-
-        .ik-blue {
-            background: #e0ecff;
-            color: #2563eb
-        }
-
-        .ik-violet {
-            background: #ede9fe;
-            color: #7c3aed
-        }
-
-        .ik-orange {
-            background: #ffedd5;
-            color: #ea580c
-        }
-
-        .ik-teal {
-            background: #ccfbf1;
-            color: #0f766e
-        }
-
-        .pill-stok {
-            display: inline-flex;
-            align-items: center;
-            gap: .4rem;
-            border-radius: 999px;
-            padding: .2rem .75rem;
-            font-weight: 700;
-            font-size: .8rem
-        }
-
-        .pill-stok::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor
-        }
-
-        .pill-stok.ok {
-            background: #dcfce7;
-            color: #15803d
-        }
-
-        .pill-stok.low {
-            background: #fef3c7;
-            color: #b45309
-        }
-
-        .pill-stok.zero {
-            background: #fee2e2;
-            color: #b91c1c
-        }
-
-        .pill-stok.off {
-            background: #e2e8f0;
-            color: #475569
-        }
-
-        .panel-unit {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: .9rem;
-            padding: .9rem 1rem
-        }
-
-        .panel-unit thead th {
-            font-size: .66rem;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            color: #94a3b8;
-            font-weight: 700
-        }
-
-        .sp {
-            display: inline-flex;
-            align-items: center;
-            gap: .35rem;
-            border-radius: 999px;
-            padding: .2rem .7rem;
-            font-size: .8rem;
-            font-weight: 600;
-            border: 1px solid transparent
-        }
-
-        button.sp {
-            cursor: pointer
-        }
-
-        .sp-tersedia {
-            background: #dcfce7;
-            color: #15803d
-        }
-
-        .sp-disewa {
-            background: #dbeafe;
-            color: #1d4ed8
-        }
-
-        .sp-maintenance {
-            background: #fff4e0;
-            color: #b45309;
-            border-color: #fcd9a0
-        }
-
-        .sp-rusak {
-            background: #fee2e2;
-            color: #b91c1c;
-            border-color: #fecaca
-        }
-
-        .pagination .page-link {
-            border: 0;
-            border-radius: .5rem;
-            margin: 0 2px;
-            color: #475569
-        }
-
-        .pagination .active>.page-link {
-            background: #2563eb;
-            color: #fff
-        }
-    </style>
 </head>
 
-<body class="bg-light">
+<body class="bg-light page-admin page-unit-ps">
 
     <div id="backdrop"></div>
     <!-- Sidebar Navigation -->
@@ -377,7 +19,7 @@
             <i class="bi bi-controller fs-2 me-2"></i>
             <div class="lh-sm">
                 <span class="fs-5 fw-bold d-block">PS Rental</span>
-                <small class="opacity-75" style="font-size: 0.7rem;">Admin Panel</small>
+                <small class="opacity-75 fz-70">Admin Panel</small>
             </div>
         </a>
         <ul class="nav nav-pills flex-column mb-auto gap-2">
@@ -385,8 +27,8 @@
                     Beranda</a></li>
             <li><a href="dashboard.html" class="nav-link text-white opacity-75"><i class="bi bi-card-list me-3"></i>
                     Penyewaan</a></li>
-            <li><a href="unit-ps.html" class="nav-link active text-white shadow-sm"
-                    style="background-color: #2563eb;"><i class="bi bi-box-seam me-3"></i> Unit PS</a></li>
+            <li><a href="unit-ps.html" class="nav-link active text-white shadow-sm nav-active-blue"><i
+                        class="bi bi-box-seam me-3"></i> Unit PS</a></li>
             <li><a href="#" class="nav-link text-white opacity-75"><i class="bi bi-exclamation-octagon me-3"></i>
                     Denda</a></li>
             <li><a href="#" class="nav-link text-white opacity-75"><i class="bi bi-cash-stack me-3"></i> Pengeluaran</a>
@@ -409,7 +51,8 @@
                         class="bi bi-list fs-4"></i></button>
                 <div>
                     <h4 class="fw-bold text-dark m-0">Katalog Konsol &amp; Paket</h4>
-                    <small class="text-primary">Kelola data unit, kelengkapan, stok, dan tarif rental (12 Jam &amp; 24
+                    <small class="text-primary d-none d-sm-block">Kelola data unit, kelengkapan, stok, dan tarif rental
+                        (12 Jam &amp; 24
                         Jam)</small>
                 </div>
             </div>
@@ -427,8 +70,8 @@
                 <div class="d-flex align-items-center gap-2">
                     <span class="avatar">AT</span>
                     <div class="lh-1 d-none d-md-block">
-                        <span class="d-block fw-bold" style="font-size:.9rem">Operator Toko</span>
-                        <small class="text-muted" style="font-size:.72rem">Administrator</small>
+                        <span class="d-block fw-bold fz-90">Operator Toko</span>
+                        <small class="text-muted fz-72">Administrator</small>
                     </div>
                 </div>
             </div>
@@ -490,7 +133,7 @@
 
                 <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
                     <ul class="nav gap-1 flex-wrap" id="tabStatusUnit"></ul>
-                    <div class="input-group input-group-sm w-auto flex-grow-1" style="max-width:280px">
+                    <div class="input-group input-group-sm w-auto flex-grow-1 cari-unit">
                         <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
                         <input type="search" class="form-control border-start-0" id="cariUnit"
                             placeholder="Cari unit, kelengkapan...">
@@ -664,6 +307,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebar.js"></script>
     <script src="../assets/js/unit.js"></script>
 </body>
 

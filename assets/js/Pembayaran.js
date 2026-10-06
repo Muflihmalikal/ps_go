@@ -181,8 +181,8 @@ function tampilSukses(o) {
         [false, 'Kembalikan unit tepat waktu', 'Keterlambatan dikenakan denda Rp 10.000 per jam (toleransi 10 menit).'],
     ];
     $('sLangkah').innerHTML = langkah.map(([selesai, judul, ket], i) => `
-    <div class="timeline-line position-relative" ${i === langkah.length - 1 ? 'style="border-color: transparent"' : ''}>
-      <span class="position-absolute rounded-circle ${selesai ? 'bg-success' : 'bg-secondary-subtle border border-secondary'}" style="width: 12px; height: 12px; left: -7px; top: 5px"></span>
+    <div class="timeline-line position-relative${i === langkah.length - 1 ? ' timeline-line-akhir' : ''}">
+      <span class="timeline-dot position-absolute rounded-circle ${selesai ? 'bg-success' : 'bg-secondary-subtle border border-secondary'}"></span>
       <div class="fw-semibold">${esc(judul)}</div>
       <small class="text-muted">${esc(ket)}</small>
     </div>`).join('');
