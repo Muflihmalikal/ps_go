@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PS Rental - Profil Saya</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <style>
+      .form-readonly {
+        background-color: transparent !important;
+        border: 1px solid transparent !important;
+        padding-left: 0 !important;
+        font-weight: 600;
+        color: #111827 !important;
+        cursor: default;
+      }
+      .form-readonly:focus {
+        box-shadow: none;
+        outline: none;
+      }
+
+
+      .form-editing {
+        background-color: #f8f9fa !important;
+        border: 1px solid #ced4da !important;
+        padding-left: 0.75rem !important;
+        font-weight: 400;
+        color: #212529 !important;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="d-flex w-100" style="min-height: 100vh; overflow-x: hidden;">
+      
+      <!-- Menu Kiri -->
+      <aside class="sidebar-bg d-flex flex-column p-3 text-white flex-shrink-0 sticky-top" style="width: 250px; height: 100vh;">
+        <a href="index.html" class="d-flex align-items-center mb-5 mt-2 text-white text-decoration-none">
+          <i class="bi bi-controller fs-2 me-2"></i>
+          <div class="lh-sm">
+            <span class="fs-5 fw-bold d-block">PS Rental</span>
+            <small class="opacity-75" style="font-size: 0.7rem">Bawa pulang, main di rumah!</small>
+          </div>
+        </a>
+        <ul class="nav nav-pills flex-column mb-auto gap-2">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link text-white opacity-75 d-flex align-items-center">
+              <i class="bi bi-house-door-fill me-3"></i> Beranda
+            </a>
+          </li>
+          <li>
+            <a href="pelanggan/Pesanan.html" class="nav-link text-white opacity-75 d-flex align-items-center">
+              <i class="bi bi-receipt me-3"></i> Pesanan Saya
+            </a>
+          </li>
+          <li>
+            <a href="profil.html" class="nav-link active text-white d-flex align-items-center shadow-sm">
+              <i class="bi bi-person-fill me-3"></i> Profil
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Konten Kanan -->
+      <main class="flex-grow-1 p-4 ms-0" style="max-height: 100vh; overflow-y: auto; margin-left: 0 !important;">
+        
+        <!-- Topbar -->
+        <header class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm border-0">
+          <div class="input-group w-50">
+            <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control bg-light border-0" placeholder="Cari konsol PS, paket Playbox..." />
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 font-medium" style="font-size: 0.75rem">
+              <i class="bi bi-circle-fill text-success me-1" style="font-size: 7px"></i> Buka Setiap Hari (10:00 - 23:00 WIB)
+            </span>
+            <div class="d-flex align-items-center gap-2 border-start ps-3">
+              <div class="rounded-circle fw-bold d-flex align-items-center justify-content-center"
+                   style="width: 40px; height: 40px; flex-shrink: 0; background-color: #fff3cd; border: 2px solid #ffc107; color: #111827; font-size: 0.95rem;">
+                AP
+              </div>
+              <div class="lh-1">
+                <span class="d-block fw-bold" style="font-size: 0.9rem">Alya Pratama</span>
+                <small class="text-muted" style="font-size: 0.75rem">Pelanggan</small>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Judul Halaman -->
+        <div class="mb-4">
+          <small class="text-muted fw-bold d-block mb-1"><i class="bi bi-person-vcard-fill me-1"></i> MANAJEMEN AKUN</small>
+          <h3 class="fw-bold text-dark mb-1">Profil Saya</h3>
+          <p class="text-muted small mb-0">Kelola informasi data diri, alamat pengiriman, dan keamanan akun Anda.</p>
+        </div>
+        <div class="row g-4">
+          
+          <!-- Kartu Ringkasan & Tombol Edit -->
+          <div class="col-12 col-lg-4">
+            <div class="card border shadow-sm rounded-4 h-100">
+              <div class="card-body p-4 text-center">
+                <!-- Avatar Besar -->
+                <div class="rounded-circle fw-bold d-flex align-items-center justify-content-center mx-auto mb-3 shadow-sm"
+                     style="width: 110px; height: 110px; flex-shrink: 0; background-color: #fff3cd; border: 4px solid #ffc107; color: #111827; font-size: 2.5rem;">
+                  AP
+                </div>
+                <h5 class="fw-bold text-dark mb-1">Alya Pratama</h5>
+                <p class="text-muted small mb-3">alyapratama@email.com</p>
+                
+
+                <button id="btnEditProfile" class="btn btn-primary px-4 py-2 rounded-pill fw-semibold mb-4" onclick="mulaiEdit()">
+                  Edit Profile
+                </button>
+
+                <div class="mb-4">
+                  <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
+                    <i class="bi bi-patch-check-fill me-1"></i> Akun Terverifikasi
+                  </span>
+                </div>
+
+                <hr class="text-muted opacity-25">
+
+                <div class="d-flex justify-content-between align-items-center text-start small mb-3">
+                  <span class="text-muted fw-semibold">Nomor WhatsApp</span>
+                  <span class="fw-bold text-dark">0812-3456-7890</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center text-start small mb-3">
+                  <span class="text-muted fw-semibold">Total Pesanan</span>
+                  <span class="fw-bold text-dark">4 Transaksi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form (Kunci & Buka) -->
+          <div class="col-12 col-lg-8">
+            <div class="card border shadow-sm rounded-4 h-100">
+              <div class="card-body p-4">
+                
+                <ul class="nav nav-tabs mb-4" id="profilTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active fw-semibold" id="data-diri-tab" data-bs-toggle="tab" data-bs-target="#data-diri" type="button" role="tab">Data Diri</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-semibold text-muted" id="alamat-tab" data-bs-toggle="tab" data-bs-target="#alamat" type="button" role="tab">Alamat Pengiriman</button>
+                  </li>
+                </ul>
+
+                <div class="tab-content" id="profilTabsContent">
+                  
+                  <!-- Tab: Data Diri -->
+                  <div class="tab-pane fade show active" id="data-diri" role="tabpanel">
+                    <form>
+                      <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                          <label class="form-label small fw-bold text-muted"><i class="bi bi-person-fill text-primary me-1"></i> Nama Lengkap</label>
+                          <input type="text" class="form-control form-readonly input-profil" value="Alya Pratama" readonly>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-bold text-muted"><i class="bi bi-envelope-fill text-primary me-1"></i> Alamat Email</label>
+                          <input type="email" class="form-control form-readonly input-profil" value="alyapratama@email.com" readonly>
+                        </div>
+                      </div>
+                      <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                          <label class="form-label small fw-bold text-muted"><i class="bi bi-telephone-fill text-primary me-1"></i> Nomor Telepon</label>
+                          <input type="text" class="form-control form-readonly input-profil" value="081234567890" readonly>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-bold text-muted"><i class="bi bi-calendar-event-fill text-primary me-1"></i> Tanggal Lahir</label>
+                          <input type="date" class="form-control form-readonly input-profil" value="2000-05-14" readonly>
+                        </div>
+                      </div>
+                      
+                      <h6 class="fw-bold text-dark mb-3 border-top pt-4">Dokumen Jaminan (Identitas)</h6>
+                      <div class="d-flex align-items-center gap-3 bg-light p-3 rounded-3 border">
+                        <div class="text-success fs-2"><i class="bi bi-file-earmark-check-fill"></i></div>
+                        <div class="lh-sm">
+                          <span class="d-block fw-bold text-dark">KTP Pribadi Asli</span>
+                          <small class="text-success fw-medium">Sudah Diunggah & Diverifikasi</small>
+                        </div>
+                      </div>
+
+                      <!-- Tombol Action Data Diri (Sembunyi by Default) -->
+                      <div class="action-buttons d-none justify-content-end gap-2 mt-4">
+                        <button type="button" class="btn btn-light border px-4 rounded-pill fw-semibold text-muted" onclick="batalEdit()">Batal</button>
+                        <button type="button" class="btn btn-primary px-4 rounded-pill fw-semibold shadow-sm" onclick="simpanEdit()">Simpan Perubahan</button>
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- Tab: Alamat -->
+                  <div class="tab-pane fade" id="alamat" role="tabpanel">
+                    <form>
+                      <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted"><i class="bi bi-geo-alt-fill text-primary me-1"></i> Alamat Lengkap (Sesuai Titik)</label>
+                        <textarea class="form-control form-readonly input-profil" rows="3" readonly>Jl. Suwandak No. 45, RT 02 / RW 05, Kelurahan Rogotrunan</textarea>
+                      </div>
+                      <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                          <label class="form-label small fw-bold text-muted"><i class="bi bi-map-fill text-primary me-1"></i> Kecamatan / Kota</label>
+                          <input type="text" class="form-control form-readonly input-profil" value="Lumajang" readonly>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-bold text-muted"><i class="bi bi-signpost-2-fill text-primary me-1"></i> Detail Patokan</label>
+                          <input type="text" class="form-control form-readonly input-profil" value="Pagar hitam depan warung soto" readonly>
+                        </div>
+                      </div>
+
+                      <!-- Tombol Action Alamat (Sembunyi by Default) -->
+                      <div class="action-buttons d-none justify-content-end gap-2 mt-4">
+                        <button type="button" class="btn btn-light border px-4 rounded-pill fw-semibold text-muted" onclick="batalEdit()">Batal</button>
+                        <button type="button" class="btn btn-primary px-4 rounded-pill fw-semibold shadow-sm" onclick="simpanEdit()">Simpan Alamat</button>
+                      </div>
+                    </form>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <
+    <script>
+      function mulaiEdit() {
+        
+        document.getElementById('btnEditProfile').classList.add('d-none');
+        
+       
+        let inputs = document.querySelectorAll('.input-profil');
+        inputs.forEach(input => {
+          input.removeAttribute('readonly');
+          input.classList.remove('form-readonly');
+          input.classList.add('form-editing');
+        });
+
+        
+        let actions = document.querySelectorAll('.action-buttons');
+        actions.forEach(action => {
+          action.classList.remove('d-none');
+          action.classList.add('d-flex');
+        });
+      }
+
+      function batalEdit() {
+        document.getElementById('btnEditProfile').classList.remove('d-none');
+        
+        let inputs = document.querySelectorAll('.input-profil');
+        inputs.forEach(input => {
+          input.setAttribute('readonly', true);
+          input.classList.remove('form-editing');
+          input.classList.add('form-readonly');
+        });
+
+        
+        let actions = document.querySelectorAll('.action-buttons');
+        actions.forEach(action => {
+          action.classList.remove('d-flex');
+          action.classList.add('d-none');
+        });
+      }
+
+      function simpanEdit() {
+        alert('Data profil berhasil diperbarui!');
+        batalEdit(); 
+      }
+    </script>
+  </body>
+</html>
