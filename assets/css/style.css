@@ -444,7 +444,7 @@ main {
 
 
 /* =====================================================================
-   6. PESANAN SAYA (pelanggan/Pesanan.html)
+   6. PESANAN SAYA (pelanggan/Pesanan.php)
    ===================================================================== */
 body.page-pesanan {
     margin: 0;
@@ -550,6 +550,39 @@ body.page-pesanan {
 .dot-animating {
     animation: pulse-ring 2s infinite;
     box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.5);
+}
+
+.riwayat-aksi {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    width: 100%;
+}
+
+.riwayat-cari {
+    flex: 1 1 200px;
+    min-width: 0;
+    max-width: 300px;
+}
+
+.riwayat-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}
+
+.riwayat-filter .form-control {
+    width: auto;
+    flex: 1 1 140px;
+    max-width: 170px;
+}
+
+@media (min-width: 576px) {
+    .riwayat-aksi {
+        width: auto;
+    }
 }
 
 @keyframes pulse-ring {
@@ -1218,5 +1251,28 @@ body.page-pesanan {
     /* Modal: isi lebih rapat di ponsel */
     .custom-success-box {
         padding: 2rem 1rem;
+    }
+
+    /*Halaman Profil*/
+    .form-readonly {
+        background-color: transparent !important;
+        border: 1px solid transparent !important;
+        padding-left: 0 !important;
+        font-weight: 600;
+        color: #111827 !important;
+        cursor: default;
+    }
+
+    .form-readonly:focus {
+        box-shadow: none;
+        outline: none;
+    }
+
+    .form-editing {
+        background-color: #f8f9fa !important;
+        border: 1px solid #ced4da !important;
+        padding-left: 0.75rem !important;
+        font-weight: 400;
+        color: #212529 !important;
     }
 }

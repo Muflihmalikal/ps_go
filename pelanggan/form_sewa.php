@@ -1,0 +1,222 @@
+<?php
+$pageTitle = "PS Rental - Form Penyewaan";
+include __DIR__ . '/../includes/header.php';
+?>
+<div class="mobile-bar d-lg-none mb-3 d-flex align-items-center gap-2">
+    <button type="button" class="btn btn-light" id="menuBtn" aria-label="Buka menu"><i
+            class="bi bi-list fs-4"></i></button>
+    <span class="fw-bold text-dark">PS Rental</span>
+</div>
+<div class="mb-4">
+    <a href="../index.php" class="text-decoration-none fw-semibold">
+        <i class="bi bi-arrow-left me-2"></i> Kembali ke Beranda
+    </a>
+</div>
+
+<div class="row g-4">
+    <!-- Form Input -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label text-muted small fw-semibold">Nama Pelanggan <span
+                            class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" id="namaPelanggan"
+                            placeholder="Masukkan nama lengkap" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-muted small fw-semibold">Nomor HP <span
+                            class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-telephone"></i></span>
+                        <input type="tel" class="form-control" id="hpPelanggan" placeholder="08xxxxxxxxxx" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pilihan Unit -->
+            <div class="mb-4">
+                <label class="form-label text-muted small fw-semibold">Pilih Unit</label>
+                <div class="d-flex align-items-center p-3 border rounded-3 bg-light">
+                    <img src="../assets/img/ps4.png" alt="PS4" width="40" class="me-3" id="unitGambar" />
+                    <div>
+                        <h6 class="mb-0 fw-bold" id="unitNama">PS4</h6>
+                        <small class="text-muted" id="unitHarga"></small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tipe, Durasi, Waktu Mulai, Metode Penerimaan -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label text-muted small fw-semibold">Tipe Sewa</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="tipeSewa" id="harian" checked />
+                        <label class="btn btn-outline-primary" for="harian">Sewa Harian</label>
+                        <input type="radio" class="btn-check" name="tipeSewa" id="jam" />
+                        <label class="btn btn-outline-primary" for="jam">Sewa Per Jam</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-muted small fw-semibold" for="mulaiSewa">Tanggal & Waktu
+                        Mulai Sewa</label>
+                    <input type="datetime-local" class="form-control" id="mulaiSewa" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-muted small fw-semibold" for="durasi">Durasi</label>
+                    <div class="input-group">
+                        <button class="btn btn-outline-secondary px-3" type="button" id="btnKurang">-</button>
+                        <input type="text" inputmode="numeric" class="form-control text-center" id="durasi"
+                            value="1" />
+                        <span class="input-group-text bg-white" id="satuanDurasi">Hari</span>
+                        <button class="btn btn-primary px-3" type="button" id="btnTambah">+</button>
+                    </div>
+                    <small class="text-muted d-block mt-1" id="infoDurasi"></small>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-muted small fw-semibold" for="metodeTerima">Metode
+                        Penerimaan Unit</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-box-seam"></i></span>
+                        <select class="form-select" id="metodeTerima">
+                            <option value="ambil" selected>Ambil di Toko</option>
+                            <option value="antar">Antar ke Rumah (+ ongkir)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jika ambil di toko: alamat toko -->
+            <div id="blokToko">
+                <div class="d-flex gap-3 p-3 border rounded-3 bg-light">
+                    <i class="bi bi-geo-alt-fill text-danger fs-4"></i>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Alamat Toko</h6>
+                        <p class="mb-1 small">Galaxy Game, Jl. [isi alamat lengkap toko], Lumajang</p>
+                        <small class="text-muted"><i class="bi bi-clock me-1"></i> Buka setiap hari 10:00 -
+                            23:00 WIB. Bawa jaminan asli saat mengambil unit.</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jika antar ke rumah: alamat + jaminan -->
+            <div id="blokAntar" class="d-none">
+                <div class="mb-3">
+                    <label class="form-label text-muted small fw-semibold" for="alamatAntar">Alamat
+                        Pengantaran <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="alamatAntar" rows="2"
+                        placeholder="Nama jalan, nomor rumah, RT/RW"></textarea>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small fw-semibold" for="kecamatan">Kecamatan /
+                            Kelurahan <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="kecamatan"
+                            placeholder="Contoh: Rogotrunan" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small fw-semibold" for="patokan">Patokan
+                            (opsional)</label>
+                        <input type="text" class="form-control" id="patokan"
+                            placeholder="Contoh: depan masjid" />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-muted small fw-semibold">Pilih Jenis Jaminan</label>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="radio-card w-100">
+                                <input type="radio" name="jaminan" value="ktp" checked />
+                                <div class="card p-3 text-center border-2">
+                                    <i class="bi bi-person-vcard fs-4 mb-2"></i>
+                                    <span class="fw-semibold d-block">KTP</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label class="radio-card w-100">
+                                <input type="radio" name="jaminan" value="stnk" />
+                                <div class="card p-3 text-center border-2">
+                                    <i class="bi bi-car-front fs-4 mb-2"></i>
+                                    <span class="fw-semibold d-block">STNK</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label text-muted small fw-semibold">Upload Foto Jaminan <span
+                            class="text-danger">*</span></label>
+                    <label class="upload-area d-block text-center p-4 w-100" for="fileJaminan">
+                        <input type="file" id="fileJaminan" accept="image/*" class="d-none" />
+                        <i class="bi bi-cloud-arrow-up fs-3 text-primary d-block mb-1"></i>
+                        <span class="small fw-semibold d-block" id="namaFileJaminan">Klik untuk pilih foto
+                            KTP / STNK (JPG atau PNG)</span>
+                        <img id="previewJaminan" class="upload-preview rounded-3 border mt-3 d-none"
+                            alt="Pratinjau jaminan" />
+                    </label>
+                    <small class="text-muted d-block mt-2">Foto dipakai untuk verifikasi awal. Jaminan asli
+                        tetap diserahkan ke kurir saat unit tiba.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ringkasan Penyewaan -->
+    <div class="col-lg-4">
+        <div class="card glass-card card-ringkasan rounded-4 p-3 p-md-4 shadow-sm border-0">
+            <h5 class="fw-bold mb-4">Ringkasan Penyewaan</h5>
+
+            <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                <img src="../assets/img/ps4.png" alt="PS4" width="40" class="me-3" id="sumGambar" />
+                <div>
+                    <h6 class="mb-0 fw-bold" id="sumNama">PS4</h6>
+                    <small class="text-muted" id="sumHarga"></small>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Tarif</span>
+                <span class="fw-semibold text-end" id="sumTarif">Weekday (Sen-Kam)</span>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Durasi</span>
+                <span class="fw-semibold" id="sumDurasi">1 Hari</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Penerimaan</span>
+                <span class="fw-semibold text-end" id="sumPenerimaan">Ambil di Toko</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 d-none" id="sumOngkirBaris">
+                <span class="text-muted">Ongkir</span>
+                <span class="fw-semibold" id="sumOngkir">Rp 0</span>
+            </div>
+            <div class="d-flex justify-content-between mb-4 pb-3 border-bottom">
+                <span class="text-muted">Jaminan</span>
+                <span class="fw-semibold text-end" id="sumJaminan">Diserahkan di toko</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="fw-bold fs-5">Total Estimasi</span>
+                <span class="fw-bold fs-5 text-primary" id="sumTotal">Rp 240.000</span>
+            </div>
+
+            <div class="alert alert-primary bg-primary-subtle border-0 d-flex gap-2" role="alert">
+                <i class="bi bi-info-circle-fill text-primary"></i>
+                <small class="fz-80">Setelah mengisi form, silahkan lanjutkan ke halaman
+                    pembayaran.</small>
+            </div>
+
+            <div class="alert alert-danger small d-none" id="errForm" role="alert"></div>
+            <a href="pembayaran.php" id="btnLanjut" class="btn btn-primary w-100 py-2 fw-semibold">Lanjutkan ke
+                Pembayaran</a>
+        </div>
+    </div>
+</div>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
