@@ -1,5 +1,25 @@
 <?php
 $pageTitle = "PS Rental - Form Penyewaan";
+require_once __DIR__ . '/../includes/koneksi.php';
+$id_paket_encrypted = $_GET['id_paket'] ?? '';
+$id_paket = decrypt_id($id_paket_encrypted);
+if ($id_paket === false) {
+    header("Location: /../index.php?error=invalid_link");
+    exit;
+}
+$stmt = $pdo->prepare("
+    SELECT p.*, 
+           (SELECT COUNT(u.id_unit) FROM unit_ps u WHERE u.id_paket = p.id_paket AND u.status_unit = 'tersedia') as stok_tersedia
+    FROM paket_sewa p 
+    WHERE p.id_paket = :id_paket AND p.override_status = 'auto'
+");
+$stmt->execute(['id_paket' => $id_paket]);
+$paket = $stmt->fetch();
+
+if (!$paket) {
+    header("Location: /../index.php?error=not_found");
+    exit;
+}
 include __DIR__ . '/../includes/header.php';
 ?>
 <div class="mobile-bar d-lg-none mb-3 d-flex align-items-center gap-2">

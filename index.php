@@ -1,6 +1,5 @@
 <?php
 $pageTitle = "PS Rental - Beranda Pelanggan";
-require_once __DIR__ . '/includes/koneksi.php';
 include __DIR__ . '/includes/header.php';
 
 $query = "
@@ -113,7 +112,8 @@ $katalog = $stmt->fetchAll();
                 <span class="fw-bold text-primary fs-6" data-harga="j24">Rp <?= number_format($item['harga_wk_24h'], 0, ',', '.') ?></span>
               </div>
 
-              <a href="pelanggan/form_sewa.php?id_paket=<?= $item['id_paket'] ?>&tarif=weekday" class="btn <?= $item['stok_tersedia'] > 0 ? 'btn-primary' : 'btn-secondary disabled' ?> w-100 rounded-3 py-2 fw-semibold fz-90">
+              <a href="pelanggan/form_sewa.php?id_paket=<?= encrypt_id($item['id_paket']) ?>&tarif=weekday"
+                class="btn btn-sewa <?= $item['stok_tersedia'] > 0 ? 'btn-primary' : 'btn-secondary disabled' ?> w-100 rounded-3 py-2 fw-semibold fz-90">
                 <i class="bi bi-bag-plus me-1"></i> <?= $item['stok_tersedia'] > 0 ? 'Sewa Sekarang' : 'Antre / Booking' ?>
               </a>
             </div>

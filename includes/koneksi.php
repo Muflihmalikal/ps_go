@@ -1,4 +1,15 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_samesite', 'Lax');
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+        ini_set('session.cookie_secure', 1);
+    }
+
+    session_start();
+}
+
 function loadEnv($filePath)
 {
     if (!file_exists($filePath)) {
@@ -36,5 +47,8 @@ try {
         PDO::ATTR_EMULATE_PREPARES => false,
     ]);
 } catch (PDOException $e) {
-    die("Koneksi Database Gagal: " . $e->getMessage());
+    error_log("Koneksi DB Gagal: " . $e->getMessage());
+    die("Terjadi masalah koneksi ke server. Silakan coba beberapa saat lagi."); 
 }
+
+require_once __DIR__ . '/security.php';

@@ -1,5 +1,28 @@
 <?php
 $pageTitle = "PS Rental - Pesanan";
+// require_once __DIR__ . '/../includes/koneksi.php';
+// session_start();
+// $id_user_login = $_SESSION['id_user'] ?? 0;
+// $id_sewa_input = $_GET['id_sewa'] ?? '';
+
+// $stmt = $pdo->prepare("
+//     SELECT p.*, pb.status_bayar 
+//     FROM penyewaan p
+//     LEFT JOIN pembayaran pb ON p.id_sewa = pb.id_sewa
+//     WHERE p.id_sewa = :id_sewa 
+//       AND p.id_user = :id_user_login
+// ");
+
+// $stmt->execute([
+//   'id_sewa' => $id_sewa_input,
+//   'id_user_login' => $id_user_login
+// ]);
+
+// $pesanan = $stmt->fetch();
+
+// if (!$pesanan) {
+//   die("Akses Ditolak: Anda tidak memiliki akses ke pesanan ini.");
+// }
 include __DIR__ . '/../includes/header.php';
 ?>
 <div class="app-card">
