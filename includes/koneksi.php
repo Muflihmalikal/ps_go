@@ -48,7 +48,7 @@ try {
     ]);
 } catch (PDOException $e) {
     error_log("Koneksi DB Gagal: " . $e->getMessage());
-    die("Terjadi masalah koneksi ke server. Silakan coba beberapa saat lagi."); 
+    die("Terjadi gangguan sistem koneksi. Silakan coba beberapa saat lagi.");
 }
 
 require_once __DIR__ . '/security.php';
