@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../includes/auth.php';
+require_login();
+
 $pageTitle = "PS Rental - Form Penyewaan";
 require_once __DIR__ . '/../includes/koneksi.php';
 $id_paket_encrypted = $_GET['id_paket'] ?? '';

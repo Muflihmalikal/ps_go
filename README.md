@@ -62,15 +62,16 @@ ps_go/
 
 ### Parameter Koneksi Database
 
-Apa pun web server yang dipakai, sesuaikan file koneksi di folder `config/` dengan nilai berikut (ubah sesuai komputer masing-masing):
+Salin `.env.example` menjadi `.env` di folder utama proyek, lalu isi password PostgreSQL sesuai komputer masing-masing:
 
 | Parameter | Nilai Umum                              |
 | --------- | --------------------------------------- |
-| Host      | `localhost` atau `127.0.0.1`            |
+| Host      | `127.0.0.1`                              |
 | Port      | `5432`                                  |
 | Username  | `postgres`                              |
-| Password  | Sesuai yang Anda atur saat instalasi    |
-| Database  | Nama database yang Anda buat (mis. `ps_go`) |
+| Password  | Password user PostgreSQL Anda           |
+| Database  | `db_rental` (sesuaikan dengan database yang dibuat) |
+| SSL mode  | `prefer` untuk PostgreSQL lokal          |
 
 ---
 

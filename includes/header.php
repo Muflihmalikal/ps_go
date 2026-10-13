@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/includes/koneksi.php';
+require_once __DIR__ . '/koneksi.php';
+require_once __DIR__ . '/auth.php';
 $__jobsheetRoot = dirname(__DIR__);
 $__scriptDir = dirname($_SERVER['SCRIPT_FILENAME']);
 $__rel = ltrim(str_replace('\\', '/', substr($__scriptDir, strlen($__jobsheetRoot))), '/');
@@ -7,6 +8,7 @@ $base = $__rel === '' ? '' : str_repeat('../', substr_count($__rel, '/') + 1);
 
 $currentPage = basename($_SERVER['SCRIPT_FILENAME']);
 $hiddenHeaderPages = ['form_sewa.php', 'pembayaran.php'];
+$userLogin = current_user();
 ?>
 <!doctype html>
 <html lang="id">
@@ -44,11 +46,14 @@ $hiddenHeaderPages = ['form_sewa.php', 'pembayaran.php'];
                         Buka Setiap Hari (10:00 - 23:00 WIB)
                     </span>
                     <div class="d-flex align-items-center gap-2 app-topbar-user">
-                        <div class="app-topbar-avatar">AP</div>
+                        <div class="app-topbar-avatar"><?= htmlspecialchars(substr($userLogin['nama'] ?? 'U', 0, 2), ENT_QUOTES, 'UTF-8') ?></div>
                         <div class="lh-1 d-none d-md-block">
-                            <span class="d-block fw-bold app-topbar-name">Alya Pratama</span>
-                            <small class="text-muted app-topbar-role">Pelanggan</small>
+                            <span class="d-block fw-bold app-topbar-name"><?= htmlspecialchars($userLogin['nama'] ?? 'User', ENT_QUOTES, 'UTF-8') ?></span>
+                            <small class="text-muted app-topbar-role"><?= htmlspecialchars(ucfirst($userLogin['role'] ?? 'pelanggan'), ENT_QUOTES, 'UTF-8') ?></small>
                         </div>
+                        <a href="<?= $base ?: '' ?>logout.php" class="btn btn-sm btn-outline-secondary rounded-pill ms-2">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </header>

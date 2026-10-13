@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../includes/auth.php';
+require_login();
+
 $pageTitle = "PS Rental - Profil";
 include __DIR__ . '/../includes/header.php';
 ?>
