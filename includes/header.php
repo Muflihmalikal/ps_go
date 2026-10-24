@@ -45,16 +45,22 @@ $userLogin = current_user();
                         <i class="bi bi-circle-fill text-success me-1 app-topbar-dot"></i>
                         Buka Setiap Hari (10:00 - 23:00 WIB)
                     </span>
-                    <div class="d-flex align-items-center gap-2 app-topbar-user">
-                        <div class="app-topbar-avatar"><?= htmlspecialchars(substr($userLogin['nama'] ?? 'U', 0, 2), ENT_QUOTES, 'UTF-8') ?></div>
-                        <div class="lh-1 d-none d-md-block">
-                            <span class="d-block fw-bold app-topbar-name"><?= htmlspecialchars($userLogin['nama'] ?? 'User', ENT_QUOTES, 'UTF-8') ?></span>
-                            <small class="text-muted app-topbar-role"><?= htmlspecialchars(ucfirst($userLogin['role'] ?? 'pelanggan'), ENT_QUOTES, 'UTF-8') ?></small>
+                    <?php if ($userLogin): ?>
+                        <div class="d-flex align-items-center gap-2 app-topbar-user">
+                            <div class="app-topbar-avatar"><?= htmlspecialchars(substr($userLogin['nama'], 0, 2), ENT_QUOTES, 'UTF-8') ?></div>
+                            <div class="lh-1 d-none d-md-block">
+                                <span class="d-block fw-bold app-topbar-name"><?= htmlspecialchars($userLogin['nama'], ENT_QUOTES, 'UTF-8') ?></span>
+                                <small class="text-muted app-topbar-role"><?= htmlspecialchars(ucfirst($userLogin['role']), ENT_QUOTES, 'UTF-8') ?></small>
+                            </div>
+                            <a href="<?= $base ?: '' ?>logout.php" class="btn btn-sm btn-outline-secondary rounded-pill ms-2">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </a>
                         </div>
-                        <a href="<?= $base ?: '' ?>logout.php" class="btn btn-sm btn-outline-secondary rounded-pill ms-2">
-                            <i class="bi bi-box-arrow-right"></i>
+                    <?php else: ?>
+                        <a href="<?= $base ?: '' ?>login.php" class="btn btn-primary btn-sm rounded-pill px-3">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Masuk
                         </a>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </header>
         <?php endif; ?>

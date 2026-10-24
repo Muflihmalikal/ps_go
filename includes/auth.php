@@ -15,6 +15,11 @@ function require_login()
     }
 
     if (empty($_SESSION['user'])) {
+        $returnPath = safe_return_path($_SERVER['REQUEST_URI'] ?? '');
+        if ($returnPath !== null) {
+            $_SESSION['login_redirect'] = $returnPath;
+        }
+
         $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
         $loginUrl = (strpos($scriptName, '/pelanggan/') !== false || strpos($scriptName, '/admin/') !== false)
             ? '../login.php'
@@ -23,6 +28,27 @@ function require_login()
         header('Location: ' . $loginUrl, true, 302);
         exit;
     }
+}
+
+function safe_return_path($path)
+{
+    if (
+        !is_string($path)
+        || $path === ''
+        || $path[0] !== '/'
+        || strpos($path, '//') === 0
+        || strpos($path, '\\') !== false
+        || preg_match('/[\r\n]/', $path)
+    ) {
+        return null;
+    }
+
+    $parts = parse_url($path);
+    if ($parts === false || isset($parts['scheme']) || isset($parts['host'])) {
+        return null;
+    }
+
+    return $path;
 }
 
 function user_home_path($role)

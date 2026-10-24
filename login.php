@@ -37,7 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_role'] = $user['role'];
             $_SESSION['user_name'] = $user['nama'];
 
-            header('Location: ' . user_home_path($user['role']));
+            $returnPath = safe_return_path($_SESSION['login_redirect'] ?? null);
+            unset($_SESSION['login_redirect']);
+            header('Location: ' . ($returnPath ?? user_home_path($user['role'])));
             exit;
         }
 
