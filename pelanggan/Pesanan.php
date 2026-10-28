@@ -175,7 +175,7 @@ include __DIR__ . '/../includes/header.php';
             <div class="col-12 col-sm-6">
               <div class="bg-light p-2 rounded-3 border h-100">
                 <strong class="text-dark d-block">Persiapan Jaminan</strong>
-                <span class="text-danger fw-medium fz-65">Siapkan STNK / KTP</span>
+                <span class="text-danger fw-medium fz-65">Siapkan SIM / KTP</span>
               </div>
             </div>
           </div>
@@ -417,7 +417,7 @@ include __DIR__ . '/../includes/header.php';
               Normal & Baterai Siap)
             </div>
             <div class="d-flex align-items-center text-dark">
-              <i class="bi bi-check-square-fill text-primary me-2 fs-6"></i> Jaminan Fisik KTP/STNK Asli Diserahkan
+              <i class="bi bi-check-square-fill text-primary me-2 fs-6"></i> Jaminan Fisik KTP/SIM Asli Diserahkan
               Aman ke Kurir
             </div>
           </div>
