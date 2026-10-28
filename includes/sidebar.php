@@ -3,12 +3,8 @@ if (!isset($base)) {
   $base = '';
 }
 $currentUser = current_user();
-
-// Nama file yang lagi dibuka, dijadiin huruf kecil semua
-// biar "Pesanan.php" dan "pesanan.php" dianggap sama
 $halaman = strtolower(basename($_SERVER['SCRIPT_NAME']));
 echo "<!-- Halaman: $halaman -->";
-// Cek menu ini aktif atau nggak
 function menuAktif($file, $halaman)
 {
   return strtolower($file) === $halaman ? 'active shadow-sm' : 'opacity-75';
