@@ -88,7 +88,7 @@ include __DIR__ . '/../includes/header.php';
                 <ul class="small mb-0 ps-3">
                     <li class="mb-1">Bayar tunai <b class="nominal-bayar"></b> di toko saat mengambil unit.
                     </li>
-                    <li class="mb-1">Bawa jaminan asli (KTP / STNK) dan tunjukkan kode pesanan ke operator.
+                    <li class="mb-1">Bawa jaminan asli (KTP / SIM) dan tunjukkan kode pesanan ke operator.
                     </li>
                     <li>Operator tetap memverifikasi pesanan dan jaminan sebelum unit diserahkan.</li>
                 </ul>
