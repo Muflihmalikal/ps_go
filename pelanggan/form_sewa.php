@@ -162,10 +162,10 @@ include __DIR__ . '/../includes/header.php';
                         </div>
                         <div class="col-6">
                             <label class="radio-card w-100">
-                                <input type="radio" name="jaminan" value="stnk" />
+                                <input type="radio" name="jaminan" value="sim" />
                                 <div class="card p-3 text-center border-2">
-                                    <i class="bi bi-car-front fs-4 mb-2"></i>
-                                    <span class="fw-semibold d-block">STNK</span>
+                                    <i class="bi bi-card-heading fs-4 mb-2"></i>
+                                    <span class="fw-semibold d-block">SIM</span>
                                 </div>
                             </label>
                         </div>
@@ -179,7 +179,7 @@ include __DIR__ . '/../includes/header.php';
                         <input type="file" id="fileJaminan" accept="image/*" class="d-none" />
                         <i class="bi bi-cloud-arrow-up fs-3 text-primary d-block mb-1"></i>
                         <span class="small fw-semibold d-block" id="namaFileJaminan">Klik untuk pilih foto
-                            KTP / STNK (JPG atau PNG)</span>
+                            KTP / SIM (JPG atau PNG)</span>
                         <img id="previewJaminan" class="upload-preview rounded-3 border mt-3 d-none"
                             alt="Pratinjau jaminan" />
                     </label>
