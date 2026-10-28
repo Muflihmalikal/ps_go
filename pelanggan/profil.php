@@ -93,17 +93,7 @@ include __DIR__ . '/../includes/header.php';
                     <input type="date" class="form-control form-readonly input-profil" value="2000-05-14" readonly>
                   </div>
                 </div>
-
-                <h6 class="fw-bold text-dark mb-3 border-top pt-4">Dokumen Jaminan (Identitas)</h6>
-                <div class="d-flex align-items-center gap-3 bg-light p-3 rounded-3 border">
-                  <div class="text-success fs-3"><i class="bi bi-file-earmark-check-fill"></i></div>
-                  <div class="lh-sm">
-                    <span class="d-block fw-bold text-dark small">KTP Pribadi Asli</span>
-                    <small class="text-success fw-medium" style="font-size: 0.7rem;">Sudah Diunggah &
-                      Diverifikasi</small>
-                  </div>
-                </div>
-
+                
                 <div class="action-buttons d-none justify-content-end gap-2 mt-4">
                   <button type="button"
                     class="btn btn-light border px-4 rounded-pill fw-semibold text-muted w-100 w-sm-auto"
