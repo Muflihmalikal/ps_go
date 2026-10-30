@@ -5,13 +5,24 @@ $pageTitle = "PS Rental - Beranda Pelanggan";
 include __DIR__ . '/includes/header.php';
 
 $query = "
-    SELECT p.*, 
-           (SELECT COUNT(u.id_unit) 
-            FROM unit_ps u 
-            WHERE u.id_paket = p.id_paket AND u.status_unit = 'tersedia'
-           ) as stok_tersedia
-    FROM paket_sewa p
-    WHERE p.override_status = 'auto'
+    SELECT 
+    p.id_paket, 
+    p.nama_paket, 
+    p.kategori, 
+    p.deskripsi, 
+    p.gambar, 
+    p.harga_wk_12h, 
+    p.harga_wk_24h, 
+    p.harga_wn_12h, 
+    p.harga_wn_24h, 
+    p.label_badge, 
+    p.tag_highlight,
+    COUNT(u.id_unit) AS stok_tersedia
+FROM paket_sewa p
+LEFT JOIN unit_ps u 
+    ON u.id_paket = p.id_paket AND u.status_unit = 'tersedia'
+WHERE p.override_status = 'auto'
+GROUP BY p.id_paket;
 ";
 $stmt = $pdo->prepare($query);
 $stmt->execute();
@@ -76,11 +87,11 @@ $katalog = $stmt->fetchAll();
     <?php foreach ($katalog as $item): ?>
       <div data-unit="<?= htmlspecialchars($item['kategori']) ?>"
         class="col item-produk <?= htmlspecialchars($item['kategori']) ?>"
-        data-wk12="<?= $item['harga_wk_12h'] ?>"
-        data-wk24="<?= $item['harga_wk_24h'] ?>"
-        data-wn12="<?= $item['harga_wn_12h'] ?>"
-        data-wn24="<?= $item['harga_wn_24h'] ?>"
-        data-stok="<?= $item['stok_tersedia'] ?>">
+        data-wk12="<?= htmlspecialchars($item['harga_wk_12h']) ?>"
+        data-wk24="<?= htmlspecialchars($item['harga_wk_24h']) ?>"
+        data-wn12="<?= htmlspecialchars($item['harga_wn_12h']) ?>"
+        data-wn24="<?= htmlspecialchars($item['harga_wn_24h']) ?>"
+        data-stok="<?= (int)$item['stok_tersedia'] ?>">
 
         <div class="card kartu-gerak h-100 border-0 shadow-sm rounded-4 p-2 bg-light">
 
