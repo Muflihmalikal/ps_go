@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/includes/koneksi.php';
+require_once __DIR__ . '/config/koneksi.php';
 require_once __DIR__ . '/includes/auth.php';
 
 if (!empty($_SESSION['user'])) {
@@ -7,48 +7,13 @@ if (!empty($_SESSION['user'])) {
     exit;
 }
 
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim((string)($_POST['email'] ?? ''));
-    $password = (string)($_POST['password'] ?? '');
-
-    if (!verify_csrf_token()) {
-        $error = 'Form sudah kedaluwarsa. Muat ulang halaman lalu coba lagi.';
-    } elseif ($email === '' || $password === '') {
-        $error = 'Email dan password wajib diisi.';
-    } else {
-        $stmt = $pdo->prepare('SELECT id_user, nama, email, password, role, id_cabang, status_verifikasi FROM users WHERE email = :email LIMIT 1');
-        $stmt->execute(['email' => strtolower($email)]);
-        $user = $stmt->fetch();
-
-        if ($user && password_verify($password, $user['password'])) {
-            session_regenerate_id(true);
-            $_SESSION['user'] = [
-                'id_user' => (int)$user['id_user'],
-                'nama' => $user['nama'],
-                'email' => $user['email'],
-                'role' => $user['role'],
-                'id_cabang' => $user['id_cabang'],
-                'status_verifikasi' => $user['status_verifikasi'],
-            ];
-
-            $_SESSION['id_user'] = (int)$user['id_user'];
-            $_SESSION['user_role'] = $user['role'];
-            $_SESSION['user_name'] = $user['nama'];
-
-            $returnPath = safe_return_path($_SESSION['login_redirect'] ?? null);
-            unset($_SESSION['login_redirect']);
-            header('Location: ' . ($returnPath ?? user_home_path($user['role'])));
-            exit;
-        }
-
-        $error = 'Email atau password salah.';
-    }
-}
+$error = $_SESSION['error'] ?? '';
+$oldEmail = $_SESSION['old__email'] ?? '';
+unset($_SESSION['error'], $_SESSION['old_email']);
 ?>
 <!doctype html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: linear-gradient(135deg, #eef5ff 0%, #f8f9ff 45%, #f2f4f8 100%);
             font-family: Arial, sans-serif;
         }
+
         .login-card {
             width: min(100%, 430px);
             border-radius: 24px;
@@ -70,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
             padding: 2rem;
         }
+
         .brand-badge {
             width: 72px;
             height: 72px;
@@ -81,14 +48,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 2rem;
             margin: 0 auto 1rem;
         }
+
         .form-control:focus {
             box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
         }
+
         .alert-danger {
             border-radius: 14px;
         }
     </style>
 </head>
+
 <body>
     <div class="login-card">
         <div class="brand-badge"><i class="bi bi-controller"></i></div>
@@ -105,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="alert alert-danger" role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div>
         <?php endif; ?>
 
-        <form method="POST" action="login.php" autocomplete="off">
+        <form method="POST" action="modules/auth/proses_login.php" autocomplete="off">
             <?= csrf_field() ?>
             <div class="mb-3">
                 <label for="email" class="form-label fw-semibold text-dark">Email</label>
@@ -132,4 +102,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </p>
     </div>
 </body>
+
 </html>

@@ -4,7 +4,6 @@ if (!isset($base)) {
 }
 $currentUser = current_user();
 $halaman = strtolower(basename($_SERVER['SCRIPT_NAME']));
-echo "<!-- Halaman: $halaman -->";
 function menuAktif($file, $halaman)
 {
   return strtolower($file) === $halaman ? 'active shadow-sm' : 'opacity-75';

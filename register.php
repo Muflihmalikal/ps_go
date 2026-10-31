@@ -1,5 +1,8 @@
 <?php
-require_once __DIR__ . '/includes/koneksi.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/config/security.php';
 require_once __DIR__ . '/includes/auth.php';
 
 if (!empty($_SESSION['user'])) {
@@ -7,60 +10,17 @@ if (!empty($_SESSION['user'])) {
     exit;
 }
 
-$error = '';
-$nama = '';
-$email = '';
-$noWa = '';
+$error = $_SESSION['error'] ?? '';
+$oldInput = $_SESSION['old_input'] ?? ['nama' => '', 'email' => '', 'no_wa' => ''];
+unset($_SESSION['error'], $_SESSION['old_input']);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nama = trim((string)($_POST['nama'] ?? ''));
-    $email = strtolower(trim((string)($_POST['email'] ?? '')));
-    $noWa = trim((string)($_POST['no_wa'] ?? ''));
-    $password = (string)($_POST['password'] ?? '');
-    $konfirmasiPassword = (string)($_POST['konfirmasi_password'] ?? '');
-
-    if (!verify_csrf_token()) {
-        $error = 'Form sudah kedaluwarsa. Muat ulang halaman lalu coba lagi.';
-    } elseif ($nama === '' || strlen($nama) > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 100 || $noWa === '' || strlen($noWa) > 20) {
-        $error = 'Periksa kembali nama, email, dan nomor WhatsApp Anda.';
-    } elseif (strlen($password) < 8) {
-        $error = 'Password harus terdiri dari minimal 8 karakter.';
-    } elseif ($password !== $konfirmasiPassword) {
-        $error = 'Konfirmasi password tidak sama.';
-    } else {
-        $existingUser = $pdo->prepare('SELECT 1 FROM users WHERE email = :email LIMIT 1');
-        $existingUser->execute(['email' => $email]);
-
-        if ($existingUser->fetchColumn()) {
-            $error = 'Email sudah terdaftar. Silakan gunakan email lain atau masuk.';
-        } else {
-            try {
-                $insertUser = $pdo->prepare(
-                    "INSERT INTO users (nama, email, password, no_wa, role) VALUES (:nama, :email, :password, :no_wa, 'pelanggan')"
-                );
-                $insertUser->execute([
-                    'nama' => $nama,
-                    'email' => $email,
-                    'password' => password_hash($password, PASSWORD_DEFAULT),
-                    'no_wa' => $noWa,
-                ]);
-
-                header('Location: login.php?registered=1');
-                exit;
-            } catch (PDOException $exception) {
-                if ($exception->getCode() === '23505') {
-                    $error = 'Email sudah terdaftar. Silakan gunakan email lain atau masuk.';
-                } else {
-                    error_log('Registrasi gagal: ' . $exception->getMessage());
-                    $error = 'Registrasi gagal karena gangguan sistem. Silakan coba lagi.';
-                }
-            }
-        }
-    }
-}
+$nama = $oldInput['nama'] ?? '';
+$email = $oldInput['email'] ?? '';
+$noWa = $oldInput['no_wa'] ?? '';
 ?>
 <!doctype html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -76,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-family: Arial, sans-serif;
             padding: 1rem;
         }
+
         .register-card {
             width: min(100%, 480px);
             border-radius: 24px;
@@ -83,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
             padding: 2rem;
         }
+
         .brand-badge {
             width: 72px;
             height: 72px;
@@ -96,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+
 <body>
     <main class="register-card">
         <div class="brand-badge"><i class="bi bi-controller"></i></div>
@@ -108,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="alert alert-danger" role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div>
         <?php endif; ?>
 
-        <form method="POST" action="register.php" autocomplete="on">
+        <form method="POST" action="modules/auth/proses_register.php" autocomplete="on">
             <?= csrf_field() ?>
             <div class="mb-3">
                 <label for="nama" class="form-label fw-semibold">Nama lengkap</label>
@@ -140,4 +103,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </p>
     </main>
 </body>
+
 </html>

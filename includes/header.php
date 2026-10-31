@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/koneksi.php';
+require_once __DIR__ . '/../config/koneksi.php';
 require_once __DIR__ . '/auth.php';
 $__jobsheetRoot = dirname(__DIR__);
 $__scriptDir = dirname($_SERVER['SCRIPT_FILENAME']);
@@ -19,7 +19,6 @@ $userLogin = current_user();
     <title><?= isset($pageTitle) ? $pageTitle : 'PS Rental - Beranda Pelanggan'; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-    <!-- DataTables & Buttons CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
     <link rel="stylesheet" href="<?php echo $base; ?>assets/css/style.css" />

@@ -20,12 +20,7 @@ function require_login()
             $_SESSION['login_redirect'] = $returnPath;
         }
 
-        $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-        $loginUrl = (strpos($scriptName, '/pelanggan/') !== false || strpos($scriptName, '/admin/') !== false)
-            ? '../login.php'
-            : 'login.php';
-
-        header('Location: ' . $loginUrl, true, 302);
+        header('Location: /login.php', true, 302);
         exit;
     }
 }
@@ -54,8 +49,8 @@ function safe_return_path($path)
 function user_home_path($role)
 {
     return in_array($role, ['owner', 'admin', 'operator'], true)
-        ? 'admin/index.php'
-        : 'index.php';
+        ? '/admin/index.php'
+        : '/index.php';
 }
 
 function require_role($allowedRoles)
@@ -64,7 +59,7 @@ function require_role($allowedRoles)
     $user = current_user();
 
     if (!in_array($user['role'] ?? '', $allowedRoles, true)) {
-        header('Location: ../index.php', true, 302);
+        header('Location: /index.php', true, 302);
         exit;
     }
 }
