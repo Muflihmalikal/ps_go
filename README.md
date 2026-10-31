@@ -1,305 +1,258 @@
 # PS_GO – PlayStation Rental System (`ps_go`)
 
-**PS_GO** adalah Sistem Informasi Manajemen rental PlayStation berbasis web yang dibangun menggunakan **PHP** dan **PostgreSQL**. Aplikasi ini membantu pengelola rental dalam mengelola data unit PlayStation serta mencatat transaksi penyewaan, durasi, dan pembayaran.
-
----
+**PS_GO** adalah Sistem Informasi Manajemen rental PlayStation berbasis web yang dibangun menggunakan **PHP Native** dan **PostgreSQL**. Aplikasi ini membantu pengelola rental dalam mengelola unit PlayStation, paket harga, serta mencatat transaksi penyewaan, durasi, dan pembayaran pelanggan.
 
 ## Daftar Isi
 
-- [Fitur Utama](#fitur-utama)
-- [Struktur Folder](#struktur-folder)
-- [Kebutuhan Sistem](#kebutuhan-sistem)
-- [Instalasi & Menjalankan Aplikasi](#instalasi--menjalankan-aplikasi)
-  - [Parameter Koneksi Database](#parameter-koneksi-database)
-  - [Opsi A: XAMPP + PostgreSQL](#opsi-a-xampp--postgresql)
-  - [Opsi B: Laragon + PostgreSQL](#opsi-b-laragon--postgresql)
-  - [Verifikasi Instalasi](#verifikasi-instalasi)
-  - [Troubleshooting](#troubleshooting)
-- [Panduan Kerja Tim (Git Workflow)](#panduan-kerja-tim-git-workflow)
-- [Tim Pengembang](#tim-pengembang)
+* [Fitur Utama](#fitur-utama)
+* [Arsitektur & Pemisahan Kode](#arsitektur--pemisahan-kode)
+* [Struktur Folder Lengkap & Analisis Isi](#struktur-folder-lengkap--analisis-isi)
+* [Kebutuhan Sistem](#kebutuhan-sistem)
+* [Instalasi & Menjalankan Aplikasi](#instalasi--menjalankan-aplikasi)
+* [Panduan Keamanan & Konvensi Kode](#panduan-keamanan--konvensi-kode)
+* [Panduan Kerja Tim (Git Workflow)](#panduan-kerja-tim-git-workflow)
+* [Tim Pengembang](#tim-pengembang)
 
 ---
 
 ## Fitur Utama
 
-| Modul         | Deskripsi                                                 |
-| ------------- | --------------------------------------------------------- |
-| **Auth**      | Autentikasi pengguna: Login, Logout, dan Register.        |
-| **Unit**      | Manajemen data unit PlayStation: status, tipe, dan harga. |
-| **Transaksi** | Pencatatan penyewaan unit, durasi sewa, dan pembayaran.   |
+| Modul | Deskripsi |
+| ----- | ----- |
+| **Auth & Security** | Registrasi pelanggan, login multi-role (Admin/Pelanggan), logout, proteksi session, dan CSRF protection. |
+| **Katalog & Unit** | Display status unit real-time (tersedia/disewa), filter jenis konsol (PS3, PS4, Playbox), dan toggle tarif (Weekday/Weekend). |
+| **Transaksi & Rental** | Booking unit, pemilihan durasi sewa (12/24 jam), kalkulasi harga otomatis, dan riwayat pesanan pelanggan. |
+| **Panel Admin** | Manajemen status unit fisik, pengawasan transaksi aktif, dan kelola paket sewa. |
 
 ---
 
-## Struktur Folder
+## Arsitektur & Pemisahan Kode
+
+Proyek ini menerapkan prinsip **Separation of Concerns (Pemisahan Tampilan dan Logika Pemrosesan)**:
+
+1. **View (Tampilan UI):** Terletak di *root folder* (`login.php`, `register.php`), `/pelanggan/`, dan `/admin/`. File-file ini hanya bertanggung jawab menampilkan antarmuka HTML/Bootstrap dan tidak mengeksekusi query `INSERT`/`UPDATE`/`DELETE` langsung.
+2. **Process / Logic (Backend):** Terletak di dalam folder `/modules/`. File ini menerima data via `POST`, melakukan validasi data & keamanan (CSRF/Sanitasi), memproses query database, lalu mengarahkan kembali (*redirect*) ke tampilan terkait.
+3. **Configuration & Helpers:** Terletak di `/config/` dan `/includes/` untuk menyediakan koneksi database, fungsi pengaman, serta komponen UI yang dapat digunakan kembali (*reusable components*).
+
+---
+
+## Struktur Folder Lengkap & Analisis Isi
+
+Pohon folder dan alokasi file pada proyek `ps_go`:
 
 ```text
 ps_go/
-├── config/      # Koneksi & konfigurasi database
-├── assets/      # Aset statis (CSS, JavaScript, gambar)
-├── includes/    # Komponen halaman yang dipakai ulang (header, footer, sidebar)
-├── modules/     # Logika per fitur (Auth, Unit, Transaksi)
-└── index.php    # Halaman utama aplikasi
+├── .env                  # Variabel lingkungan sensitif (DB Credentials) - TIDAK DIBAGIKAN KE GIT
+├── .env.example          # Template konfigurasi environment untuk anggota tim
+├── .gitignore            # Daftar file/folder yang diabaikan oleh Git
+├── index.php             # Beranda utama / Katalog unit & paket untuk pelanggan
+├── login.php             # Halaman tampilan (UI) form Login
+├── logout.php            # Skrip penghapus session untuk Logout
+├── register.php          # Halaman tampilan (UI) form Registrasi
+├── README.md             # Dokumentasi utama proyek
+│
+├── admin/                # PANEL KHUSUS PENGELOLA / OPERATOR
+│   ├── index.php         # Dashboard utama admin & statistik rental
+│   ├── penyewaan.php     # Manajemen transaksi penyewaan aktif & histori
+│   └── unit-ps.php       # Kelola unit fisik PlayStation (tambah, edit status)
+│
+├── assets/               # ASET STATIS FRONTEND
+│   ├── css/              # File stylesheet kustom
+│   ├── js/               # Skrip JavaScript kustom (misal: filter katalog)
+│   └── img/              # Foto produk konsol, logo, dan gambar default
+│
+├── config/               # KONFIGURASI DAN UTILITAS DASAR
+│   ├── koneksi.php       # Inisialisasi koneksi Database PostgreSQL via PDO
+│   └── security.php      # Fungsi keamanan (Token CSRF, Sanitasi Input, Encrypt ID)
+│
+├── database/             # DOKUMENTASI DATABASE
+│   └── schema.sql        # File DDL/Skema tabel database PostgreSQL & data awal
+│
+├── includes/             # TEMPLATE LAYOUT & MIDDLEWARE
+│   ├── auth.php          # Helper autentikasi (require_login, require_role, user_home_path)
+│   ├── header.php        # Head HTML, pemanggilan CSS Bootstrap & Navbar atas
+│   ├── footer.php        # Bagian bawah halaman & pemanggilan JavaScript Bootstrap
+│   ├── sidebar.php       # Menu navigasi samping untuk dashboard admin/pelanggan
+│   └── .gitkeep          # Menjaga folder tetap terlacak Git meski kosong
+│
+├── modules/              # PEMROSESAN LOGIKA BACKEND (PROCESSORS)
+│   ├── auth/             # Pemrosesan Akun & Autentikasi
+│   │   ├── proses_login.php    # Validasi email/password, session_regenerate, set session
+│   │   └── proses_register.php # Validasi input form, hash password, INSERT user baru
+│   └── sewa/             # Pemrosesan Bisnis Penyewaan
+│       └── proses_sewa.php     # Pemrosesan transaksi booking & pembuatan order
+│
+└── pelanggan/            # ALUR HALAMAN KHUSUS PELANGGAN
+    ├── form_sewa.php     # Form checkout & penentuan durasi sewa unit
+    ├── pembayaran.php    # Halaman upload bukti / metode pembayaran
+    ├── pesanan.php       # Riwayat dan status transaksi sewa milik pelanggan
+    └── profil.php        # Pengaturan data pribadi pelanggan
 ```
+
+### Rincian Fungsi Setiap Folder
+
+#### 1. Root Directory (`/`)
+* **`index.php`**: Beranda publik yang menampilkan katalog unit PlayStation secara real-time. Memuat logika pembacaan stok unit yang tersedia via `PDO`.
+* **`login.php` & `register.php`**: Berisi elemen visual HTML formulir. Mengirim data `POST` ke folder `modules/auth/`.
+* **`logout.php`**: Menghancurkan cookie dan session `$_SESSION`, lalu mengembalikan pengguna ke `login.php`.
+
+#### 2. Folder `config/`
+* **`koneksi.php`**: Mengisi variabel koneksi PDO PostgreSQL berdasarkan isi `.env`.
+* **`security.php`**: Berisi fungsi penting seperti `csrf_field()` untuk membuat token keamanan form, `verify_csrf_token()` untuk memeriksa token saat form dikirim, dan `encrypt_id()` untuk menyembunyikan ID numerik di URL.
+
+#### 3. Folder `includes/`
+* **`auth.php`**: Pusat kontrol akses halaman (*middleware*). Berisi fungsi `require_login()` untuk memblokir pengguna belum login, `require_role()` untuk membatasi halaman berdasarkan hak akses (admin/pelanggan), dan `user_home_path()` untuk menentukan halaman tujuan pengarahan setelah login.
+* **`header.php`, `footer.php`, `sidebar.php`**: Potongan elemen UI agar tampilan di semua halaman tetap konsisten dan tidak perlu menuliskan skrip HTML Bootstrap berulang-ulang.
+
+#### 4. Folder `modules/`
+* Folder ini **tidak menampilkan HTML**, melainkan murni mengeksekusi data logic.
+* **`modules/auth/proses_login.php`**: Memeriksa token CSRF $\rightarrow$ mengecek email & password hash (`password_verify`) $\rightarrow$ mencatat session user $\rightarrow$ mengarahkan ke dashboard.
+* **`modules/auth/proses_register.php`**: Memeriksa token CSRF $\rightarrow$ validasi format email/nomor WA $\rightarrow$ memastikan email belum terdaftar $\rightarrow$ menyimpan user baru dengan `password_hash()` $\rightarrow$ mengarahkan ke `login.php?registered=1`.
+
+#### 5. Folder `admin/`
+* Berisi halaman khusus dengan proteksi `require_role(['admin', 'owner', 'operator'])`.
+* Digunakan oleh pengelola rental untuk memantau unit yang sedang disewa, mengembalikan unit, atau mengubah harga rental.
+
+#### 6. Folder `pelanggan/`
+* Berisi alur checkout dan transaksi pelanggan setelah mereka memilih paket di `index.php`. Diproteksi menggunakan `require_login()`.
 
 ---
 
 ## Kebutuhan Sistem
 
-| Komponen   | Keterangan                                                                 |
-| ---------- | -------------------------------------------------------------------------- |
-| Web server | **XAMPP** atau **Laragon** (pilih salah satu, lihat catatan di bawah)      |
-| PHP        | Sudah termasuk di XAMPP / Laragon                                          |
-| Database   | **PostgreSQL** (default port `5432`)                                       |
-| Ekstensi   | PHP `pdo_pgsql` dan `pgsql` harus aktif                                    |
-| Git        | [git-scm.com](https://git-scm.com/) (sudah termasuk di Laragon)            |
-| Browser    | Chrome, Firefox, Edge, atau browser modern lainnya                         |
-
-> ⚠️ **Jangan menjalankan XAMPP dan Laragon bersamaan.** Keduanya memakai port Apache yang sama (`80` dan `443`) sehingga akan bentrok. Pastikan salah satunya dimatikan (*Stop*) sebelum menjalankan yang lain.
+| Komponen | Spesifikasi Minimal |
+| ----- | ----- |
+| **Web Server** | Apache (XAMPP / Laragon) |
+| **Bahasa Pemrograman** | PHP `>= 8.0` |
+| **Database Engine** | PostgreSQL `>= 13.0` (Default Port: `5432`) |
+| **Ekstensi PHP Wajib** | `pdo_pgsql`, `pgsql`, `openssl`, `mbstring` |
 
 ---
 
 ## Instalasi & Menjalankan Aplikasi
 
-### Parameter Koneksi Database
+### 1. Salin Konfigurasi Environment
+Salin file `.env.example` menjadi `.env` di direktori utama:
+```bash
+cp .env.example .env
+```
 
-Salin `.env.example` menjadi `.env` di folder utama proyek, lalu isi password PostgreSQL sesuai komputer masing-masing:
+Sesuaikan kredensial `.env` sesuai dengan konfigurasi PostgreSQL lokal Anda:
+```env
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_NAME=db_rental
+DB_USER=postgres
+DB_PASSWORD=password_postgres_anda
+```
 
-| Parameter | Nilai Umum                              |
-| --------- | --------------------------------------- |
-| Host      | `127.0.0.1`                              |
-| Port      | `5432`                                  |
-| Username  | `postgres`                              |
-| Password  | Password user PostgreSQL Anda           |
-| Database  | `db_rental` (sesuaikan dengan database yang dibuat) |
-| SSL mode  | `prefer` untuk PostgreSQL lokal          |
+### 2. Impor Skema Database
+Buat database bernama `db_rental` pada PostgreSQL (via pgAdmin / DBeaver / psql), lalu impor skema dari folder `database/schema.sql`:
+```bash
+psql -U postgres -d db_rental -f database/schema.sql
+```
+
+### 3. Aktifkan Ekstensi PostgreSQL pada PHP
+Pastikan baris berikut pada `php.ini` tidak diawali tanda titik koma (`;`):
+```ini
+extension=pdo_pgsql
+extension=pgsql
+```
+
+### 4. Jalankan Aplikasi
+Jalankan lokal server via terminal di direktori utama:
+```bash
+php -S localhost:8000
+```
+Akses aplikasi melalui browser di: `http://localhost:8000`
 
 ---
 
-### Opsi A: XAMPP + PostgreSQL
+## Panduan Keamanan & Konvensi Kode
 
-> XAMPP **tidak** menyertakan PostgreSQL (hanya MySQL/MariaDB), sehingga PostgreSQL perlu diinstal terpisah.
+Demi menjaga keamanan dan keteraturan kode dalam tim, wajib mematuhi aturan berikut:
 
-**1. Instal PostgreSQL**
-
-1. Unduh installer dari [postgresql.org/download/windows](https://www.postgresql.org/download/windows/).
-2. Jalankan installer, pastikan komponen **PostgreSQL Server** dan **pgAdmin 4** ikut terpilih.
-3. Saat diminta, atur **password** untuk user `postgres` (**catat password ini**) dan biarkan port di `5432`.
-
-**2. Aktifkan ekstensi PostgreSQL di PHP**
-
-1. Buka `C:\xampp\php\php.ini` dengan text editor.
-2. Cari dua baris berikut, lalu hapus tanda titik koma (`;`) di depannya:
-
-   ```ini
-   extension=pdo_pgsql
-   extension=pgsql
+1. **Gunakan Prepared Statements:** Dilarang menyambung string SQL (*string concatenation*) secara langsung. Gunakan PDO Prepared Statements untuk mencegah SQL Injection.
+   ```php
+   // SALAH
+   $pdo->query("SELECT * FROM users WHERE email = '$email'");
+   
+   // BENAR
+   $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+   $stmt->execute(['email' => $email]);
    ```
 
-3. Simpan file.
+2. **Gunakan Protection Form CSRF:** Setiap kali membuat tag `<form method="POST">`, wajib menyertakan helper `<?= csrf_field() ?>` di dalam form, dan memvalidasinya di file pemroses dengan `verify_csrf_token()`.
 
-**3. Clone proyek**
+3. **Escaping Output HTML:** Gunakan `htmlspecialchars($val, ENT_QUOTES, 'UTF-8')` pada setiap variabel PHP yang dicetak ke dalam elemen HTML untuk mencegah XSS.
 
-```bash
-cd C:/xampp/htdocs
-git clone https://github.com/Muflihmalikal/ps_go.git
-cd ps_go
-```
-
-**4. Jalankan server**
-
-Buka **XAMPP Control Panel**, lalu klik **Start** pada **Apache**. (MySQL tidak perlu dijalankan karena proyek ini memakai PostgreSQL.) Jika Apache sudah berjalan sebelum langkah 2, klik **Stop** lalu **Start** lagi agar `php.ini` terbaca ulang.
-
-**5. Buat database**
-
-1. Buka **pgAdmin 4** dan masukkan password `postgres`.
-2. Klik kanan **Databases** ➔ **Create** ➔ **Database...**, beri nama (mis. `ps_go`), lalu **Save**.
-3. Impor struktur tabel: klik kanan database tersebut ➔ **Query Tool** ➔ ikon **Open File** ➔ pilih file `.sql` proyek (jika tersedia) ➔ klik **Execute** (F5).
-
-**6. Atur konfigurasi**
-
-Sesuaikan file koneksi di folder `config/` dengan [parameter koneksi database](#parameter-koneksi-database).
-
-**7. Buka aplikasi**
-
-```text
-http://localhost/ps_go/
-```
-
----
-
-### Opsi B: Laragon + PostgreSQL
-
-> Laragon tidak selalu menyertakan PostgreSQL secara bawaan, tetapi bisa ditambahkan dengan mudah lewat fitur **Quick add**.
-
-**1. Instal Laragon**
-
-Unduh dari [laragon.org](https://laragon.org/) (disarankan versi **Full**), lalu instal ke lokasi default `C:\laragon`.
-
-**2. Tambahkan PostgreSQL ke Laragon**
-
-*Cara termudah (Quick add):*
-
-1. Buka Laragon.
-2. Klik kanan area Laragon (atau ikon di system tray) ➔ **Tools** ➔ **Quick add** ➔ pilih **PostgreSQL** (pilih versi yang tersedia).
-3. Tunggu proses unduh dan instalasi selesai.
-
-*Cara manual (jika PostgreSQL tidak ada di Quick add):*
-
-1. Unduh **binaries (.zip)** PostgreSQL dari [enterprisedb.com/download-postgresql-binaries](https://www.enterprisedb.com/download-postgresql-binaries).
-2. Ekstrak file zip. Di dalamnya ada folder bernama `pgsql`.
-3. Pindahkan folder `pgsql` ke `C:\laragon\bin\postgresql\` (buat folder `postgresql` jika belum ada), lalu ubah namanya sesuai versi, misalnya `postgresql-16`.
-4. Restart Laragon. Menu **PostgreSQL** akan muncul.
-
-**3. Aktifkan ekstensi PostgreSQL di PHP**
-
-Klik kanan Laragon ➔ **PHP** ➔ **Extensions**, lalu centang:
-
-- `pdo_pgsql`
-- `pgsql`
-
-Laragon akan me-reload Apache secara otomatis.
-
-**4. Clone proyek**
-
-Klik tombol **Terminal** di Laragon (atau buka terminal biasa), lalu:
-
-```bash
-cd C:/laragon/www
-git clone https://github.com/Muflihmalikal/ps_go.git
-cd ps_go
-```
-
-**5. Jalankan server**
-
-- Klik **Start All** pada Laragon untuk menjalankan Apache.
-- Jalankan PostgreSQL: klik kanan Laragon ➔ **PostgreSQL** ➔ **Start**. Agar otomatis ikut jalan saat **Start All**, centang PostgreSQL di **Menu ➔ Preferences ➔ Services & Ports**.
-
-**6. Buat database**
-
-Gunakan salah satu tool berikut:
-
-- **pgAdmin** atau **DBeaver** dari menu **PostgreSQL** di Laragon (jika tersedia; DBeaver bisa ditambahkan lewat **Tools ➔ Quick add**).
-- **Adminer** (tersedia di Laragon Full): buka `http://localhost/adminer`, pilih sistem **PostgreSQL**, lalu login.
-- **Command line** melalui Terminal Laragon:
-
-  ```bash
-  psql -U postgres -c "CREATE DATABASE ps_go;"
-  psql -U postgres -d ps_go -f nama_file.sql
-  ```
-
-> Password bawaan user `postgres` di Laragon bisa berbeda tergantung versi. Jika ragu, cek dokumentasi Laragon atau ubah password dengan perintah `psql -U postgres -c "ALTER USER postgres PASSWORD 'password_baru';"`.
-
-**7. Atur konfigurasi**
-
-Sesuaikan file koneksi di folder `config/` dengan [parameter koneksi database](#parameter-koneksi-database).
-
-**8. Buka aplikasi**
-
-```text
-http://localhost/ps_go/
-```
-
----
-
-### Verifikasi Instalasi
-
-Pastikan ekstensi PostgreSQL sudah aktif. Buka terminal (Terminal Laragon, atau CMD dengan PHP XAMPP), lalu jalankan:
-
-```bash
-php -m | findstr pgsql
-```
-
-Hasil yang benar menampilkan kedua ekstensi:
-
-```text
-pdo_pgsql
-pgsql
-```
-
----
-
-### Troubleshooting
-
-| Masalah                                                     | Kemungkinan Penyebab & Solusi                                                                                   |
-| ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `could not find driver`                                     | Ekstensi `pdo_pgsql` belum aktif. Aktifkan lalu restart Apache.                                                 |
-| `Call to undefined function pg_connect()`                   | Ekstensi `pgsql` belum aktif. Aktifkan lalu restart Apache.                                                     |
-| `Connection refused` / `could not connect to server`        | Service PostgreSQL belum berjalan, atau port bukan `5432`. Start PostgreSQL dan cek port.                       |
-| `password authentication failed for user "postgres"`        | Password di file `config/` tidak sama dengan password PostgreSQL. Samakan keduanya.                             |
-| `database "ps_go" does not exist`                           | Database belum dibuat, atau nama di `config/` berbeda dengan nama database sebenarnya.                          |
-| Apache gagal start / port 80 sudah dipakai                  | XAMPP dan Laragon berjalan bersamaan, atau aplikasi lain memakai port 80. Matikan salah satunya.                |
-| Halaman `404 Not Found`                                     | Folder proyek tidak berada di `htdocs` (XAMPP) atau `www` (Laragon), atau nama folder bukan `ps_go`.            |
-| Perubahan di `php.ini` tidak berpengaruh                    | Apache belum di-restart, atau Anda mengedit `php.ini` yang salah. Cek dengan `phpinfo()` bagian *Loaded Configuration File*. |
+4. **Gunakan Absolute Path untuk Redirect:** Saat melakukan redirect header, gunakan jalur yang konsisten dari root (diawali `/`) agar tidak terjadi kesalahan URL 404.
 
 ---
 
 ## Panduan Kerja Tim (Git Workflow)
 
-Ikuti panduan berikut setiap kali bekerja pada proyek ini agar terhindar dari konflik file (*merge conflict*).
-
-### 1. Persiapan Awal (Clone Repository)
-
-Langkah ini **hanya dilakukan satu kali**, yaitu saat pertama kali mengambil proyek ke komputer lokal. Clone ke folder `htdocs` (XAMPP) atau `www` (Laragon).
-
-```bash
-git clone https://github.com/Muflihmalikal/ps_go.git
-cd ps_go
-```
-
-### 2. Sebelum Mulai Coding
-
-Selalu tarik kode terbaru terlebih dahulu, karena anggota tim lain mungkin sudah memperbarui proyek.
-
+### 1. Sebelum Mulai Mengerjakan Fitur
+Selalu tarik perubahan kode terbaru dari repositori utama:
 ```bash
 git checkout main
 git pull origin main
 ```
 
-### 3. Mengubah atau Menambah Kode
-
-**a. Edit atau tambah file**
-
-Kerjakan tugas Anda pada file di dalam folder proyek (`config`, `assets`, `includes`, `modules`, atau `index.php`). Untuk melihat file apa saja yang berubah:
-
+### 2. Alur Commit & Push
 ```bash
+# 1. Periksa file apa saja yang diubah
 git status
-```
 
-**b. Simpan dan kirim perubahan (commit & push)**
-
-Setelah selesai dan memastikan kode berjalan tanpa error:
-
-```bash
-# 1. Masukkan semua perubahan ke staging area
+# 2. Tambahkan perubahan ke Staging Area
 git add .
 
-# 2. Simpan perubahan dengan pesan commit yang jelas
-git commit -m "menambahkan halaman login pada modul auth"
+# 3. Buat commit dengan standar tipe yang disepakati
+git commit -m "feat(auth): menambah validasi nomor WA pada proses register"
 
-# 3. Kirim perubahan ke GitHub
+# 4. Kirim ke repositori GitHub
 git push origin main
 ```
 
-> **Tips penulisan pesan commit:** gunakan kalimat singkat yang menjelaskan apa yang ditambah atau diubah, misalnya `memperbaiki validasi form register` atau `menambahkan fitur hitung durasi sewa`.
+### 3. Standar Tipe Commit (Conventional Commits)
 
-> 🔒 **Penting:** Jangan meng-commit password database asli ke GitHub. Jika file di `config/` berisi kredensial pribadi, sepakati dengan tim untuk memakai file contoh (mis. `config/database.example.php`) dan masukkan file asli ke `.gitignore`.
+Seluruh anggota tim wajib menggunakan awalan tipe commit berikut agar histori *version control* rapi dan mudah ditelusuri:
 
-### Ringkasan Alur Harian
+* **`feat`**: Menambah fitur baru
+  ```bash
+  git commit -m "feat(cart): add checkout button to shopping cart"
+  ```
+* **`fix`**: Memperbaiki bug atau error
+  ```bash
+  git commit -m "fix(auth): resolve token expiration issue on login"
+  ```
+* **`docs`**: Mengubah atau menambah dokumentasi
+  ```bash
+  git commit -m "docs(readme): update installation steps"
+  ```
+* **`refactor`**: Merapikan atau mengubah struktur kode tanpa mengubah fungsi
+  ```bash
+  git commit -m "refactor(api): simplify user data fetching logic"
+  ```
+* **`style`**: Perubahan format atau spasi (tidak mengubah logika kode)
+  ```bash
+  git commit -m "style: fix indentation in navbar component"
+  ```
+* **`test`**: Menambah atau memperbaiki unit test
+  ```bash
+  git commit -m "test(cart): add unit test for total price calculation"
+  ```
 
-```text
-git pull origin main  →  Edit/tambah kode  →  git status  →  git add .  →  git commit -m "..."  →  git push origin main
-```
-
-> **Catatan:** Jika `git push` ditolak karena ada perubahan baru di GitHub, jalankan `git pull origin main` terlebih dahulu, selesaikan konflik (jika ada), lalu `push` kembali.
+🔒 **Peringatan Keamanan:** Dilarang meng-commit file `.env` yang berisi password database asli ke dalam repositori Git!
 
 ---
 
 ## Tim Pengembang
 
-| No | Nama                         |
-| -- | ---------------------------- |
-| 1  | M. Muflih Rafiansyah Fendy   |
-| 2  | Sarah Sabrina Kusumadewi     |
-| 3  | Alya Fakhrun Nisa            |
-| 4  | Sulthaan Ahmad Effendy       |
-| 5  | Muhammad Khairibyan Athallah |
+| No | Nama | Peran & Responsibilitas Utama |
+| --- | --- | --- |
+| 1 | **M. Muflih Rafiansyah Fendy** | **Product Manager (PM) / Lead Developer**<br>Mengontrol seluruh alur proyek, manajemen tim, serta supervisi sistem. |
+| 2 | **Sarah Sabrina Kusumadewi** | **Sekretaris & Documenter**<br>Menyiapkan dokumentasi non-coding (User Persona, Use Case Diagram, SRS), serta membantu UI/UX design. |
+| 3 | **Alya Fakhrun Nisa** | **UI/UX Specialist & Lead Frontend Developer**<br>Merancang antarmuka visual (desain) dan mengimplementasikan tampilan frontend aplikasi. |
+| 4 | **Sulthaan Ahmad Effendy** | **Backend Developer**<br>Mengembangkan alur logika server, pemrosesan transaksi (`modules/`), dan integrasi database PostgreSQL. |
+| 5 | **Muhammad Khairibyan Athallah** | **Quality Assurance (QA) & Frontend Assistant**<br>Melakukan pengujian sistem (bug testing & security audit) serta membantu pengembangan frontend. |
