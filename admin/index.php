@@ -28,14 +28,14 @@ $user = current_user();
         </div>
         <div class="row g-3">
             <div class="col-md-6">
-                <a href="penyewaan.html" class="card card-body h-100 text-decoration-none shadow-sm">
+                <a href="penyewaan.php" class="card card-body h-100 text-decoration-none shadow-sm">
                     <span class="fs-2 text-primary"><i class="bi bi-receipt"></i></span>
                     <h2 class="h5 text-dark mt-3">Kelola Penyewaan</h2>
                     <span class="text-muted">Buka halaman penyewaan admin.</span>
                 </a>
             </div>
             <div class="col-md-6">
-                <a href="unit-ps.html" class="card card-body h-100 text-decoration-none shadow-sm">
+                <a href="unit-ps.php" class="card card-body h-100 text-decoration-none shadow-sm">
                     <span class="fs-2 text-primary"><i class="bi bi-controller"></i></span>
                     <h2 class="h5 text-dark mt-3">Kelola Unit PS</h2>
                     <span class="text-muted">Buka halaman pengelolaan unit.</span>

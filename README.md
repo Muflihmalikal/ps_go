@@ -111,7 +111,9 @@ ps_go/
 
 #### 5. Folder `admin/`
 * Berisi halaman khusus dengan proteksi `require_role(['admin', 'owner', 'operator'])`.
-* Digunakan oleh pengelola rental untuk memantau unit yang sedang disewa, mengembalikan unit, atau mengubah harga rental.
+* **`unit-ps.php`**: Mengelola paket, tarif weekday/weekend, stok unit, serta status kondisi unit langsung di database.
+* **`penyewaan.php`**: Memproses sewa di tempat, verifikasi atau penolakan booking, tahap pengantaran/serah-terima, check-out, pengembalian stok, dan denda keterlambatan.
+* **`_common.php`**: Menyediakan layout admin bersama, pembatasan data berdasarkan cabang, dan utilitas tampilan.
 
 #### 6. Folder `pelanggan/`
 * Berisi alur checkout dan transaksi pelanggan setelah mereka memilih paket di `index.php`. Diproteksi menggunakan `require_login()`.
