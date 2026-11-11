@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/config/security.php';
+require_once __DIR__ . '/config/koneksi.php';
 require_once __DIR__ . '/includes/auth.php';
 
 if (!empty($_SESSION['user'])) {
@@ -83,12 +83,12 @@ $noWa = $oldInput['no_wa'] ?? '';
             </div>
             <div class="mb-3">
                 <label for="no_wa" class="form-label fw-semibold">Nomor WhatsApp</label>
-                <input type="tel" class="form-control" id="no_wa" name="no_wa" maxlength="20" value="<?= htmlspecialchars($noWa, ENT_QUOTES, 'UTF-8') ?>" autocomplete="tel" required />
+                <input type="tel" class="form-control" id="no_wa" name="no_wa" maxlength="20" inputmode="tel" placeholder="081234567890" value="<?= htmlspecialchars($noWa, ENT_QUOTES, 'UTF-8') ?>" autocomplete="tel" required />
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label fw-semibold">Password</label>
-                <input type="password" class="form-control" id="password" name="password" minlength="8" autocomplete="new-password" required />
-                <div class="form-text">Minimal 8 karakter.</div>
+                <input type="password" class="form-control" id="password" name="password" minlength="8" maxlength="72" autocomplete="new-password" required />
+                <div class="form-text">8-72 karakter. Hindari password umum seperti 12345678.</div>
             </div>
             <div class="mb-4">
                 <label for="konfirmasi_password" class="form-label fw-semibold">Konfirmasi password</label>
