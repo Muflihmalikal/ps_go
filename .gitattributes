@@ -1,0 +1,12 @@
+# Di repo, akhir baris selalu disimpan sebagai LF.
+# Di komputer masing-masing, Git menyesuaikan dengan OS (CRLF di Windows).
+* text=auto
+
+# Berkas biner: jangan pernah diubah akhir barisnya.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary
