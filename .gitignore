@@ -1,9 +1,22 @@
-# File konfigurasi sensitif / lokal
+# --- Rahasia & konfigurasi lokal ---
+.env
+.env.*
+!.env.example
 config/database_local.php
 config/env.php
-.env
 
-# System files
+# --- Unggahan pengguna (foto bukti bayar, jaminan) ---
+storage/
+uploads/
+
+# --- Skrip uji & berkas sementara ---
+tes_*.php
+test_*.php
+*.tmp
+*.bak
+CURRENT_TIMESTAMP
+
+# --- Log & berkas sistem operasi ---
+*.log
 .DS_Store
 Thumbs.db
-*.log
