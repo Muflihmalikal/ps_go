@@ -4,9 +4,6 @@ require_once __DIR__ . '/includes/auth.php';
 $pageTitle = "PS Rental - Beranda Pelanggan";
 include __DIR__ . '/includes/header.php';
 
-// Stok dihitung database (view v_stok_paket, migrasi 002):
-//  - paket biasa : unit berstatus 'tersedia' yang tidak sedang dialokasikan ke pesanan aktif
-//  - paket combo : jumlah SET lengkap yang bisa dibentuk dari komponen yang masih bebas
 $stmt = $pdo->prepare("
     SELECT p.id_paket, p.nama_paket, p.kategori, p.deskripsi, p.gambar,
            p.harga_wk_12h, p.harga_wk_24h, p.harga_wn_12h, p.harga_wn_24h,
@@ -21,7 +18,6 @@ $stmt = $pdo->prepare("
 $stmt->execute();
 $katalog = $stmt->fetchAll();
 
-// Nama tombol filter per kategori (kunci = nilai kolom paket_sewa.kategori).
 $namaKategori = [
   'ps3'   => 'PlayStation 3',
   'ps4'   => 'PlayStation 4',
@@ -29,7 +25,6 @@ $namaKategori = [
   'combo' => 'Paket Combo',
   'tv'    => 'TV LED',
 ];
-// Gambar cadangan bila kolom gambar kosong / tidak valid (semua file ini ada di assets/img).
 $gambarBawaan = [
   'ps3'   => 'assets/img/ps3.png',
   'ps4'   => 'assets/img/ps4.png',
@@ -93,8 +88,7 @@ $jumlahKategori = array_count_values(array_column($katalog, 'kategori'));
       $kat    = (string)$item['kategori'];
       $stok   = (int)$item['stok_tersedia'];
       $satuan = $kat === 'combo' ? 'Set' : 'Unit';
-
-      // Hanya terima path relatif sederhana (tanpa URL luar, tanpa "..").
+      
       $gambar = (string)($item['gambar'] ?? '');
       if (
         $gambar === '' || !preg_match('#^[A-Za-z0-9_./-]+$#', $gambar)

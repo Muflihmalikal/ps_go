@@ -1,11 +1,8 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 require_once __DIR__ . '/config/koneksi.php';
 require_once __DIR__ . '/includes/auth.php';
 
-if (!empty($_SESSION['user'])) {
+if (is_logged_in()) {
     header('Location: ' . user_home_path($_SESSION['user']['role'] ?? 'pelanggan'));
     exit;
 }

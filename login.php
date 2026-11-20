@@ -2,13 +2,13 @@
 require_once __DIR__ . '/config/koneksi.php';
 require_once __DIR__ . '/includes/auth.php';
 
-if (!empty($_SESSION['user'])) {
+if (is_logged_in()) {
     header('Location: ' . user_home_path($_SESSION['user']['role'] ?? 'pelanggan'));
     exit;
 }
 
 $error = $_SESSION['error'] ?? '';
-$oldEmail = $_SESSION['old__email'] ?? '';
+$oldEmail = $_SESSION['old_email'] ?? '';
 unset($_SESSION['error'], $_SESSION['old_email']);
 ?>
 <!doctype html>
@@ -81,7 +81,7 @@ unset($_SESSION['error'], $_SESSION['old_email']);
                 <label for="email" class="form-label fw-semibold text-dark">Email</label>
                 <div class="input-group">
                     <span class="input-group-text bg-white"><i class="bi bi-envelope"></i></span>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="nama@email.com" required />
+                    <input type="email" class="form-control" id="email" name="email" placeholder="nama@email.com" value="<?= e($oldEmail) ?>" required />
                 </div>
             </div>
 
