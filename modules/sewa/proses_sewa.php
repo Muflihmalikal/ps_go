@@ -218,11 +218,10 @@ try {
     if (!sewa_dalam_jam_buka($mulai, $paket['jam_buka'], $paket['jam_tutup'])) {
         throw new SewaGagal(
             'Jam mulai sewa di luar jam operasional toko (' .
-            substr((string)$paket['jam_buka'], 0, 5) . ' - ' . substr((string)$paket['jam_tutup'], 0, 5) . ').'
+                substr((string)$paket['jam_buka'], 0, 5) . ' - ' . substr((string)$paket['jam_tutup'], 0, 5) . ').'
         );
     }
 
-    // Kirim ulang form yang sama (klik dua kali / refresh) -> pakai pesanan yang sudah ada.
     $stmt = $pdo->prepare(
         "SELECT id_sewa FROM penyewaan
           WHERE id_user = :u AND id_paket = :p AND tipe_sewa = :t AND durasi = :d
@@ -233,8 +232,6 @@ try {
     $kode = $stmt->fetchColumn();
 
     if ($kode === false) {
-        // Batas pesanan yang belum "selesai urusan pembayarannya". Pesanan COD (bayar di toko)
-        // ikut dihitung, supaya satu akun tidak bisa menahan banyak unit tanpa membayar.
         $stmt = $pdo->prepare(
             "SELECT COUNT(*) FROM penyewaan p
               WHERE p.id_user = :u AND p.status_sewa = 'menunggu'
@@ -248,7 +245,7 @@ try {
         if ((int)$stmt->fetchColumn() >= SEWA_MAKS_BELUM_BAYAR) {
             throw new SewaGagal(
                 'Anda masih punya ' . SEWA_MAKS_BELUM_BAYAR . ' pesanan yang belum dibayar atau masih menunggu pembayaran di toko. ' .
-                'Selesaikan dulu, atau tunggu hingga kedaluwarsa.'
+                    'Selesaikan dulu, atau tunggu hingga kedaluwarsa.'
             );
         }
 
@@ -259,7 +256,6 @@ try {
         }
         $biaya = sewa_hitung_biaya($tipeSewa, $durasi, $h12, $h24);
 
-        // Cari unit kosong untuk SETIAP komponen. Kurang satu saja -> seluruh pesanan gagal.
         $stmt = $pdo->prepare(
             'SELECT id_unit FROM unit_kosong(:p, CAST(:m AS timestamptz), CAST(:s AS timestamptz))'
         );
@@ -308,7 +304,6 @@ try {
         ]);
         $kode = $stmt->fetchColumn();
 
-        // Catat unit yang ditahan (jadwal & status disalin otomatis oleh trigger database).
         $stmt = $pdo->prepare('INSERT INTO penyewaan_unit (id_sewa, id_unit) VALUES (:k, :u)');
         foreach ($alokasi as $idUnit) {
             $stmt->execute(['k' => $kode, 'u' => $idUnit]);
@@ -324,7 +319,7 @@ try {
     sewa_kembali_dengan_error($pdo, $e->getMessage(), $old, $urlForm);
 } catch (PDOException $e) {
     $sqlState = (string)($e->errorInfo[0] ?? $e->getCode());
-    error_log('proses_sewa gagal [' . $sqlState . ']: ' . $e->getMessage());   // detail hanya ke log server
+    error_log('proses_sewa gagal [' . $sqlState . ']: ' . $e->getMessage());
 
     $pesan = match ($sqlState) {
         '23P01'        => 'Unit baru saja dipesan orang lain. Silakan coba lagi atau pilih jadwal lain.',
@@ -335,4 +330,4 @@ try {
 } catch (Throwable $e) {
     error_log('proses_sewa error tak terduga: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
     sewa_kembali_dengan_error($pdo, 'Terjadi gangguan sistem. Silakan coba lagi beberapa saat.', $old, $urlForm);
-}x
+}

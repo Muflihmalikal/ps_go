@@ -1,245 +1,242 @@
 <?php
-require_once __DIR__ . '/../includes/auth.php';
-require_login();
 
-$pageTitle = "PS Rental - Form Penyewaan";
 require_once __DIR__ . '/../config/koneksi.php';
-$id_paket_encrypted = $_GET['id_paket'] ?? '';
-$id_paket = decrypt_id($id_paket_encrypted);
-if ($id_paket === false) {
-    header("Location: /../index.php?error=invalid_link");
-    exit;
-}
-$stmt = $pdo->prepare("
-    SELECT p.*, 
-           (SELECT COUNT(u.id_unit) FROM unit_ps u WHERE u.id_paket = p.id_paket AND u.status_unit = 'tersedia') as stok_tersedia
-    FROM paket_sewa p 
-    WHERE p.id_paket = :id_paket AND p.override_status = 'auto'
-");
-$stmt->execute(['id_paket' => $id_paket]);
-$paket = $stmt->fetch();
+require_once __DIR__ . '/../config/sewa.php';
+require_once __DIR__ . '/../includes/auth.php';
 
-if (!$paket) {
-    header("Location: /../index.php?error=not_found");
+require_role(['pelanggan']);
+$idUser = (int)(current_user()['id_user'] ?? 0);
+
+$tokenPaket = (string)($_GET['id_paket'] ?? '');
+$idPaket    = strlen($tokenPaket) <= 200 ? decrypt_id($tokenPaket) : false;
+if ($idPaket === false || !ctype_digit((string)$idPaket) || strlen((string)$idPaket) > 9) {
+    header('Location: ../index.php?error=invalid_link');
     exit;
 }
+
+$stmt = $pdo->prepare(
+    "SELECT p.id_paket, p.nama_paket, p.kategori, p.deskripsi, p.gambar,
+            ROUND(p.harga_wk_12h)::int AS wk12, ROUND(p.harga_wk_24h)::int AS wk24,
+            ROUND(p.harga_wn_12h)::int AS wn12, ROUND(p.harga_wn_24h)::int AS wn24,
+            c.nama_cabang, c.alamat, c.jam_buka, c.jam_tutup
+       FROM paket_sewa p
+       JOIN cabang c ON c.id_cabang = p.id_cabang
+      WHERE p.id_paket = :id AND p.override_status = 'auto' AND p.is_active AND c.is_active"
+);
+$stmt->execute(['id' => (int)$idPaket]);
+$paket = $stmt->fetch();
+if (!$paket) {
+    header('Location: ../index.php?error=not_found');
+    exit;
+}
+$tarifSiap = $paket['wk12'] > 0 && $paket['wk24'] > 0 && $paket['wn12'] > 0 && $paket['wn24'] > 0;
+
+$stmt = $pdo->prepare('SELECT COUNT(*) FROM v_kebutuhan_unit WHERE id_paket = :id');
+$stmt->execute(['id' => (int)$idPaket]);
+$paketSiap = (int)$stmt->fetchColumn() > 0;
+
+$stmt = $pdo->prepare('SELECT nama, no_wa FROM users WHERE id_user = :id');
+$stmt->execute(['id' => $idUser]);
+$akun = $stmt->fetch() ?: ['nama' => '', 'no_wa' => ''];
+
+$error = (string)($_SESSION['error_sewa'] ?? '');
+$old   = is_array($_SESSION['old_sewa'] ?? null) ? $_SESSION['old_sewa'] : [];
+unset($_SESSION['error_sewa'], $_SESSION['old_sewa']);
+
+$tipeAwal   = in_array($old['tipe_sewa'] ?? '', ['harian', 'jam'], true) ? $old['tipe_sewa'] : 'harian';
+$durasiAwal = preg_replace('/\D/', '', (string)($old['durasi'] ?? '')) ?: '';
+$mulaiAwal  = preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/', (string)($old['mulai'] ?? '')) ? $old['mulai'] : '';
+
+$sekarang  = new DateTimeImmutable('now', new DateTimeZone(SEWA_TZ));
+$minMulai  = $sekarang->format('Y-m-d\TH:i');
+$maxMulai  = $sekarang->modify('+' . SEWA_MAKS_HARI_DEPAN . ' days')->format('Y-m-d\TH:i');
+$tarifAwal = in_array($_GET['tarif'] ?? '', ['weekday', 'weekend'], true)
+    ? $_GET['tarif']
+    : ((int)$sekarang->format('N') >= 5 ? 'weekend' : 'weekday');
+
+$rp = static fn(int $n): string => 'Rp ' . number_format($n, 0, ',', '.');
+
+$infoJam = ($paket['jam_buka'] !== null && $paket['jam_tutup'] !== null)
+    ? 'Buka ' . substr($paket['jam_buka'], 0, 5) . ' - ' . substr($paket['jam_tutup'], 0, 5) . ' WIB. Jam mulai sewa harus dalam jam operasional.'
+    : 'Buka 24 jam.';
+
+$pageTitle = 'PS Rental - Form Penyewaan';
 include __DIR__ . '/../includes/header.php';
+
+$gambarBawaan = [
+    'ps3'   => 'ps3.png',
+    'ps4'   => 'ps4.png',
+    'ps5'   => 'ps5-banner.png',
+    'combo' => 'paket-ps4.png',
+    'tv'    => 'tv-43.png',
+];
+$berkasGambar = basename(str_replace('\\', '/', trim((string)($paket['gambar'] ?? ''))));
+if (!preg_match('/^[A-Za-z0-9._-]+$/', $berkasGambar)) {
+    $berkasGambar = $gambarBawaan[$paket['kategori']] ?? 'ps4.png';
+}
+$srcGambar = $base . 'assets/img/' . $berkasGambar;
+
+$h12Awal   = $tarifAwal === 'weekend' ? $paket['wn12'] : $paket['wk12'];
+$h24Awal   = $tarifAwal === 'weekend' ? $paket['wn24'] : $paket['wk24'];
+$bisaPesan = $tarifSiap && $paketSiap;
 ?>
 <div class="mobile-bar d-lg-none mb-3 d-flex align-items-center gap-2">
-    <button type="button" class="btn btn-light" id="menuBtn" aria-label="Buka menu"><i
-            class="bi bi-list fs-4"></i></button>
+    <button type="button" class="btn btn-light" id="menuBtn" aria-label="Buka menu"><i class="bi bi-list fs-4"></i></button>
     <span class="fw-bold text-dark">PS Rental</span>
 </div>
+
 <div class="mb-4">
-    <a href="../index.php" class="text-decoration-none fw-semibold">
+    <a href="<?= e($base) ?>index.php" class="text-decoration-none fw-semibold">
         <i class="bi bi-arrow-left me-2"></i> Kembali ke Beranda
     </a>
 </div>
 
-<div class="row g-4">
-    <!-- Form Input -->
-    <div class="col-lg-8">
-        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
-            <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                    <label class="form-label text-muted small fw-semibold">Nama Pelanggan <span
-                            class="text-danger">*</span></label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-person"></i></span>
-                        <input type="text" class="form-control" id="namaPelanggan"
-                            placeholder="Masukkan nama lengkap" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label text-muted small fw-semibold">Nomor HP <span
-                            class="text-danger">*</span></label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-telephone"></i></span>
-                        <input type="tel" class="form-control" id="hpPelanggan" placeholder="08xxxxxxxxxx" />
-                    </div>
-                </div>
-            </div>
+<?php if ($error !== ''): ?>
+    <div class="alert alert-danger d-flex gap-2" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <div><?= e($error) ?></div>
+    </div>
+<?php endif; ?>
 
-            <!-- Pilihan Unit -->
-            <div class="mb-4">
-                <label class="form-label text-muted small fw-semibold">Pilih Unit</label>
-                <div class="d-flex align-items-center p-3 border rounded-3 bg-light">
-                    <img src="../assets/img/ps4.png" alt="PS4" width="40" class="me-3" id="unitGambar" />
-                    <div>
-                        <h6 class="mb-0 fw-bold" id="unitNama">PS4</h6>
-                        <small class="text-muted" id="unitHarga"></small>
-                    </div>
-                </div>
-            </div>
+<form id="formSewa" method="POST" action="<?= e($base) ?>modules/sewa/proses_sewa.php" autocomplete="off"
+    data-wk12="<?= (int)$paket['wk12'] ?>" data-wk24="<?= (int)$paket['wk24'] ?>"
+    data-wn12="<?= (int)$paket['wn12'] ?>" data-wn24="<?= (int)$paket['wn24'] ?>"
+    data-maks-jam="<?= (int)SEWA_MAKS_JAM ?>" data-tarif-awal="<?= e($tarifAwal) ?>">
+    <?= csrf_field() ?>
+    <input type="hidden" name="id_paket" value="<?= e($tokenPaket) ?>">
+    <input type="hidden" name="metode_terima" value="ambil">
 
-            <!-- Tipe, Durasi, Waktu Mulai, Metode Penerimaan -->
-            <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                    <label class="form-label text-muted small fw-semibold">Tipe Sewa</label>
-                    <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="tipeSewa" id="harian" checked />
-                        <label class="btn btn-outline-primary" for="harian">Sewa Harian</label>
-                        <input type="radio" class="btn-check" name="tipeSewa" id="jam" />
-                        <label class="btn btn-outline-primary" for="jam">Sewa Per Jam</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label text-muted small fw-semibold" for="mulaiSewa">Tanggal & Waktu
-                        Mulai Sewa</label>
-                    <input type="datetime-local" class="form-control" id="mulaiSewa" />
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label text-muted small fw-semibold" for="durasi">Durasi</label>
-                    <div class="input-group">
-                        <button class="btn btn-outline-secondary px-3" type="button" id="btnKurang">-</button>
-                        <input type="text" inputmode="numeric" class="form-control text-center" id="durasi"
-                            value="1" />
-                        <span class="input-group-text bg-white" id="satuanDurasi">Hari</span>
-                        <button class="btn btn-primary px-3" type="button" id="btnTambah">+</button>
-                    </div>
-                    <small class="text-muted d-block mt-1" id="infoDurasi"></small>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label text-muted small fw-semibold" for="metodeTerima">Metode
-                        Penerimaan Unit</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-box-seam"></i></span>
-                        <select class="form-select" id="metodeTerima">
-                            <option value="ambil" selected>Ambil di Toko</option>
-                            <option value="antar">Antar ke Rumah (+ ongkir)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Jika ambil di toko: alamat toko -->
-            <div id="blokToko">
-                <div class="d-flex gap-3 p-3 border rounded-3 bg-light">
-                    <i class="bi bi-geo-alt-fill text-danger fs-4"></i>
-                    <div>
-                        <h6 class="mb-1 fw-bold">Alamat Toko</h6>
-                        <p class="mb-1 small">Galaxy Game, Jl. [isi alamat lengkap toko], Lumajang</p>
-                        <small class="text-muted"><i class="bi bi-clock me-1"></i> Buka setiap hari 10:00 -
-                            23:00 WIB. Bawa jaminan asli saat mengambil unit.</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Jika antar ke rumah: alamat + jaminan -->
-            <div id="blokAntar" class="d-none">
-                <div class="mb-3">
-                    <label class="form-label text-muted small fw-semibold" for="alamatAntar">Alamat
-                        Pengantaran <span class="text-danger">*</span></label>
-                    <textarea class="form-control" id="alamatAntar" rows="2"
-                        placeholder="Nama jalan, nomor rumah, RT/RW"></textarea>
-                </div>
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-semibold" for="kecamatan">Kecamatan /
-                            Kelurahan <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="kecamatan"
-                            placeholder="Contoh: Rogotrunan" />
+                        <label class="form-label text-muted small fw-semibold" for="namaAkun">Nama Pemesan</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control bg-light" id="namaAkun" value="<?= e($akun['nama']) ?>" readonly>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-semibold" for="patokan">Patokan
-                            (opsional)</label>
-                        <input type="text" class="form-control" id="patokan"
-                            placeholder="Contoh: depan masjid" />
+                        <label class="form-label text-muted small fw-semibold" for="waAkun">Nomor WhatsApp</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-telephone"></i></span>
+                            <input type="text" class="form-control bg-light" id="waAkun" value="<?= e($akun['no_wa']) ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <small class="text-muted">Data diambil dari akun Anda.</small>
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label text-muted small fw-semibold">Pilih Jenis Jaminan</label>
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <label class="radio-card w-100">
-                                <input type="radio" name="jaminan" value="ktp" checked />
-                                <div class="card p-3 text-center border-2">
-                                    <i class="bi bi-person-vcard fs-4 mb-2"></i>
-                                    <span class="fw-semibold d-block">KTP</span>
-                                </div>
-                            </label>
+                    <label class="form-label text-muted small fw-semibold">Unit yang Disewa</label>
+                    <div class="d-flex align-items-center p-3 border rounded-3 bg-light">
+                        <img src="<?= e($srcGambar) ?>" alt="<?= e($paket['nama_paket']) ?>" width="48" class="me-3">
+                        <div>
+                            <h6 class="mb-0 fw-bold"><?= e($paket['nama_paket']) ?></h6>
+                            <small class="text-muted" id="unitHarga"><?= e($rp($h12Awal)) ?> / 12 jam &bull; <?= e($rp($h24Awal)) ?> / 24 jam</small>
                         </div>
-                        <div class="col-6">
-                            <label class="radio-card w-100">
-                                <input type="radio" name="jaminan" value="sim" />
-                                <div class="card p-3 text-center border-2">
-                                    <i class="bi bi-card-heading fs-4 mb-2"></i>
-                                    <span class="fw-semibold d-block">SIM</span>
-                                </div>
-                            </label>
+                    </div>
+                    <?php if (!$tarifSiap): ?>
+                        <div class="alert alert-warning small mt-3 mb-0">Tarif paket ini belum lengkap diatur. Silakan hubungi pengelola.</div>
+                    <?php elseif (!$paketSiap): ?>
+                        <div class="alert alert-warning small mt-3 mb-0">Paket ini belum memiliki unit yang bisa disewa. Silakan hubungi pengelola.</div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small fw-semibold">Tipe Sewa</label>
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="tipe_sewa" id="tipeHarian" value="harian" <?= $tipeAwal === 'harian' ? 'checked' : '' ?>>
+                            <label class="btn btn-outline-primary" for="tipeHarian">Sewa Harian</label>
+                            <input type="radio" class="btn-check" name="tipe_sewa" id="tipeJam" value="jam" <?= $tipeAwal === 'jam' ? 'checked' : '' ?>>
+                            <label class="btn btn-outline-primary" for="tipeJam">Sewa Per Jam</label>
                         </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small fw-semibold" for="mulai">Tanggal &amp; Waktu Mulai Sewa <span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" id="mulai" name="mulai" required
+                            min="<?= e($minMulai) ?>" max="<?= e($maxMulai) ?>" value="<?= e($mulaiAwal) ?>">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small fw-semibold" for="durasi">Durasi</label>
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary px-3" type="button" id="btnKurang" aria-label="Kurangi durasi">-</button>
+                            <input type="text" inputmode="numeric" maxlength="3" class="form-control text-center"
+                                id="durasi" name="durasi" value="<?= e($durasiAwal !== '' ? $durasiAwal : ($tipeAwal === 'jam' ? '12' : '1')) ?>" required>
+                            <span class="input-group-text bg-white" id="satuanDurasi"><?= $tipeAwal === 'jam' ? 'Jam' : 'Hari' ?></span>
+                            <button class="btn btn-primary px-3" type="button" id="btnTambah" aria-label="Tambah durasi">+</button>
+                        </div>
+                        <small class="text-muted d-block mt-1" id="infoDurasi"></small>
                     </div>
                 </div>
 
-                <div>
-                    <label class="form-label text-muted small fw-semibold">Upload Foto Jaminan <span
-                            class="text-danger">*</span></label>
-                    <label class="upload-area d-block text-center p-4 w-100" for="fileJaminan">
-                        <input type="file" id="fileJaminan" accept="image/*" class="d-none" />
-                        <i class="bi bi-cloud-arrow-up fs-3 text-primary d-block mb-1"></i>
-                        <span class="small fw-semibold d-block" id="namaFileJaminan">Klik untuk pilih foto
-                            KTP / SIM (JPG atau PNG)</span>
-                        <img id="previewJaminan" class="upload-preview rounded-3 border mt-3 d-none"
-                            alt="Pratinjau jaminan" />
-                    </label>
-                    <small class="text-muted d-block mt-2">Foto dipakai untuk verifikasi awal. Jaminan asli
-                        tetap diserahkan ke kurir saat unit tiba.</small>
+                <div class="d-flex gap-3 p-3 border rounded-3 bg-light">
+                    <i class="bi bi-geo-alt-fill text-danger fs-4"></i>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Ambil di Toko - <?= e($paket['nama_cabang']) ?></h6>
+                        <p class="mb-1 small"><?= e($paket['alamat']) ?></p>
+                        <small class="text-muted"><i class="bi bi-clock me-1"></i> <?= e($infoJam) ?> Bawa jaminan asli (KTP / SIM) saat mengambil unit.</small>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Ringkasan Penyewaan -->
-    <div class="col-lg-4">
-        <div class="card glass-card card-ringkasan rounded-4 p-3 p-md-4 shadow-sm border-0">
-            <h5 class="fw-bold mb-4">Ringkasan Penyewaan</h5>
+        <div class="col-lg-4">
+            <div class="card glass-card card-ringkasan rounded-4 p-3 p-md-4 shadow-sm border-0">
+                <h5 class="fw-bold mb-4">Ringkasan Penyewaan</h5>
 
-            <div class="d-flex align-items-center border-bottom pb-3 mb-3">
-                <img src="../assets/img/ps4.png" alt="PS4" width="40" class="me-3" id="sumGambar" />
-                <div>
-                    <h6 class="mb-0 fw-bold" id="sumNama">PS4</h6>
-                    <small class="text-muted" id="sumHarga"></small>
+                <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                    <img src="<?= e($srcGambar) ?>" alt="" width="40" class="me-3">
+                    <div>
+                        <h6 class="mb-0 fw-bold"><?= e($paket['nama_paket']) ?></h6>
+                        <small class="text-muted" id="sumHarga"></small>
+                    </div>
                 </div>
-            </div>
 
-            <div class="d-flex justify-content-between mb-2">
-                <span class="text-muted">Tarif</span>
-                <span class="fw-semibold text-end" id="sumTarif">Weekday (Sen-Kam)</span>
-            </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Tarif</span>
+                    <span class="fw-semibold text-end" id="sumTarif"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Durasi</span>
+                    <span class="fw-semibold" id="sumDurasi"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Mulai</span>
+                    <span class="fw-semibold text-end" id="sumMulai"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Kembali</span>
+                    <span class="fw-semibold text-end" id="sumKembali"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-4 pb-3 border-bottom">
+                    <span class="text-muted">Penerimaan</span>
+                    <span class="fw-semibold text-end">Ambil di Toko</span>
+                </div>
 
-            <div class="d-flex justify-content-between mb-2">
-                <span class="text-muted">Durasi</span>
-                <span class="fw-semibold" id="sumDurasi">1 Hari</span>
-            </div>
-            <div class="d-flex justify-content-between mb-2">
-                <span class="text-muted">Penerimaan</span>
-                <span class="fw-semibold text-end" id="sumPenerimaan">Ambil di Toko</span>
-            </div>
-            <div class="d-flex justify-content-between mb-2 d-none" id="sumOngkirBaris">
-                <span class="text-muted">Ongkir</span>
-                <span class="fw-semibold" id="sumOngkir">Rp 0</span>
-            </div>
-            <div class="d-flex justify-content-between mb-4 pb-3 border-bottom">
-                <span class="text-muted">Jaminan</span>
-                <span class="fw-semibold text-end" id="sumJaminan">Diserahkan di toko</span>
-            </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <span class="fw-bold fs-5">Total Estimasi</span>
+                    <span class="fw-bold fs-5 text-primary" id="sumTotal"></span>
+                </div>
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <span class="fw-bold fs-5">Total Estimasi</span>
-                <span class="fw-bold fs-5 text-primary" id="sumTotal">Rp 240.000</span>
-            </div>
+                <div class="alert alert-primary bg-primary-subtle border-0 d-flex gap-2" role="alert">
+                    <i class="bi bi-info-circle-fill text-primary"></i>
+                    <small>Setelah menekan tombol, unit ditahan untuk Anda selama <?= (int)SEWA_BATAS_BAYAR_MENIT ?> menit.
+                        Selesaikan pembayaran di langkah berikutnya sebelum waktu habis. Harga final dihitung sistem.</small>
+                </div>
 
-            <div class="alert alert-primary bg-primary-subtle border-0 d-flex gap-2" role="alert">
-                <i class="bi bi-info-circle-fill text-primary"></i>
-                <small class="fz-80">Setelah mengisi form, silahkan lanjutkan ke halaman
-                    pembayaran.</small>
+                <button type="submit" id="btnSubmit" class="btn btn-primary w-100 py-2 fw-semibold" <?= $bisaPesan ? '' : 'disabled' ?>>
+                    Pesan &amp; Lanjut ke Pembayaran
+                </button>
             </div>
-
-            <div class="alert alert-danger small d-none" id="errForm" role="alert"></div>
-            <a href="pembayaran.php" id="btnLanjut" class="btn btn-primary w-100 py-2 fw-semibold">Lanjutkan ke
-                Pembayaran</a>
         </div>
     </div>
-</div>
+</form>
+
+<script src="<?= e($base) ?>assets/js/form_sewa.js" defer></script>
 <?php include __DIR__ . '/../includes/footer.php'; ?>
